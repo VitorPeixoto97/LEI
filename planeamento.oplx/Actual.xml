@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario xmlns="http://www.omnigroup.com/namespace/OmniPlan/v2" xmlns:opns="http://www.omnigroup.com/namespace/OmniPlan/v2" id="bzXb9LtowBB">
+  <start-date>2019-02-13T08:00:00.000Z</start-date>
+  <prototype-task>
+    <task id="t-2">
+      <title>Task 1</title>
+      <effort>28800</effort>
+    </task>
+  </prototype-task>
+  <prototype-task>
+    <task id="t-3">
+      <title>Milestone 1</title>
+      <type>milestone</type>
+    </task>
+  </prototype-task>
+  <prototype-task>
+    <task id="t-4">
+      <title>Group 1</title>
+      <type>group</type>
+    </task>
+  </prototype-task>
+  <prototype-resource>
+    <resource id="r-2">
+      <name>Resource 1</name>
+      <type>Staff</type>
+    </resource>
+  </prototype-resource>
+  <prototype-resource>
+    <resource id="r-3">
+      <name>Equipment 1</name>
+      <type>Equipment</type>
+    </resource>
+  </prototype-resource>
+  <prototype-resource>
+    <resource id="r-4">
+      <name>Material 1</name>
+      <type>Material</type>
+      <units-available>0</units-available>
+      <efficiency>0</efficiency>
+    </resource>
+  </prototype-resource>
+  <prototype-resource>
+    <resource id="r-5">
+      <name>Group 1</name>
+      <type>Group</type>
+    </resource>
+  </prototype-resource>
+  <top-resource idref="r-1"/>
+  <resource id="r-1">
+    <name/>
+    <type>Group</type>
+    <child-resource idref="r1"/>
+  </resource>
+  <resource id="r1">
+    <name>Resource 1</name>
+    <type>Staff</type>
+  </resource>
+  <top-task idref="t-1"/>
+  <task id="t-1">
+    <type>group</type>
+    <child-task idref="t21"/>
+    <child-task idref="t3"/>
+    <child-task idref="t2"/>
+    <child-task idref="t4"/>
+    <child-task idref="t5"/>
+    <child-task idref="t13"/>
+    <child-task idref="t19"/>
+    <child-task idref="t17"/>
+  </task>
+  <task id="t2">
+    <title>Modelação</title>
+    <effort>144000</effort>
+    <locked-start-date>2019-03-13T08:00:00.000Z</locked-start-date>
+    <locked-end-date>2019-03-19T17:00:00.000Z</locked-end-date>
+    <start-constraint-date>2019-03-13T08:00:00.000Z</start-constraint-date>
+    <recalculate>effort</recalculate>
+    <fixed-duration>144000</fixed-duration>
+    <style>
+      <value key="font-size">11</value>
+    </style>
+    <start-no-earlier-than>2019-03-13T08:00:00.000Z</start-no-earlier-than>
+  </task>
+  <task id="t3">
+    <title>Familiarização com as ferramentas de desenvolvimento</title>
+    <effort>288000</effort>
+    <locked-start-date>2019-03-06T08:00:00.000Z</locked-start-date>
+    <locked-end-date>2019-03-19T17:00:00.000Z</locked-end-date>
+    <recalculate>effort</recalculate>
+    <fixed-duration>288000</fixed-duration>
+  </task>
+  <task id="t4">
+    <title>Mockups</title>
+    <effort>86400</effort>
+    <locked-start-date>2019-03-19T08:00:00.000Z</locked-start-date>
+    <locked-end-date>2019-03-21T17:00:00.000Z</locked-end-date>
+    <start-constraint-date>2019-03-19T08:00:00.000Z</start-constraint-date>
+    <recalculate>effort</recalculate>
+    <fixed-duration>86400</fixed-duration>
+    <start-no-earlier-than>2019-03-19T08:00:00.000Z</start-no-earlier-than>
+  </task>
+  <task id="t5">
+    <title>Checkpoint 1</title>
+    <type>milestone</type>
+    <locked-start-date>2019-03-27T23:59:00.000Z</locked-start-date>
+    <locked-end-date>2019-03-27T23:59:00.000Z</locked-end-date>
+    <start-constraint-date>2019-03-27T23:59:00.000Z</start-constraint-date>
+    <recalculate>effort</recalculate>
+    <fixed-duration>0</fixed-duration>
+    <start-no-earlier-than>2019-03-27T23:59:00.000Z</start-no-earlier-than>
+  </task>
+  <task id="t13">
+    <title>Desenvolvimento</title>
+    <effort>1296000</effort>
+    <locked-start-date>2019-03-22T08:00:00.000Z</locked-start-date>
+    <locked-end-date>2019-05-23T16:00:00.000Z</locked-end-date>
+    <start-constraint-date>2019-03-22T08:00:00.000Z</start-constraint-date>
+    <recalculate>effort</recalculate>
+    <fixed-duration>1296000</fixed-duration>
+    <start-no-earlier-than>2019-03-22T08:00:00.000Z</start-no-earlier-than>
+  </task>
+  <task id="t17">
+    <title>Checkpoint 2</title>
+    <type>milestone</type>
+    <locked-start-date>2019-05-29T22:59:00.000Z</locked-start-date>
+    <locked-end-date>2019-05-29T22:59:00.000Z</locked-end-date>
+    <start-constraint-date>2019-05-29T22:59:00.000Z</start-constraint-date>
+    <recalculate>effort</recalculate>
+    <fixed-duration>0</fixed-duration>
+    <start-no-earlier-than>2019-05-29T22:59:00.000Z</start-no-earlier-than>
+  </task>
+  <task id="t19">
+    <title>Fase de testes</title>
+    <effort>144000</effort>
+    <locked-start-date>2019-05-23T07:00:00.000Z</locked-start-date>
+    <locked-end-date>2019-05-29T16:00:00.000Z</locked-end-date>
+    <start-constraint-date>2019-05-23T07:00:00.000Z</start-constraint-date>
+    <recalculate>effort</recalculate>
+    <fixed-duration>144000</fixed-duration>
+    <start-no-earlier-than>2019-05-23T07:00:00.000Z</start-no-earlier-than>
+  </task>
+  <task id="t21">
+    <title>Levantamento de requisitos</title>
+    <effort>288000</effort>
+    <effort-done>288000</effort-done>
+    <locked-start-date>2019-02-20T08:00:00.000Z</locked-start-date>
+    <locked-end-date>2019-03-06T08:00:00.000Z</locked-end-date>
+    <recalculate>effort</recalculate>
+    <fixed-duration>288000</fixed-duration>
+  </task>
+  <critical-path root="-1" enabled="false" resources="false">
+    <color space="srgb" r="1" g="0.5" b="0.5"/>
+  </critical-path>
+</scenario>
