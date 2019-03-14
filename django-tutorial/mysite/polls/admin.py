@@ -4,6 +4,7 @@ from django.contrib import admin
 from .models import Question
 from .models import Choice
 from .models import Atleta
+from .models import Formacao
 from .models import Clube
 from django.forms import ModelForm
 from django.forms.widgets import TextInput
@@ -35,10 +36,20 @@ class ClubeAdmin(admin.ModelAdmin):
         (None, {'fields': ('nome', 'cor')
             }),
         )
+    
+class FormacaoAdmin(admin.ModelAdmin):
+	fieldsets = (
+        (None, {'fields': ('nome', 'clube')
+            }),
+        )
 
-admin.site.register(Question, QuestionAdmin)
+
+
+#admin.site.register(Question, QuestionAdmin)
 
 admin.site.register(Atleta)
+
+admin.site.register(Formacao, FormacaoAdmin)
 
 admin.site.register(Clube, ClubeAdmin)
 

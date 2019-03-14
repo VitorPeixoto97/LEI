@@ -20,15 +20,41 @@ class Choice(models.Model):
     def __str__(self):
         return self.choice_text
 
+class Clube(models.Model):
+    nome = models.CharField(max_length=200)
+    cor = models.CharField(max_length=6)
+    simbolo = models.TextField()
+    def __str__(self):
+        return self.nome
+
+class Formacao(models.Model):
+    nome = models.CharField(max_length=200)
+    clube = models.ForeignKey(Clube, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.nome
+    class Meta:
+        verbose_name_plural = 'Formações'
+
 class Atleta(models.Model):
     nome = models.CharField(max_length=200)
     licenca = models.IntegerField()
     def __str__(self):
         return self.nome
 
-class Clube (models.Model):
+class Gestor(models.Model):
     nome = models.CharField(max_length=200)
-    cor = models.CharField(max_length=6)
-    simbolo = models.TextField()
+    email = models.CharField(max_length=200)
+    password = forms.CharField(widget=forms.PasswordInput)
+    clube = forms.ForeignKey(Clube, on_delete=models.CASCADE)
     def __str__(self):
         return self.nome
+    class Meta:
+        verbose_name_plural = 'Gestores'
+
+class Jogo(models.Model):
+    tipo = models.CharField(max_length=200)
+    adversario = models.ForeignKey(Formacao, on_delete=models.CASCADE)
+    
+
+
+
