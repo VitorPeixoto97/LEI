@@ -44,17 +44,31 @@ class Atleta(models.Model):
 class Gestor(models.Model):
     nome = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
-    password = forms.CharField(widget=forms.PasswordInput)
-    clube = forms.ForeignKey(Clube, on_delete=models.CASCADE)
+    password = models.CharField(max_length=200)
+    clube = models.ForeignKey(Clube, on_delete=models.CASCADE)
     def __str__(self):
         return self.nome
     class Meta:
         verbose_name_plural = 'Gestores'
 
+class Tecnico(models.Model):
+    nome = models.CharField(max_length=200)
+    formacao = models.ForeignKey(Formacao, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.nome
+    class Meta:
+        verbose_name_plural = 'Técnicos'
+
 class Jogo(models.Model):
     tipo = models.CharField(max_length=200)
-    adversario = models.ForeignKey(Formacao, on_delete=models.CASCADE)
-    
+    formacao = models.ForeignKey(Formacao, on_delete=models.CASCADE, related_name="Minhaequipa")
+    adversario = models.ForeignKey(Formacao, on_delete=models.CASCADE, related_name="Adversário")
+    tecnico = models.ForeignKey(Tecnico, on_delete=models.CASCADE)
+    casafora = models.BooleanField(default=True)
+    def __str__(self):
+        return self.adversario
+
+
 
 
 

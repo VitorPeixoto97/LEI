@@ -1,26 +1,22 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Question
-from .models import Choice
-from .models import Atleta
-from .models import Formacao
-from .models import Clube
+from .models import Question, Tecnico, Jogo, Atleta, Formacao, Clube, Gestor
 from django.forms import ModelForm
 from django.forms.widgets import TextInput
 
 
 
-class ChoiceInline(admin.TabularInline):
-    model = Choice
-    extra = 1
+#class ChoiceInline(admin.TabularInline):
+#    model = Choice
+#    extra = 1
 
-class QuestionAdmin(admin.ModelAdmin):
-    fieldsets = [
-        ('',               {'fields': ['question_text']}),
-        ('Date information', {'fields': ['pub_date']}),
-    ]
-    inlines = [ChoiceInline]
+#class QuestionAdmin(admin.ModelAdmin):
+#    fieldsets = [
+#        ('',               {'fields': ['question_text']}),
+#        ('Date information', {'fields': ['pub_date']}),
+#    ]
+#    inlines = [ChoiceInline]
 
 class CategoryForm(ModelForm):
     class Meta:
@@ -52,4 +48,10 @@ admin.site.register(Atleta)
 admin.site.register(Formacao, FormacaoAdmin)
 
 admin.site.register(Clube, ClubeAdmin)
+
+admin.site.register(Jogo)
+
+admin.site.register(Tecnico)
+
+admin.site.register(Gestor)
 
