@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <omniplan xmlns="http://www.omnigroup.com/namespace/OmniPlan/v2" xmlns:opnx="http://www.omnigroup.com/namespace/OmniPlan/v2" file-format-version="2">
-  <window x="0" y="0" w="1680" h="983">
+  <window x="-1" y="52" w="1680" h="975">
     <editing-scenario>bzXb9LtowBB</editing-scenario>
     <view>task</view>
     <change-tracking/>
     <status-display>basic</status-display>
     <task-view>
-      <split-view-divider-position>310</split-view-divider-position>
-      <outline x="0" y="0" w="310" h="962">
+      <split-view-divider-position>345</split-view-divider-position>
+      <outline x="0" y="0" w="345" h="894">
         <column name="Violations" width="20"/>
         <column name="Notes" width="20"/>
-        <column name="Title" width="195"/>
+        <column name="Title" width="230"/>
         <column name="Effort" width="70"/>
         <expanded-items idrefs="t13"/>
-        <selected-items-at-filter-time idrefs="t29 t13 t30 t4 t27 t33 t5 t19 t31 t28 t17 t34 t26 t21 t32 t3 t35"/>
+        <selected-items-at-filter-time idrefs="t46 t38 t21 t13 t42 t34 t47 t39 t30 t3 t43 t27 t19 t35 t4 t31 t44 t5 t36 t40 t32 t45 t37 t41 t33 t17"/>
       </outline>
-      <gantt-view x="160" y="0" w="1068" h="962">
+      <gantt-view x="80" y="0" w="1033" h="894">
         <view-mode>actual</view-mode>
         <dependency-lines/>
         <constraints/>
@@ -47,7 +47,7 @@
         <task-bar-label task-type="task" position="right">
           <key>Assigned</key>
         </task-bar-label>
-        <scale scale-name="Automatic" full-day-width="39.1319">
+        <scale scale-name="Automatic" full-day-width="35.3621">
           <selected/>
         </scale>
         <scale scale-name="Day" full-day-width="1215"/>
@@ -113,10 +113,10 @@
     </resource-view>
     <calendar>
       <split-view-divider-position>290</split-view-divider-position>
-      <outline x="0" y="0" w="290" h="573">
+      <outline x="0" y="0" w="290" h="870">
         <column name="Notes" width="20"/>
         <column name="Type" width="49"/>
-        <column name="Resource" width="139"/>
+        <column name="Resource" width="175"/>
         <column name="Custom Work Week" width="20"/>
         <column name="Schedule Exception" width="20"/>
       </outline>
@@ -130,7 +130,7 @@
     </network-view>
   </window>
   <project>
-    <next-task-id>36</next-task-id>
+    <next-task-id>48</next-task-id>
     <next-resource-id>2</next-resource-id>
     <scenario id="bzXb9LtowBB" name="Actual" filename="Actual.xml"/>
     <date-display dates="true" times="true" seconds="false"/>
