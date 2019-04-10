@@ -2,12 +2,12 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'statsapp/style.css' %}">
 
-{% if latest_question_list %}
+{% if club_list %}
     <ul>
-    {% for question in latest_question_list %}
-        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+    {% for club in club_list %}
+        <li><a href="{% url 'statsapp:detail' clube.id %}">{{ club.nome }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
-    <p>No polls are available.</p>
+    <p>No clubs are available.</p>
 {% endif %}
