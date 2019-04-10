@@ -61,22 +61,22 @@ class Jogo(models.Model):
         return self.adversario
 
 class Convocado(models.Model):
-   atleta = models.ForeignKey(Atleta, on_delete=models.CASCADE)
-   jogo = models.ForeignKey(Jogo, on_delete=models.CASCADE)
-   emcampo = models.BooleanField(default=True)
-   def __str__(self):
-	return self.jogo
+    atleta = models.ForeignKey(Atleta, on_delete=models.CASCADE)
+    jogo = models.ForeignKey(Jogo, on_delete=models.CASCADE)
+    emcampo = models.BooleanField(default=True)
+    def __str__(self): 
+        return self.jogo
 
 class Evento(models.Model):
    tipo = models.CharField(max_length=200)
    jogo = models.ForeignKey(Jogo, on_delete=models.CASCADE)
    equipa = models.ForeignKey(Formacao, on_delete=models.CASCADE)
-   atleta1 = models.ForeignKey(Atleta, on_delete=models.CASCADE, blank=True, null=True)
-   atleta2 = models.ForeignKey(Atleta, on_delete=models.CASCADE, blank=True, null=True)
+   atleta1 = models.ForeignKey(Atleta, on_delete=models.CASCADE, related_name='AtletaEntra', blank=True, null=True)
+   atleta2 = models.ForeignKey(Atleta, on_delete=models.CASCADE, related_name='AtletaSai', blank=True, null=True)
    zonaCampo = models.IntegerField(default=None, blank=True, null=True)
    zonaBaliza = models.IntegerField(default=None, blank=True, null=True)
    instante = models.TimeField()
-   novoinstante = models.TimeField(default=Nome, blank=True, null=True)
+   novoinstante = models.TimeField(default=None, blank=True, null=True)
    timestamp = models.DateTimeField(auto_now_add=True)
    def __str__(self):
        return self.tipo
