@@ -1,3 +1,4 @@
 .idea
 venv
 HoqueiStats.iml
+*.pyc

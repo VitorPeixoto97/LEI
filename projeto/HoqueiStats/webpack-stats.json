@@ -1,0 +1,1 @@
+{"status":"error","error":"ModuleParseError","message":"Module parse failed: Unexpected token (11:2)\nYou may need an appropriate loader to handle this file type.\n| \n| \r\n> p {\r\n|     text-align: center;\r\n| }\r"}
