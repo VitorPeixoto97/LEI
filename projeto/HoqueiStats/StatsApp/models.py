@@ -1,8 +1,4 @@
-import datetime
-
-
 from django.db import models
-from django.utils import timezone
 
 
 class Admin(models.Model):
@@ -104,8 +100,3 @@ class Evento(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.tipo
-
-
-
-
-
