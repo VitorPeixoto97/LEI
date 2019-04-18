@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from . import models
@@ -26,7 +26,8 @@ def clubeView(request, nome, cor, simbolo):
 
 def gCLubeView(request, nome):
     clube = get_object_or_404(models.Clube, nome=nome)
-    return render(request, 'statsapp/clube.html', {'clube': clube})
+    jsonOut = 'fazer json aqui'
+    return HttpResponse(jsonOut)
 
 
 def gestorView(request, clube, email, nome, password):
@@ -47,7 +48,8 @@ def dFormacaoView(request, clube, nome):
 
 def gFormacaoView(request, clube, nome):
     formacao = get_object_or_404(models.Formacao, clube=clube, nome=nome)
-    return render(request, 'statsapp/formacao.html', {'formacao': formacao})
+    jsonOut = 'fazer json aqui'
+    return HttpResponse(jsonOut)
 
 
 def atletaView(request, clube, licenca, nome, formacao, camisola):
@@ -64,7 +66,8 @@ def dAtletaView(request, licenca):
 
 def gAtleta(request, licenca):
     atleta = get_object_or_404(models.Atleta, licenca=licenca)
-    return render(request, 'statsapp/atleta.html', {'atleta': atleta})
+    jsonOut = 'fazer json aqui'
+    return HttpResponse(jsonOut)
 
 
 def tecnicoView(request, clube, email, nome, password):
@@ -76,8 +79,9 @@ def cTecnicoView(request, email, password, grelhaC, grelhaB):
 
 
 def gTecnico(request, email):
-    tecnico = get_object_or_404(models.Tecnico, email=email)
-    return render(request, 'statsapp/tecnico.html', {'tecnico': tecnico})
+    tecnico = get_object_or_404(models.Tecnico, email=email
+    jsonOut = 'fazer json aqui'
+    return HttpResponse(jsonOut)
 
 
 def jogoView(request, clube, formacao, clubeAdv, formacaoAdv, casa, data, hora, tipo):
@@ -91,7 +95,8 @@ def cJogoView(request, idJogo, grelhaC, grelhaB):
 def gJogoView(request, clube, formacao, data, hora):
     form = get_object_or_404(models.Formacao, clube=clube, nome=formacao)
     jogo = get_object_or_404(models.Jogo, formacao=form.id, data=data, hora=hora)
-    return render(request, 'statsapp/jogo.html', {'jogo': jogo})
+    jsonOut = 'fazer json aqui'
+    return HttpResponse(jsonOut)
 
 
 def convocadoView(request, idJogo, licenca, emCampo):
@@ -112,7 +117,8 @@ def dEventoView(request, idJogo, tipo, instante):
 
 def gEventoView(request, idJogo, tipo, instante):
     evento = get_object_or_404(models.Evento, jogo=idJogo, tipo=tipo, instante=instante)
-    return render(request, 'statsapp/evento.html', {'evento': evento})
+    jsonOut = 'fazer json aqui'
+    return HttpResponse(jsonOut)
 
 
 def gEventosView(request, idJogo):
