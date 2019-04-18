@@ -54,10 +54,12 @@ def gFormacaoView(request, clube, nome):
     jsonOut = json.dumps(formacao)
     return HttpResponse(jsonOut, content_type="formacao/json")
 
+
 def atletaView(request, clube, licenca, nome, formacao, camisola):
     clube = get_object_or_404(models.Clube, nome=clube)
     formacao = get_object_or_404(models.Formacao, clube=clube.id, nome=formacao)
     models.Atleta.objects.create(nome=nome, formacao=formacao.id, licensa=licenca, camisola=camisola)
+
 
 def cAtletaView(request, licenca, formacao, camisola):
     return None
