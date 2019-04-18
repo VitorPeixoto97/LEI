@@ -22,7 +22,7 @@ def cAdminView(request, email, password):
 
 
 def clubeView(request, nome, cor, simbolo):
-    return None
+    models.Clube.objects.create(nome=nome, cor=cor, simbolo=simbolo)
 
 
 def gCLubeView(request, nome):
@@ -32,7 +32,8 @@ def gCLubeView(request, nome):
 
 
 def gestorView(request, clube, email, nome, password):
-    return None
+    clube = get_object_or_404(models.Clube, nome=clube)
+    models.Gestor.objects.create(nome=nome, email=email, password=password, clube=clube.id)
 
 
 def cGestorView(request, email, password):
@@ -40,7 +41,8 @@ def cGestorView(request, email, password):
 
 
 def formacaoView(request, clube, nome):
-    return None
+    clube = get_object_or_404(models.Clube, nome=clube)
+    models.Formacao.objects.create(nome=nome, clube=clube.id)
 
 
 def dFormacaoView(request, clube, nome):
@@ -53,8 +55,9 @@ def gFormacaoView(request, clube, nome):
     return HttpResponse(jsonOut, content_type="formacao/json")
 
 def atletaView(request, clube, licenca, nome, formacao, camisola):
-    return None
-
+    clube = get_object_or_404(models.Clube, nome=clube)
+    formacao = get_object_or_404(models.Formacao, clube=clube.id, nome=formacao)
+    models.Atleta.objects.create(nome=nome, formacao=formacao.id, licensa=licenca, camisola=camisola)
 
 def cAtletaView(request, licenca, formacao, camisola):
     return None
@@ -71,7 +74,8 @@ def gAtleta(request, licenca):
 
 
 def tecnicoView(request, clube, email, nome, password):
-    return None
+    clube = get_object_or_404(models.Clube, nome=clube)
+    models.Tecnico.objects.create(nome=nome, email=email, password=password, clube=clube.id)
 
 
 def cTecnicoView(request, email, password, grelhaC, grelhaB):
