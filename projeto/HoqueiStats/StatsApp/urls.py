@@ -6,40 +6,47 @@ app_name = 'statsapp'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
 
-    path('/change_admin/<string:email>/<string:password>/', views.AdminView.as_view(), name='admin'),
-    path('/get_admin/', views.GAdminView.as_view(), name='gadmin'),
+    path('/change_admin/<string:email>/<string:password>/', views.cAdminView, name='cadmin'),
 
-    path('/clube/<string:nome>/<string:cor>/<string:simbolo>/', views.ClubeView.as_view(), name='clube'),
-    path('/change_clube/<string:nome>/<string:cor>/<string:simbolo>/', views.CClubeView.as_view(), name='cclube'),
-    path('/get_clube/<string:nome>/', views.GCLubeView.as_view(), name='gclube'),
+    path('/clube/<string:nome>/<string:cor>/<string:simbolo>/', views.clubeView, name='clube'),
+    # não meti o change clube, porque fiquei na dúvida se não se pode usar o de cima
+    path('/get_clube/<string:nome>/', views.gCLubeView, name='gclube'),
 
-    path('/gestor/<string:clube>/<string:email>/<string:nome>/<string:password>/', views.GestorView.as_view(), name='gestor'),
-    path('/change_gestor/<string:email>/<string:password>/', views.CGestorView.as_view(), name='cgestor'),
-    path('/get_gestor/<string:email>/', views.GGestorView.as_view(), name='ggestor'),
+    path('/gestor/<string:clube>/<string:email>/<string:nome>/<string:password>/', views.gestorView, name='gestor'),
+    path('/change_gestor/<string:email>/<string:password>/', views.cGestorView, name='cgestor'),
 
-    path('/formacao/<string:clube>/<string:nome>/', views.FormacaoView.as_view(), name='formacao'),
-    path('/del_formacao/<string:clube>/<string:nome>/', views.DFormacaoView.as_view(), name='dformacao'),
-    path('/get_formacao/<string:clube>/<string:nome>/', views.GFormacaoView.as_view(), name='gformacao'),
+    path('/formacao/<string:clube>/<string:nome>/', views.formacaoView, name='formacao'),
+    path('/del_formacao/<string:clube>/<string:nome>/', views.dFormacaoView, name='dformacao'),
+    path('/get_formacao/<string:clube>/<string:nome>/', views.gFormacaoView, name='gformacao'),
 
-    path('/atleta/<string:clube>/<string:formacao>/<string:nome>/<int:licenca>/<int:camisola>/', views.AtletaView.as_view(), name='atleta'),
-    path('/change_atleta/<int:licenca>/<string:formacao>/', views.CAtletaView.as_view(), name='catleta'),
-    path('/del_atleta/<int:licenca>/', views.DAtletaView.as_view(), name='datleta'),
-    path('/get_atleta/<int:licenca>/', views.GAtleta.as_view(), name='gatleta'),
+    path('/atleta/<string:clube>/<int:licenca>/<string:nome>/<string:formacao>/<int:camisola>/', views.atletaView, name='atleta'),
+    path('/change_atleta/<int:licenca>/<string:formacao>/<int:camisola>/', views.cAtletaView, name='catleta'),
+    path('/del_atleta/<int:licenca>/', views.dAtletaView, name='datleta'),
+    path('/get_atleta/<int:licenca>/', views.gAtleta, name='gatleta'),
 
-    path('/tecnico/<string:clube>/<string:email>/<string:nome>/<string:password>/<string:grelhaC>/<string:grelhaB>/', views.TecnicoView.as_view(), name='tecnico'),
-    path('/change_tecnico/<string:email>/<string:password>/<string:grelhaC>/<string:grelhaB>/', views.CTecnicoView.as_view(), name='ctecnico'),
-    path('/get_tecnico/<string:email>/', views.GTecnico.as_view(), name='gtecnico'),
+    path('/tecnico/<string:clube>/<string:email>/<string:nome>/<string:password>/', views.tecnicoView, name='tecnico'),
+    path('/change_tecnico/<string:email>/<string:password>/<string:grelhaC>/<string:grelhaB>/', views.cTecnicoView, name='ctecnico'),
+    path('/get_tecnico/<string:email>/', views.gTecnico, name='gtecnico'),
 
-    path('/jogo/<string:clube>/<string:formacao>/<string:clubeAdv>/<string:formacaoAdv>/<boolean:casa>/<date:data>/<time:hora>/<string:tipo>/<string:grelhaC>/<string:grelhaB>/', views.JogoView.as_view(), name='jogo'),
-    path('/change_jogo/<string:clube>/<string:formacao>/<date:data>/<time:hora>/<string:grelhaC>/<string:grelhaB>/', views.CJogoView.as_view(), name='cjogo'),
-    path('/get_jogo/<string:clube>/<string:formacao>/<date:data>/<time:hora>/', views.GJogoView.as_view(), name='gjogo'),
+    path('/jogo/<string:clube>/<string:formacao>/<string:clubeAdv>/<string:formacaoAdv>/<boolean:casa>/<date:data>/<time:hora>/<string:tipo>/', views.jogoView, name='jogo'),
+    path('/change_jogo/<int:idJogo>/<string:grelhaC>/<string:grelhaB>/', views.cJogoView, name='cjogo'),
+    path('/get_jogo/<string:clube>/<string:formacao>/<date:data>/<time:hora>/', views.gJogoView, name='gjogo'),
 
-    path('/convocado/<string:clube>/<string:formacao>/<date:data>/<time:hora>/<int:licenca>/<boolean:emCampo>/', views.ConvocadoView.as_view(), name='convocado'),
-    #não meti o change_convocado, porque fiquei na dúvida se não se pode usar o de cima
-    path('/get_convocados/<string:clube>/<string:formacao>/<date:data>/<time:hora>/', views.GConvocadosView.as_view(), name='gconvocados'),
-    #não fiz o get_convocado para um jogador em específico, porque não vi utilidade
+    path('/convocado/<int:idJogo>/<int:licenca>/<boolean:emCampo>/', views.convocadoView, name='convocado'),
+    # não meti o change_convocado, porque fiquei na dúvida se não se pode usar o de cima
+    path('/get_convocados/<int:idJogo>/', views.gConvocadosView, name='gconvocados'),
+    # não fiz o get_convocado para um jogador em específico, porque não vi utilidade
 
-    #falta para evento, tipoevento e tipoeventoselecionado
+    path('/evento/<int:idJogo>/<int:idEquipa>/<string:tipo>/<int:atleta1>/<int:atleta2>/<int:zonaC>/<int:zonaB>/<time:instante>/<time:novoinst>/', views.eventoView, name='evento'),
+    # não meti o change evento, porque fiquei na dúvida se não se pode usar o de cima
+    path('/del_evento/<int:idJogo>/<string:tipo>/<time:instante>/', views.dEventoView, name='devento'),
+    path('/get_evento/<int:idJogo>/<string:tipo>/<time:instante>/', views.gEventoView, name='gevento'),
+    path('/get_eventos/<int:idJogo>/', views.gEventosView, name='geventos'),
+
+    path('/tipo_evento/<string:tipo>/<boolean:atleta1>/<boolean:atleta2>/<boolean:zonaC>/<boolean:<zonaB>/<boolean:novoinst>/', views.tipoEventoView, name='tipoevento'),
+    path('/get_tipos_eventos/', views.gTiposEventosView, name='gtiposeventos'),
+
+    path('/tipo_selecionado/<string:tipo>/<string:email>/', views.tipoSelecionadoView, name='tiposelecionado'),
+    path('/del_tipo_selecionado/<string:tipo>/<string:email>/', views.dTipoSelecionadoView, name='dtiposelecionado'),
+    path('/get_tipos_selecionados/<string:email>', views.gTiposSelecionadosView, name='gtiposselecionados'),
 ]
-
-# NOTA: não sei se os urls vão ficar assim, ou se em alguns casos se pode substituir parametros pelo id da base de dados
