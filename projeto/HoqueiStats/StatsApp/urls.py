@@ -30,5 +30,16 @@ urlpatterns = [
     path('/change_tecnico/<string:email>/<string:password>/<string:grelhaC>/<string:grelhaB>/', views.CTecnicoView.as_view(), name='ctecnico'),
     path('/get_tecnico/<string:email>/', views.GTecnico.as_view(), name='gtecnico'),
 
+    path('/jogo/<string:clube>/<string:formacao>/<string:clubeAdv>/<string:formacaoAdv>/<boolean:casa>/<date:data>/<time:hora>/<string:tipo>/<string:grelhaC>/<string:grelhaB>/', views.JogoView.as_view(), name='jogo'),
+    path('/change_jogo/<string:clube>/<string:formacao>/<date:data>/<time:hora>/<string:grelhaC>/<string:grelhaB>/', views.CJogoView.as_view(), name='cjogo'),
+    path('/get_jogo/<string:clube>/<string:formacao>/<date:data>/<time:hora>/', views.GJogoView.as_view(), name='gjogo'),
 
+    path('/convocado/<string:clube>/<string:formacao>/<date:data>/<time:hora>/<int:licenca>/<boolean:emCampo>/', views.ConvocadoView.as_view(), name='convocado'),
+    #não meti o change_convocado, porque fiquei na dúvida se não se pode usar o de cima
+    path('/get_convocados/<string:clube>/<string:formacao>/<date:data>/<time:hora>/', views.GConvocadosView.as_view(), name='gconvocados'),
+    #não fiz o get_convocado para um jogador em específico, porque não vi utilidade
+
+    #falta para evento, tipoevento e tipoeventoselecionado
 ]
+
+# NOTA: não sei se os urls vão ficar assim, ou se em alguns casos se pode substituir parametros pelo id da base de dados
