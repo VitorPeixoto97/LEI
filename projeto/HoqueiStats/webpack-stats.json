@@ -1,1 +1,1 @@
-{"status":"error","error":"ModuleParseError","message":"Module parse failed: Unexpected token (11:2)\nYou may need an appropriate loader to handle this file type.\n| \n| \r\n> p {\r\n|     text-align: center;\r\n| }\r"}
+{"status":"done","chunks":{"main":[{"name":"app.js","path":"C:\\Users\\danie\\Documents\\GitHub\\LEI\\projeto\\HoqueiStats\\assets\\bundles\\app.js"}]}}
