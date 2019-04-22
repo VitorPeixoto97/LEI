@@ -1,6 +1,8 @@
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
+from django.core import serializers
+from django.forms.models import model_to_dict
 from . import models
 import json
 
@@ -27,7 +29,8 @@ def clubeView(request, nome, cor, simbolo):
 
 def gCLubeView(request, nome):
     clube = get_object_or_404(models.Clube, nome=nome)
-    jsonOut = json.dumps(clube)
+
+    jsonOut = json.dumps(model_to_dict(clube))
     return HttpResponse(jsonOut, content_type="clube/json")
 
 

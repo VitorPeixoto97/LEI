@@ -1,0 +1,17 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Criação de Clube</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'statsapp/style.css' %}">
+</head>
+<body>
+    {% load render_bundle from webpack_loader %}
+    <div id="clube">
+        <clube></clube>
+    </div>
+    {% render_bundle 'main' %}
+</body>
+</html>
+</body>
+</html>
