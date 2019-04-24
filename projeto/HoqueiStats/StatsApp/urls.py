@@ -14,7 +14,7 @@ urlpatterns = [
     path('clube/<str:nome>/<str:cor>/<str:simbolo>/', views.clubeView, name='clube'),
     # não meti o change clube, porque fiquei na dúvida se não se pode usar o de cima
     path('get_clubes/', views.gClubesView, name='gclubes'),
-    path('get_clube/<str:nome>/', views.gClubeView, name='gclube'),
+    path('get_clube/<str:id>/', views.gClubeView, name='gclube'),
 
     path('gestor/<str:clube>/<str:email>/<str:nome>/<str:password>/', views.gestorView, name='gestor'),
     path('change_gestor/<str:email>/<str:password>/', views.cGestorView, name='cgestor'),
