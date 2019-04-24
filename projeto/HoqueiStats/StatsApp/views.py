@@ -1,10 +1,8 @@
-from django.http import Http404, HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
-from django.core import serializers
 from django.forms.models import model_to_dict
 from . import models
-import json
 
 #isto é mesmo preciso?
 
@@ -27,12 +25,16 @@ def clubeView(request, nome, cor, simbolo):
     models.Clube.objects.create(nome=nome, cor=cor, simbolo=simbolo)
 
 
-def gCLubeView(request, nome):
-    clube = get_object_or_404(models.Clube, nome=nome)
-
-    #jsonOut = json.dumps(model_to_dict(clube))
-    #return HttpResponse(jsonOut, content_type="clube/json")
+def gClubeView(request, id):
+    clube = get_object_or_404(models.Clube, id=id)
     return JsonResponse(model_to_dict(clube))
+
+def gClubesView(request):
+    clubes = models.Clube.objects.all()
+    aux = []
+    for clube in clubes:
+        aux.append(model_to_dict(clube))
+    return JsonResponse(aux)
 
 def gestorView(request, clube, email, nome, password):
     clube = get_object_or_404(models.Clube, nome=clube)
@@ -43,25 +45,36 @@ def cGestorView(request, email, password):
     return None
 
 
+def gGestorView(request, email):
+    gestor = get_object_or_404(models.Gestor, email=email)
+    return JsonResponse(model_to_dict(gestor))
+
+
 def formacaoView(request, clube, nome):
     clube = get_object_or_404(models.Clube, nome=clube)
     models.Formacao.objects.create(nome=nome, clube=clube.id)
 
 
-def dFormacaoView(request, clube, nome):
+def dFormacaoView(request, clube, id):
     return None
 
 
-def gFormacaoView(request, clube, nome):
-    formacao = get_object_or_404(models.Formacao, clube=clube, nome=nome)
-    jsonOut = json.dumps(formacao)
-    return HttpResponse(jsonOut, content_type="formacao/json")
+def gFormacoesView(request, clube):
+    clubex = get_object_or_404(models.Clube, id=clube)
+    formacoes = clubex.formacao_set.all()
+    aux = []
+    for formacao in formacoes:
+        aux.append(model_to_dict(formacao))
+    return JsonResponse(aux)
 
 
-def atletaView(request, clube, licenca, nome, formacao, camisola):
-    clube = get_object_or_404(models.Clube, nome=clube)
-    formacao = get_object_or_404(models.Formacao, clube=clube.id, nome=formacao)
-    models.Atleta.objects.create(nome=nome, formacao=formacao.id, licensa=licenca, camisola=camisola)
+def gFormacaoView(request, id):
+    formacao = get_object_or_404(models.Formacao, id=id)
+    return JsonResponse(model_to_dict(formacao))
+
+
+def atletaView(request, licenca, nome, formacao, camisola):
+    models.Atleta.objects.create(nome=nome, formacao=formacao, licensa=licenca, camisola=camisola)
 
 
 def cAtletaView(request, licenca, formacao, camisola):
@@ -72,10 +85,18 @@ def dAtletaView(request, licenca):
     return None
 
 
-def gAtleta(request, licenca):
-    atleta = get_object_or_404(models.Atleta, licenca=licenca)
-    jsonOut = json.dumps(atleta)
-    return HttpResponse(jsonOut, content_type="atleta/json")
+def gAtletas(request, formacao):
+    formacaox = get_object_or_404(models.Formacao, id=formacao)
+    atletas = formacaox.atleta_set.all()
+    aux = []
+    for atleta in atletas:
+        aux.append(model_to_dict(atleta))
+    return JsonResponse(aux)
+
+
+def gAtleta(request, id):
+    atleta = get_object_or_404(models.Atleta, id=id)
+    return JsonResponse(model_to_dict(atleta))
 
 
 def tecnicoView(request, clube, email, nome, password):
@@ -89,8 +110,7 @@ def cTecnicoView(request, email, password, grelhaC, grelhaB):
 
 def gTecnico(request, email):
     tecnico = get_object_or_404(models.Tecnico, email=email)
-    jsonOut = json.dumps(tecnico)
-    return HttpResponse(jsonOut, content_type="tecnico/json")
+    return JsonResponse(model_to_dict(tecnico))
 
 
 def jogoView(request, clube, formacao, clubeAdv, formacaoAdv, casa, data, hora, tipo):
@@ -101,11 +121,18 @@ def cJogoView(request, idJogo, grelhaC, grelhaB):
     return None
 
 
-def gJogoView(request, clube, formacao, data, hora):
-    form = get_object_or_404(models.Formacao, clube=clube, nome=formacao)
-    jogo = get_object_or_404(models.Jogo, formacao=form.id, data=data, hora=hora)
-    jsonOut = json.dumps(jogo)
-    return HttpResponse(jsonOut, content_type="jogo/json")
+def gJogosView(request, clube):
+    clubex = get_object_or_404(models.Clube, id=clube)
+    jogos = clubex.jogo_set.all()
+    aux = []
+    for jogo in jogos:
+        aux.append(model_to_dict(jogo))
+    return JsonResponse(aux)
+
+
+def gJogoView(request, id):
+    jogo = get_object_or_404(models.Jogo, id=id)
+    return JsonResponse(model_to_dict(jogo))
 
 def convocadoView(request, idJogo, licenca, emCampo):
     return None
@@ -123,14 +150,13 @@ def dEventoView(request, idJogo, tipo, instante):
     return None
 
 
-def gEventoView(request, idJogo, tipo, instante):
-    evento = get_object_or_404(models.Evento, jogo=idJogo, tipo=tipo, instante=instante)
-    jsonOut = json.dumps(evento)
-    return HttpResponse(jsonOut, content_type="evento/json")
-
-
 def gEventosView(request, idJogo):
     return None
+
+
+def gEventoView(request, id):
+    evento = get_object_or_404(models.Evento, id=id)
+    return JsonResponse(model_to_dict(evento))
 
 
 def tipoEventoView(request, tipo, atleta1, atleta2, zonaC, zonaB, novoinst):
@@ -141,13 +167,13 @@ def gTiposEventosView(request):
     return None
 
 
-def tipoSelecionadoView(request, tipo, email):
+def tipoSelecionadoView(request, tipo, tecnico):
     return None
 
 
-def dTipoSelecionadoView(request, tipo, email):
+def dTipoSelecionadoView(request, tipo, tecnico):
     return None
 
 
-def gTiposSelecionadosView(request, email):
+def gTiposSelecionadosView(request, tecnico):
     return None
