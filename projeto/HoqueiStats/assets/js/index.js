@@ -45,6 +45,9 @@ const gClube = new Vue({
     components: {
         gClube
     },
+    mounted: function () {
+        created()
+    },
     methods: {
         created: function () {
             /*currentLocation = window.location.href;
@@ -53,8 +56,8 @@ const gClube = new Vue({
             cor = split[6];
             simbolo = split[7];*/
             axios
-                .get(window.location.href + '/clube/json')
-                .then(response => (this.data = response.json()))
+                .get(window.location.href)
+                .then(response => (this.info = response.json()))
         }
     }
 })

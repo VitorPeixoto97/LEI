@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.core import serializers
@@ -30,9 +30,9 @@ def clubeView(request, nome, cor, simbolo):
 def gCLubeView(request, nome):
     clube = get_object_or_404(models.Clube, nome=nome)
 
-    jsonOut = json.dumps(model_to_dict(clube))
-    return HttpResponse(jsonOut, content_type="clube/json")
-
+    #jsonOut = json.dumps(model_to_dict(clube))
+    #return HttpResponse(jsonOut, content_type="clube/json")
+    return JsonResponse(model_to_dict(clube))
 
 def gestorView(request, clube, email, nome, password):
     clube = get_object_or_404(models.Clube, nome=clube)
