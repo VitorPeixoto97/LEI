@@ -12,7 +12,7 @@ urlpatterns = [
     path('change_admin/<str:password>/', views.cAdminView, name='cadmin'),
 
     path('clube/<str:nome>/<str:cor>/<str:simbolo>/', views.clubeView, name='clube'),
-    # não meti o change clube, porque fiquei na dúvida se não se pode usar o de cima
+    path('change_clube/<int:id>/<str:cor>/<str:simbolo>/', views.cClubeView, name='cclube'),
     path('get_clubes/', views.gClubesView, name='gclubes'),
     path('get_clube/<str:id>/', views.gClubeView, name='gclube'),
 
@@ -41,12 +41,12 @@ urlpatterns = [
     path('get_jogo/<int:id>/', views.gJogoView, name='gjogo'),
 
     path('convocado/<int:jogo>/<int:atleta>/<bool:emCampo>/', views.convocadoView, name='convocado'),
-    # não meti o change_convocado, porque fiquei na dúvida se não se pode usar o de cima
+    path('change_convocado/<int:jogo>/<int:atleta>/<bool:emCampo>/', views.cConvocadoView, name='cconvocado'),
     path('get_convocados/<int:idJogo>/', views.gConvocadosView, name='gconvocados'),
     # não fiz o get_convocado para um jogador em específico, porque não vi utilidade
 
     path('evento/<int:idJogo>/<int:idEquipa>/<str:tipo>/<int:atleta1>/<int:atleta2>/<int:zonaC>/<int:zonaB>/<time:instante>/<time:novoinst>/', views.eventoView, name='evento'),
-    # não meti o change evento, porque fiquei na dúvida se não se pode usar o de cima
+    path('change_evento/<int:id>/<int:atleta1>/<int:atleta2>/<int:zonaC>/<int:zonaB>/<time:instante>/<time:novoinst>/', views.cEventoView, name='cevento'),
     path('del_evento/<int:id>/', views.dEventoView, name='devento'),
     path('get_eventos/<int:idJogo>/', views.gEventosView, name='geventos'),
     path('get_evento/<int:id>/', views.gEventoView, name='gevento'),

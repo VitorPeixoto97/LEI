@@ -10,6 +10,7 @@ class IndexView(generic.ListView):
 	def get_queryset(self):
 		return models.Clube.objects.order_by('-nome')[:5]
 
+
 def index(request):
     context = 'Hello World'
     return render(request, 'statsapp/index.html', context)
@@ -21,6 +22,10 @@ def cAdminView(request, password):
 
 def clubeView(request, nome, cor, simbolo):
     models.Clube.objects.create(nome=nome, cor=cor, simbolo=simbolo)
+
+
+def cClubeView(request, id, cor, simbolo):
+    models.Clube.objects.filter(id=id).update(cor=cor, simbolo=simbolo)
 
 
 def gClubeView(request, id):
@@ -134,8 +139,13 @@ def gJogoView(request, id):
     jogo = get_object_or_404(models.Jogo, id=id)
     return JsonResponse(model_to_dict(jogo))
 
+
 def convocadoView(request, jogo, atleta, emCampo):
     models.Convocado.objects.create(atleta=atleta, jogo=jogo, emCampo=emCampo)
+
+
+def cConvocadoView(request, jogo, atleta, emCampo):
+    models.Convocado.objects.filter(atleta=atleta, jogo=jogo).update(emCampo=emCampo)
 
 
 def gConvocadosView(request, idJogo):
@@ -149,6 +159,11 @@ def gConvocadosView(request, idJogo):
 
 def eventoView(request, idJogo, idEquipa, tipo, atleta1, atleta2, zonaC, zonaB, instante, novoinst):
     #models.Evento.objects.create(tipo=tipo, jogo=idJogo, equipa=idEquipa, instante=instante)
+    return None
+
+
+def cEventoView(request, id, idEquipa, atleta1, atleta2, zonaC, zonaB, instante, novoinstate):
+    #models.Evento.objects.filter(id=id).update(equipa=idEquipa, instante=instante)
     return None
 
 
@@ -199,3 +214,4 @@ def gTiposSelecionadosView(request, tecnico):
     for tipo in tipos:
         aux.append(model_to_dict(tipo))
     return JsonResponse(aux)
+
