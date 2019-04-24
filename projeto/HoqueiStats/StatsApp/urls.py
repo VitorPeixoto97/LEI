@@ -22,7 +22,7 @@ urlpatterns = [
 
     path('formacao/<str:clube>/<str:nome>/', views.formacaoView, name='formacao'),
     path('del_formacao/<str:clube>/<str:nome>/', views.dFormacaoView, name='dformacao'),
-    path('get_formacoes/<int:clube>/', views.gFormacoes, name='gformacoes'),
+    path('get_formacoes/<int:clube>/', views.gFormacoesView, name='gformacoes'),
     path('get_formacao/<int:id>/', views.gFormacaoView, name='gformacao'),
 
     path('atleta/<int:licenca>/<str:nome>/<str:formacao>/<int:camisola>/', views.atletaView, name='atleta'),
