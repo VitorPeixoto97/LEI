@@ -24,5 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('rest/', include(router.urls)),
     path('clube/', TemplateView.as_view(template_name='index.html')),
-
+    path('jogos/', TemplateView.as_view(template_name='jogos.html')),
 ]

@@ -25,20 +25,21 @@
             <div id="starting">
                 <div class="container">
                     <div class="row">
-                        <h1>Lista de Clubes
-                            <button class="btn btn-success">ADD CLUBE</button>
-                        </h1>
+                        <h1>Lista de Jogos</h1>
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Nome</th>
+                                    <th scope="col">Casa/Fora</th>
+                                    <th scope="col">Adversário</th>
+                                    <th scope="col">Resultado</th>
+                                    <th scope="col">Data</th>
+                                    <th scope="col">Formação</th>
                                     <th scope="col">Ação</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="clube in clubes">
-                                    <th scope="row">${clube.id}</th>
+                                    <td>${jogo.}</th>
                                     <td>${clube.nome}</td>
                                     <td>
                                         <button class="btn btn-info" v-on:click="getClube(clube.clube_id)">Edit</button>
@@ -54,5 +55,36 @@
         </body>
     </html>
 
-    {% load static %}
-    <script type="text/javascript" src="{% static 'js/clube.js' %}"></script>
+
+
+
+    <script type="text/javascript">
+        new Vue({
+            el: '#starting',
+            delimiters: ['${','}'],
+            data: {
+                clubes: [],
+                loading: false,
+                currentClube: {},
+                message: null,
+                newClube: { 'nome': null, 'cor': null, 'simbolo': null },
+            },
+            mounted: function() {
+                this.getClubes();
+            },
+            methods: {
+                getClubes: function() {
+                    this.loading = true;
+                    this.$http.get('/rest/clube/')
+                    .then((response) => {
+                        this.clubes = response.data;
+                        this.loading = false;
+                    })
+                    .catch((err) => {
+                        this.loading = false;
+                        console.log(err);
+                    })
+                },
+            },
+        });
+     </script>
