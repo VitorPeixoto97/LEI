@@ -4,8 +4,6 @@ from django.views import generic
 from django.forms.models import model_to_dict
 from . import models
 
-#isto é mesmo preciso?
-
 class IndexView(generic.ListView):
 	template_name = 'index.html'
 	context_object_name = 'club_list'
