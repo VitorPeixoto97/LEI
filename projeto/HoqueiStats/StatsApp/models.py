@@ -9,7 +9,7 @@ class Admin(models.Model):
 
 class Clube(models.Model):
     nome = models.CharField(max_length=200)
-    cor = models.CharField(max_length=6)
+    cor = models.CharField(max_length=7)
     simbolo = models.TextField()
     def __str__(self):
         return self.nome
