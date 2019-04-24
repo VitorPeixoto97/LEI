@@ -15,8 +15,8 @@ def index(request):
     return render(request, 'statsapp/index.html', context)
 
 
-def cAdminView(request, email, password):
-    return None
+def cAdminView(request, password):
+    models.Admin.objects.filter(id=1).update(password=password)
 
 
 def clubeView(request, nome, cor, simbolo):
@@ -39,8 +39,8 @@ def gestorView(request, clube, email, nome, password):
     models.Gestor.objects.create(nome=nome, email=email, password=password, clube=clube.id)
 
 
-def cGestorView(request, email, password):
-    return None
+def cGestorView(request, id, password):
+    models.Gestor.objects.filter(id=id).update(password=password)
 
 
 def gGestorView(request, email):
@@ -53,8 +53,9 @@ def formacaoView(request, clube, nome):
     models.Formacao.objects.create(nome=nome, clube=clube.id)
 
 
-def dFormacaoView(request, clube, id):
-    return None
+def dFormacaoView(request, id):
+    formacao = get_object_or_404(models.Formacao, id=id)
+    formacao.delete()
 
 
 def gFormacoesView(request, clube):
@@ -75,12 +76,13 @@ def atletaView(request, licenca, nome, formacao, camisola):
     models.Atleta.objects.create(nome=nome, formacao=formacao, licensa=licenca, camisola=camisola)
 
 
-def cAtletaView(request, licenca, formacao, camisola):
-    return None
+def cAtletaView(request, id, formacao, camisola):
+    models.Atleta.objects.filter(id=id).update(formacao=formacao, camisola=camisola)
 
 
-def dAtletaView(request, licenca):
-    return None
+def dAtletaView(request, id):
+    atleta = get_object_or_404(models.Atleta, id=id)
+    atleta.delete()
 
 
 def gAtletas(request, formacao):
@@ -102,8 +104,8 @@ def tecnicoView(request, clube, email, nome, password):
     models.Tecnico.objects.create(nome=nome, email=email, password=password, clube=clube.id)
 
 
-def cTecnicoView(request, email, password, grelhaC, grelhaB):
-    return None
+def cTecnicoView(request, id, password, grelhaC, grelhaB):
+    models.Tecnico.objects.filter(id=id).update(password=password, grelhaCampo=grelhaC, grelhaB=grelhaB)
 
 
 def gTecnico(request, email):
@@ -111,12 +113,12 @@ def gTecnico(request, email):
     return JsonResponse(model_to_dict(tecnico))
 
 
-def jogoView(request, clube, formacao, clubeAdv, formacaoAdv, casa, data, hora, tipo):
-    return None
+def jogoView(request, clube, formacao, formacaoAdv, casa, data, hora, tipo):
+    models.Jogo.objects.create(ipo=tipo, clube=clube, formacao=formacao, adversario=formacaoAdv, casa=casa, data=data, hora=hora)
 
 
 def cJogoView(request, idJogo, grelhaC, grelhaB):
-    return None
+    models.Jogo.objects.filter(id=idJogo).update(grelhaCampo=grelhaC, grelhaBaliza=grelhaB)
 
 
 def gJogosView(request, clube):
@@ -132,24 +134,36 @@ def gJogoView(request, id):
     jogo = get_object_or_404(models.Jogo, id=id)
     return JsonResponse(model_to_dict(jogo))
 
-def convocadoView(request, idJogo, licenca, emCampo):
-    return None
+def convocadoView(request, jogo, atleta, emCampo):
+    models.Convocado.objects.create(atleta=atleta, jogo=jogo, emCampo=emCampo)
 
 
 def gConvocadosView(request, idJogo):
-    return None
+    jogo = get_object_or_404(models.Jogo, id=idJogo)
+    convocados = jogo.convocado_set.all()
+    aux = []
+    for conv in convocados:
+        aux.append(model_to_dict(conv))
+    return JsonResponse(aux)
 
 
 def eventoView(request, idJogo, idEquipa, tipo, atleta1, atleta2, zonaC, zonaB, instante, novoinst):
+    #models.Evento.objects.create(tipo=tipo, jogo=idJogo, equipa=idEquipa, instante=instante)
     return None
 
 
-def dEventoView(request, idJogo, tipo, instante):
-    return None
+def dEventoView(request, id):
+    evento = get_object_or_404(models.Evento, id=id)
+    evento.delete()
 
 
 def gEventosView(request, idJogo):
-    return None
+    jogo = get_object_or_404(models.Jogo, id=idJogo)
+    eventos = jogo.evento_set.all()
+    aux = []
+    for evento in eventos:
+        aux.append(model_to_dict(evento))
+    return JsonResponse(aux)
 
 
 def gEventoView(request, id):
@@ -158,20 +172,30 @@ def gEventoView(request, id):
 
 
 def tipoEventoView(request, tipo, atleta1, atleta2, zonaC, zonaB, novoinst):
-    return None
+    models.TipoEvento.objects.create(tipo=tipo, atleta1=atleta1, atleta2=atleta2, zonaC=zonaC, zonaB=zonaB, novoinst=novoinst)
 
 
 def gTiposEventosView(request):
-    return None
+    tipos = models.TipoEvento.objects.all()
+    aux = []
+    for tipo in tipos:
+        aux.append(model_to_dict(tipo))
+    return JsonResponse(aux)
 
 
 def tipoSelecionadoView(request, tipo, tecnico):
-    return None
+    models.TiposSelecionados.objects.create(tecnico=tecnico, tipo=tipo)
 
 
-def dTipoSelecionadoView(request, tipo, tecnico):
-    return None
+def dTipoSelecionadoView(request, id):
+    tipo = get_object_or_404(models.TiposSelecionados, id=id)
+    tipo.delete()
 
 
 def gTiposSelecionadosView(request, tecnico):
-    return None
+    tecnicox = get_object_or_404(models.Tecnico, id=tecnico)
+    tipos = tecnicox.tiposselecionados_set.all()
+    aux=[]
+    for tipo in tipos:
+        aux.append(model_to_dict(tipo))
+    return JsonResponse(aux)
