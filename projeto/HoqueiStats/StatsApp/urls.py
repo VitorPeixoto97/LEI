@@ -1,7 +1,7 @@
 from django.urls import include, path, register_converter
 from . import converters, views
 from django.contrib.auth import views as auth_views
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 
 
 
@@ -11,14 +11,13 @@ register_converter(converters.TimeConverter, 'time')
 
 app_name = 'statsapp'
 urlpatterns = [
-
+	
+	path('', RedirectView.as_view(url='login/')),
+	
+    path('', include('django.contrib.auth.urls')),
 
     path('clubes/', TemplateView.as_view(template_name='clubes.html')),
     path('jogos/', TemplateView.as_view(template_name='jogos.html')),
-
-    path('', auth_views.LoginView.as_view(template_name='index.html')),
-
-
 
     path('clube/<str:nome>/<str:cor>/<str:simbolo>/', views.clubeView, name='clube'),
     path('change_clube/<int:id>/<str:cor>/<str:simbolo>/', views.cClubeView, name='cclube'),

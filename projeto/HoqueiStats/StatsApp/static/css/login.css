@@ -55,6 +55,8 @@ body {
 }
 
 .form-label-group input {
+  width:100%;
+  border-width: 1px;
   height: auto;
   border-radius: 2rem;
 }
@@ -68,13 +70,9 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  display: block;
   width: 100%;
   margin-bottom: 0;
-  /* Override default `<label>` margin */
-  line-height: 1.5;
-  color: #495057;
-  border: 1px solid transparent;
+  color: #798087;
   border-radius: .25rem;
   transition: all .1s ease-in-out;
 }
