@@ -6,7 +6,7 @@ new Vue({
         loading: false,
         currentClube: {},
         message: null,
-        newClube: { 'nome': null, 'body': null },
+        newClube: { 'nome': null, 'cor': null, 'simbolo': null },
     },
     mounted: function() {
         this.getClubes();

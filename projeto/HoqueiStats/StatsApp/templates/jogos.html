@@ -38,12 +38,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="clube in clubes">
-                                    <td>${jogo.}</th>
-                                    <td>${clube.nome}</td>
+                                <tr v-for="jogo in jogos">
+                                    <td>${jogo.casa}</th>
+                                    <td>${jogo.adversario}</td>
+                                    <td>12</td>
+                                    <td>${jogo.data}</td>
+                                    <td>${jogo.formacao}</td>
                                     <td>
-                                        <button class="btn btn-info" v-on:click="getClube(clube.clube_id)">Edit</button>
-                                        <button class="btn btn-danger" v-on:click="deleteClube(clube.clube_id)">Delete</button>
+                                        <button class="btn btn-info" v-on:click="abreJogo(jogo.jogo_id)">Abrir</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -56,35 +58,5 @@
     </html>
 
 
-
-
-    <script type="text/javascript">
-        new Vue({
-            el: '#starting',
-            delimiters: ['${','}'],
-            data: {
-                clubes: [],
-                loading: false,
-                currentClube: {},
-                message: null,
-                newClube: { 'nome': null, 'cor': null, 'simbolo': null },
-            },
-            mounted: function() {
-                this.getClubes();
-            },
-            methods: {
-                getClubes: function() {
-                    this.loading = true;
-                    this.$http.get('/rest/clube/')
-                    .then((response) => {
-                        this.clubes = response.data;
-                        this.loading = false;
-                    })
-                    .catch((err) => {
-                        this.loading = false;
-                        console.log(err);
-                    })
-                },
-            },
-        });
-     </script>
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/jogo.js' %}"></script>

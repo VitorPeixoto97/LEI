@@ -1,6 +1,8 @@
+import django_filters.rest_framework
 from rest_framework import viewsets
 from .models import Clube, Atleta
 from .serializers import *
+
 
 class ClubeViewSet(viewsets.ModelViewSet):
     queryset = Clube.objects.all()
@@ -25,6 +27,8 @@ class TecnicoViewSet(viewsets.ModelViewSet):
 class JogoViewSet(viewsets.ModelViewSet):
     queryset = Jogo.objects.all()
     serializer_class = JogoSerializer
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+    filterset_fields = '__all__'
 
 class ConvocadoViewSet(viewsets.ModelViewSet):
     queryset = Convocado.objects.all()
