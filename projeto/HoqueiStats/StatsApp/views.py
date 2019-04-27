@@ -19,7 +19,7 @@ def index(request):
     context = 'Hello World'
     return render(request, 'statsapp/index.html', context)
 
-
+'''
 def loginView(request):
     form = forms.LoginForm(request.POST)
     if form.is_valid():
@@ -32,9 +32,9 @@ def loginView(request):
     else:
         return HttpResponseBadRequest(content='bad form')
 
-
 def logoutView(request):
     logout(request)
+'''
 
 
 @login_required
@@ -229,11 +229,14 @@ def cJogoView(request, idJogo, grelhaC, grelhaB):
 @permission_required('view_jogo', raise_exception=True)
 def gJogosView(request, clube):
     clubex = get_object_or_404(models.Clube, id=clube)
-    jogos = clubex.jogo_set.all()
+    formacoes = clubex.formacao_set.all()
     aux = []
-    for jogo in jogos:
-        aux.append(model_to_dict(jogo))
-    return JsonResponse(aux)
+    for formacao in formacoes:
+        formacaox = get_object_or_404(models.Formacao, nome=formacao.nome, clube=formacao.clube)
+        jogos = formacaox.minhaequipa.all()
+        for jogo in jogos:
+            aux.append(model_to_dict(jogo))
+    return JsonResponse(aux, safe=False)
 
 
 @login_required

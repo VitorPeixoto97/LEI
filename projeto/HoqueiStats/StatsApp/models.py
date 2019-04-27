@@ -50,8 +50,8 @@ class Tecnico(models.Model):
 
 class Jogo(models.Model):
     tipo = models.CharField(max_length=200)
-    formacao = models.ForeignKey(Formacao, on_delete=models.CASCADE, related_name='MinhaEquipa')
-    adversario = models.ForeignKey(Formacao, on_delete=models.CASCADE, related_name='EquipaAdversaria')
+    formacao = models.ForeignKey(Formacao, on_delete=models.CASCADE, related_name='minhaequipa')
+    adversario = models.ForeignKey(Formacao, on_delete=models.CASCADE, related_name='adversario')
     casa = models.BooleanField(default=True)
     data = models.DateField()
     hora = models.TimeField()
