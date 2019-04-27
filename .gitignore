@@ -2,6 +2,7 @@
 venv
 HoqueiStats.iml
 *.pyc
+*.DS_Store
 projeto/HoqueiStats/.DS_Store
 projeto/HoqueiStats/StatsApp/.DS_Store
 projeto/HoqueiStats/StatsApp/static/.DS_Store
