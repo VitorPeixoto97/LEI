@@ -108,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = '/get_clube/1'
+LOGIN_REDIRECT_URL = '/get_jogos/1'
 
 
 

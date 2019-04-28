@@ -26,3 +26,5 @@ new Vue({
         },
     },
 });
+
+// COMO SACAR OS DADOS DO JSON PARA ESTE JAVASCRIPT SEM USAR REST???? IDK...

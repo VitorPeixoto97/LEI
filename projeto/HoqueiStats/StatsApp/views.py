@@ -6,6 +6,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from . import models, forms
 from django.contrib.auth.decorators import login_required, permission_required
+import json
 
 
 class IndexView(generic.ListView):
@@ -236,7 +237,8 @@ def gJogosView(request, clube):
         jogos = formacaox.minhaequipa.all()
         for jogo in jogos:
             aux.append(model_to_dict(jogo))
-    return JsonResponse(aux, safe=False)
+    #return JsonResponse(aux, safe=False)
+    return render(request, 'jogos.html', {'out': aux})
 
 
 @login_required
