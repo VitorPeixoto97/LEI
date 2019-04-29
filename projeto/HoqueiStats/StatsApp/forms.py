@@ -8,14 +8,15 @@ class UserForm(forms.Form):
     clube = forms.IntegerField()
 
 
+'''
 class LoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.PasswordInput()
-
+'''
 
 class CriarEventoForm(forms.Form):
     jogo = forms.IntegerField()
-    equipa = forms.IntegerField()
+    equipa = forms.IntegerField(required=False)
     tipo = forms.IntegerField()
     atleta1 = forms.IntegerField(required=False)
     atleta2 = forms.IntegerField(required=False)
@@ -27,7 +28,7 @@ class CriarEventoForm(forms.Form):
 
 class MudarEventoForm(forms.Form):
     idEvento = forms.IntegerField()
-    idEquipa = forms.IntegerField()
+    equipa = forms.IntegerField(required=False)
     atleta1 = forms.IntegerField(required=False)
     atleta2 = forms.IntegerField(required=False)
     zonaC = forms.CharField(max_length=5, required=False)

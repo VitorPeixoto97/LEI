@@ -3,7 +3,6 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.forms.models import model_to_dict
 from django.contrib.auth.models import User, Group
-from django.contrib.auth import authenticate, login, logout
 from . import models, forms
 from django.contrib.auth.decorators import login_required, permission_required
 import json
@@ -278,8 +277,24 @@ def gConvocadosView(request, idJogo):
 def eventoView(request):
     form = forms.CriarEventoForm(request.POST)
     if form.is_valid():
-        # acabar -> FALTAM OS CAMPOS QUE PODEM SER NULL
-        models.Evento.objects.create(tipo=form.cleaned_data['tipo'], jogo=form.cleaned_data['jogo'], equipa=form.cleaned_data['equipa'], instante=form.cleaned_data['instante'])
+        eq = form.cleaned_data['equipa']
+        at1 = form.cleaned_data['atleta1']
+        at2 = form.cleaned_data['atleta2']
+        zC = form.cleaned_data['zonaC']
+        zB = form.cleaned_data['zonaB']
+        novo = form.cleaned_data['novoinst']
+
+        if novo:
+            models.Evento.objects.create(tipo=form.cleaned_data['tipo'], jogo=form.cleaned_data['jogo'], instante=form.cleaned_data['instante'], novoinstante=novo)
+        elif eq and at1 and at2:
+            models.Evento.objects.create(tipo=form.cleaned_data['tipo'], jogo=form.cleaned_data['jogo'], equipa=eq, atleta1=at1, atleta2=at2, instante=form.cleaned_data['instante'])
+        elif eq and at1 and zC and zB:
+            models.Evento.objects.create(tipo=form.cleaned_data['tipo'], jogo=form.cleaned_data['jogo'], equipa=eq, atleta1=at1, zonaCampo=zC, zonaBaliza=zB, instante=form.cleaned_data['instante'])
+        elif eq and at1 and zC:
+            models.Evento.objects.create(tipo=form.cleaned_data['tipo'], jogo=form.cleaned_data['jogo'], equipa=eq, atleta1=at1, zonaCampo=zC, instante=form.cleaned_data['instante'])
+        elif eq:
+            models.Evento.objects.create(tipo=form.cleaned_data['tipo'], jogo=form.cleaned_data['jogo'], equipa=eq, instante=form.cleaned_data['instante'])
+
         return HttpResponse('ok')
     else:
         return HttpResponseBadRequest(content='bad form')
@@ -290,8 +305,24 @@ def eventoView(request):
 def cEventoView(request):
     form = forms.CriarEventoForm(request.POST)
     if form.is_valid():
-        # acabar -> FALTAM OS CAMPOS QUE PODEM SER NULL
-        models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=form.cleaned_data['idEquipa'], instante=form.cleaned_data['instante'])
+        eq = form.cleaned_data['equipa']
+        at1 = form.cleaned_data['atleta1']
+        at2 = form.cleaned_data['atleta2']
+        zC = form.cleaned_data['zonaC']
+        zB = form.cleaned_data['zonaB']
+        novo = form.cleaned_data['novoinst']
+
+        if novo:
+            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(instante=form.cleaned_data['instante'], novoinstante=novo)
+        elif eq and at1 and at2:
+            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, atleta1=at1, atleta2=at2, instante=form.cleaned_data['instante'])
+        elif eq and at1 and zC and zB:
+            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, atleta1=at1, zonaCampo=zC, zonaBaliza=zB, instante=form.cleaned_data['instante'])
+        elif eq and at1 and zC:
+            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, atleta1=at1, zonaCampo=zC, instante=form.cleaned_data['instante'])
+        elif eq:
+            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, instante=form.cleaned_data['instante'])
+
         return HttpResponse('ok')
     else:
         return HttpResponseBadRequest(content='bad form')

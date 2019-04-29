@@ -86,7 +86,7 @@ class TiposSelecionados(models.Model):
 class Evento(models.Model):
     tipo = models.ForeignKey(TipoEvento, on_delete=models.CASCADE)
     jogo = models.ForeignKey(Jogo, on_delete=models.CASCADE)
-    equipa = models.ForeignKey(Formacao, on_delete=models.CASCADE)
+    equipa = models.ForeignKey(Formacao, on_delete=models.CASCADE, blank=True, null=True)
     atleta1 = models.ForeignKey(Atleta, on_delete=models.CASCADE, related_name='AtletaEntra', blank=True, null=True)
     atleta2 = models.ForeignKey(Atleta, on_delete=models.CASCADE, related_name='AtletaSai', blank=True, null=True)
     zonaCampo = models.IntegerField(default=None, blank=True, null=True)

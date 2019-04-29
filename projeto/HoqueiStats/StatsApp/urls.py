@@ -45,7 +45,6 @@ urlpatterns = [
     path('convocado/<int:jogo>/<int:atleta>/<bool:emCampo>/', views.convocadoView, name='convocado'),
     path('change_convocado/<int:jogo>/<int:atleta>/<bool:emCampo>/', views.cConvocadoView, name='cconvocado'),
     path('get_convocados/<int:idJogo>/', views.gConvocadosView, name='gconvocados'),
-    # não fiz o get_convocado para um jogador em específico, porque não vi utilidade
 
     path('evento/', views.eventoView, name='evento'),
     path('change_evento/', views.cEventoView, name='cevento'),
