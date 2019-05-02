@@ -1,3 +1,7 @@
+INSERT INTO "public"."auth_group" ("id", "name") VALUES ('2', 'Administrador'),
+('3', 'Gestor'),
+('4', 'Tecnico');
+
 INSERT INTO "public"."auth_group_permissions" ("id", "group_id", "permission_id") VALUES ('9', '2', '41'),
 ('10', '2', '13'),
 ('11', '2', '53'),
@@ -49,25 +53,16 @@ INSERT INTO "public"."auth_group_permissions" ("id", "group_id", "permission_id"
 ('58', '4', '56'),
 ('59', '4', '61');
 
-INSERT INTO "public"."StatsApp_tipoevento" ("id", "tipo", "atleta1", "atleta2", "zonaCampo", "zonaBaliza", "novoinstante") VALUES ('0', 'Golo', 't', 'f', 't', 't', 'f');
-
-INSERT INTO "public"."auth_group" ("id", "name") VALUES ('2', 'Administrador'),
-('3', 'Gestor'),
-('4', 'Tecnico');
-
-INSERT INTO "public"."auth_user_groups" ("id", "user_id", "group_id") VALUES ('3', '4', '2'),
-('4', '5', '3'),
-('5', '6', '4');
-
 INSERT INTO "public"."auth_user" ("id", "password", "last_login", "is_superuser", "username", "first_name", "last_name", "email", "is_staff", "is_active", "date_joined") VALUES ('1', 'pbkdf2_sha256$150000$QUvpelrwAw7r$5HPQvgbVxeKrMNZIdpuB1d+nEZELBgq/ETJIdsopsTs=', '2019-04-29 22:37:59.919772+01', 't', 'admin', '', '', 'a79175@alunos.uminho.pt', 't', 't', '2019-04-10 19:22:09.457293+01'),
 ('4', 'pbkdf2_sha256$150000$avHO5ClLaaTq$pgcBGWBIxCcnYS8ca0SaykMAo6cbIq+AP2xIKvhS/ks=', NULL, 'f', 'saleteteixeira', 'Salete', 'Teixeira', 'a75281@alunos.uminho.pt', 'f', 't', '2019-04-27 19:15:18+01'),
 ('5', 'pbkdf2_sha256$150000$aDR8TPo3LfI8$+oZktFupyv9MEpf1POz1HnBwk4zlq0sVpLHMoQvVTJk=', NULL, 'f', 'danielmaia', 'Daniel', 'Maia', 'a77531@alunos.uminho.pt', 'f', 't', '2019-04-27 19:16:31+01'),
 ('6', 'pbkdf2_sha256$150000$GVbYWFIMaCO2$4vZPAYsLFdd1BNh6CoLCqSQ44L5eS/gVGsIVe9Zai1s=', '2019-04-27 23:57:57.226051+01', 'f', 'vitorpeixoto', 'Vitor', 'Peixoto', 'a79175@alunos.uminho.pt', 'f', 't', '2019-04-27 19:17:15+01');
 
-INSERT INTO "public"."StatsApp_atleta" ("id", "nome", "licenca", "camisola", "formacao_id") VALUES ('0', 'Gonçalo Alves', '0', '77', '1'),
-('1', 'Poka', '1', '18', '1'),
-('2', 'Reinaldo García', '2', '57', '1'),
-('3', 'Matías Platero', '3', '7', '3');
+INSERT INTO "public"."auth_user_groups" ("id", "user_id", "group_id") VALUES ('3', '4', '2'),
+('4', '5', '3'),
+('5', '6', '4');
+
+INSERT INTO "public"."StatsApp_tipoevento" ("id", "tipo", "atleta1", "atleta2", "zonaCampo", "zonaBaliza", "novoinstante") VALUES ('0', 'Golo', 't', 'f', 't', 't', 'f');
 
 INSERT INTO "public"."StatsApp_clube" ("id", "nome", "cor", "simbolo") VALUES ('1', 'FC Porto', '#0F579E', 'https://www.zerozero.pt/img/logos/equipas/9_imgbank.png'),
 ('2', 'SL Benfica', '#EF2F22', 'https://www.zerozero.pt/img/logos/equipas/4_imgbank.png'),
@@ -85,11 +80,6 @@ INSERT INTO "public"."StatsApp_clube" ("id", "nome", "cor", "simbolo") VALUES ('
 ('14', 'SC Marinhense', '#00713C', 'https://www.zerozero.pt/img/logos/equipas/214133_imgbank.png'),
 ('15', 'FC Barcelona', '#7F001F', 'https://www.zerozero.pt/img/logos/equipas/40_imgbank.png');
 
-INSERT INTO "public"."StatsApp_evento" ("id", "tipo_id", "zonaCampo", "zonaBaliza", "instante", "novoinstante", "timestamp", "atleta1_id", "atleta2_id", "equipa_id", "jogo_id") VALUES ('0', '0', '6', '9', '00:05:12', NULL, '2019-03-16 17:05:14.347796+00', '0', NULL, '1', '6'),
-('1', '0', '11', '9', '00:08:50', NULL, '2019-03-16 17:08:52.347796+00', '1', NULL, '1', '6'),
-('2', '0', '7', '3', '00:30:36', NULL, '2019-03-16 17:40:36.347796+00', '2', NULL, '1', '6'),
-('3', '0', '26', '9', '00:21:21', NULL, '2019-03-16 17:21:23.347796+00', '3', NULL, '3', '6');
-
 INSERT INTO "public"."StatsApp_formacao" ("id", "nome", "clube_id") VALUES ('1', 'Séniores', '1'),
 ('2', 'Séniores', '2'),
 ('3', 'Séniores', '3'),
@@ -106,6 +96,11 @@ INSERT INTO "public"."StatsApp_formacao" ("id", "nome", "clube_id") VALUES ('1',
 ('14', 'Séniores', '14'),
 ('15', 'Séniores', '15');
 
+INSERT INTO "public"."StatsApp_atleta" ("id", "nome", "licenca", "camisola", "formacao_id") VALUES ('0', 'Gonçalo Alves', '0', '77', '1'),
+('1', 'Poka', '1', '18', '1'),
+('2', 'Reinaldo García', '2', '57', '1'),
+('3', 'Matías Platero', '3', '7', '3');
+
 INSERT INTO "public"."StatsApp_jogo" ("id", "tipo", "casa", "data", "hora", "grelhaCampo", "grelhaBaliza", "adversario_id", "formacao_id") VALUES ('0', 'Competição', 'f', '2019-04-27', '17:00:00', '8x4', '3x3', '5', '1'),
 ('1', 'Competição', 'f', '2019-05-04', '19:30:00', '8x4', '3x3', '3', '1'),
 ('2', 'Competição', 'f', '2019-05-11', '12:00:00', '8x4', '3x3', '15', '1'),
@@ -113,5 +108,11 @@ INSERT INTO "public"."StatsApp_jogo" ("id", "tipo", "casa", "data", "hora", "gre
 ('4', 'Competição', 'f', '2019-05-19', '16:00:00', '8x4', '3x3', '10', '1'),
 ('5', 'Competição', 't', '2019-05-25', '18:00:00', '8x4', '3x3', '9', '1'),
 ('6', 'Competição', 't', '2019-03-16', '17:00:00', '8x4', '3x3', '3', '1');
+
+INSERT INTO "public"."StatsApp_evento" ("id", "tipo_id", "zonaCampo", "zonaBaliza", "instante", "novoinstante", "timestamp", "atleta1_id", "atleta2_id", "equipa_id", "jogo_id") VALUES ('0', '0', '6', '9', '00:05:12', NULL, '2019-03-16 17:05:14.347796+00', '0', NULL, '1', '6'),
+('1', '0', '11', '9', '00:08:50', NULL, '2019-03-16 17:08:52.347796+00', '1', NULL, '1', '6'),
+('2', '0', '7', '3', '00:30:36', NULL, '2019-03-16 17:40:36.347796+00', '2', NULL, '1', '6'),
+('3', '0', '26', '9', '00:21:21', NULL, '2019-03-16 17:21:23.347796+00', '3', NULL, '3', '6');
+
 
 
