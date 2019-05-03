@@ -41,9 +41,11 @@ INSTALLED_APPS = [
     'django_extensions',
     'webpack_loader',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_filters',
     'corsheaders'
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'HoqueiStats.urls'
 
@@ -88,8 +91,11 @@ REST_FRAMEWORK = {
 }
 
 JWT_AUTH = {
+    'JWT_VERIFY': True,
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_LEEWAY': 0,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=86400),
     'JWT_ALLOW_REFRESH': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 }
 
@@ -164,7 +170,9 @@ WEBPACK_LOADER = {
 
 CORS_ORIGIN_ALLOW_ALL = False
 
-try:
-    from server.local_settings import *
-except ImportError:
-    pass
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:8080',
+    'localhost',
+    '127.0.0.1:8080'
+)

@@ -3,6 +3,20 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Vuetify from 'vuetify'
+import VueSession from 'vue-session'
+import BootstrapVue from 'bootstrap-vue'
+import 'vuetify/dist/vuetify.min.css'
+import 'jquery/dist/jquery.min.js';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
+import 'bulma/css/bulma.css';
+
+Vue.use(BootstrapVue)
+Vue.use(Vuetify)
+Vue.use(VueSession)
 
 Vue.config.productionTip = false
 

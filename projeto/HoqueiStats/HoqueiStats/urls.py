@@ -22,9 +22,9 @@ from .routers import router
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='index.html')),
-    path('', include('server.urls')),
+    #path('', include('server.urls')),
     path('admin/', admin.site.urls),
     path('rest/', include(router.urls)),
-    url(r'^auth/obtain_token/', obtain_jwt_token),
-    url(r'^auth/refresh_token/', refresh_jwt_token)
+    path('auth/obtain/', obtain_jwt_token),
+    path('auth/refresh/', refresh_jwt_token)
 ]
