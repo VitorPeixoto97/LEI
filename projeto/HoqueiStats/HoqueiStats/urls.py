@@ -21,8 +21,7 @@ from django.conf.urls import url
 from .routers import router
 
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='index.html')),
-    #path('', include('server.urls')),
+    url(r'server/', include('server.urls')),
     path('admin/', admin.site.urls),
     path('rest/', include(router.urls)),
     path('auth/obtain/', obtain_jwt_token),

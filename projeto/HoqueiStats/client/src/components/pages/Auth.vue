@@ -7,7 +7,6 @@
           <div class="card card-signin my-5">
             <div class="card-body">
               <h5 class="card-title text-center">Entrar</h5>
-
               <v-form ref="form" class="form-signin" id="login-form" v-model="valid" lazy-validation>
                 <div class="form-label-group">
                   <input 
@@ -24,6 +23,7 @@
                   />
                   <label for="inputEmail">Endereço email</label>
                 </div>
+
                 <div class="form-label-group">
                   <input 
                     type="password"
@@ -41,7 +41,9 @@
                 </div>
 
                 <button class="btn btn-lg btn-primary btn-block text-uppercase" :disabled="!valid" @click="login">Login</button>
-
+                <p v-if="error">
+                  <h2 class="card-login-failed text-center">Credenciais incorretas</h2>
+                </p>
               </v-form>
             </div>
           </div>
@@ -60,6 +62,7 @@ export default {
         credentials: {},
         valid:true,
         loading:false,
+        error:false,
         rules: {
           username: [
             v => !!v || "Um nome de utilizador é necessário.",
@@ -83,6 +86,7 @@ export default {
                 router.push('/');
               }).catch(e => {
                 this.loading = false;
+                this.error = true;
                 swal({
                   type: 'warning',
                   title: 'Error',
@@ -90,7 +94,8 @@ export default {
                   showConfirmButton:false,
                   showCloseButton:false,
                   timer:3000
-                })
+                }),
+                this.error=false;
               })
             }
         }

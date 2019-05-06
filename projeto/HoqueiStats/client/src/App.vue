@@ -1,3 +1,4 @@
+
 <template>
   <v-app>
    <router-view/>
@@ -9,4 +10,3 @@ export default {
   name: 'App'
 }
 </script>
-view raw

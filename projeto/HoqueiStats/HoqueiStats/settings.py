@@ -133,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = '/get_jogos/1'
+LOGIN_REDIRECT_URL = '/server/get_jogos/1'
 
 
 
