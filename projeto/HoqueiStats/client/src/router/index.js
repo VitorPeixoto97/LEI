@@ -7,6 +7,7 @@ import Movies from '@/components/pages/Movies'
 
 Vue.use(Router)
 
+
 export default new Router({
   routes: [
     {

@@ -8,11 +8,12 @@ import VueSession from 'vue-session'
 import BootstrapVue from 'bootstrap-vue'
 import 'vuetify/dist/vuetify.min.css'
 import 'jquery/dist/jquery.min.js';
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
 import 'bulma/css/bulma.css';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+require('../dist/static/css/login.css')
+
 
 Vue.use(BootstrapVue)
 Vue.use(Vuetify)

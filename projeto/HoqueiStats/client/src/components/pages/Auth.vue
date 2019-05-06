@@ -1,62 +1,53 @@
 <template>
-    <v-container grid-list-md>
-      <v-layout row wrap align-center justify-center fill-height>
-        <v-flex xs12 sm8 lg4 md5>
-          <v-card class="login-card">
-            <v-card-title>
-              <span class="headline">Entrar</span>
-            </v-card-title>
+    <div class="container">    
+      <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <img src="../../assets/hoqueistats.png" alt="HoqueiStats" style="width:70%; display: block;
+  margin: auto; padding-top: 30px;">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">Entrar</h5>
 
-            <v-spacer/>
-
-            <v-card-text>
-
-              <v-layout
-                row
-                fill-height
-                justify-center
-                align-center
-                v-if="loading"
-              >
-                <v-progress-circular
-                  :size="50"
-                  color="primary"
-                  indeterminate
-                />
-              </v-layout>
-
-
-              <v-form v-else ref="form" v-model="valid" lazy-validation>
-                <v-container>
-
-                  <v-text-field
+              <v-form ref="form" class="form-signin" id="login-form" v-model="valid" lazy-validation>
+                <div class="form-label-group">
+                  <input 
+                    type="text"
+                    id="inputEmail"
+                    placeholder="Email address"
                     v-model="credentials.username"
+                    class="form-control"
                     label="nome de utilizador"
                     :rules="rules.username"
                     maxlength="70"
                     required
+                    autofocus
                   />
-
-                  <v-text-field
+                  <label for="inputEmail">Endereço email</label>
+                </div>
+                <div class="form-label-group">
+                  <input 
                     type="password"
+                    id="inputPassword"
+                    placeholder="Password"
                     v-model="credentials.password"
+                    class="form-control"
                     label="palavra-passe"
                     :rules="rules.password"
                     maxlength="20"
                     required
+                    autofocus
                   />
+                  <label for="inputPassword">Palavra-passe</label>
+                </div>
 
-                </v-container>
-                <v-btn class="pink white--text" :disabled="!valid" @click="login">Login</v-btn>
+                <button class="btn btn-lg btn-primary btn-block text-uppercase" :disabled="!valid" @click="login">Login</button>
 
               </v-form>
-
-
-            </v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script>
