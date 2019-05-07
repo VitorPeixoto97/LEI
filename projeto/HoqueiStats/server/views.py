@@ -244,12 +244,11 @@ def gJogosView(request, clube):
         jogos = formacaox.minhaequipa.all()
         for jogo in jogos:
             aux.append(model_to_dict(jogo))
-    #return JsonResponse(aux, safe=False)
-    return render(request, 'jogos.html', {'out': aux})
+    return JsonResponse(aux, safe=False)
 
 
-@login_required
-@permission_required('view_jogo', raise_exception=True)
+#@login_required
+#@permission_required('view_jogo', raise_exception=True)
 def gJogoView(request, id):
     jogo = get_object_or_404(models.Jogo, id=id)
     return JsonResponse(model_to_dict(jogo))

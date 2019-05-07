@@ -41,9 +41,9 @@
                 </div>
 
                 <button class="btn btn-lg btn-primary btn-block text-uppercase" :disabled="!valid" @click="login">Login</button>
-                <p v-if="error">
+                <div v-if="error==1">
                   <h2 class="card-login-failed text-center">Credenciais incorretas</h2>
-                </p>
+                </div>
               </v-form>
             </div>
           </div>
@@ -62,7 +62,7 @@ export default {
         credentials: {},
         valid:true,
         loading:false,
-        error:false,
+        error:0,
         rules: {
           username: [
             v => !!v || "Um nome de utilizador é necessário.",
@@ -80,13 +80,14 @@ export default {
           // checking if the input is valid
             if (this.$refs.form.validate()) {
               this.loading = true;
+              this.error = 0;
               axios.post('http://localhost:8000/auth/obtain/', this.credentials).then(res => {
                 this.$session.start();
                 this.$session.set('token', res.data.token);
-                router.push('/');
+                router.push('/jogos');
               }).catch(e => {
                 this.loading = false;
-                this.error = true;
+                this.error = 1;
                 swal({
                   type: 'warning',
                   title: 'Error',
@@ -94,8 +95,7 @@ export default {
                   showConfirmButton:false,
                   showCloseButton:false,
                   timer:3000
-                }),
-                this.error=false;
+                })
               })
             }
         }

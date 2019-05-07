@@ -1,15 +1,24 @@
 <template>
-  <div id="app">
-    Movies Page
-    {{jogo.casa}}
-  </div>
+  <layout-basic>
+    <div id="app">
+
+      Movies Page
+      {{jogo.tipo}}
+    
+
+    </div>
+  </layout-basic>
 </template>
 
 <script>
 import router from "../../router";
+import LayoutBasic from '@/components/layouts/basic'
 import axios from 'axios';
 export default {
   name: 'Movies',
+  components: {
+      LayoutBasic
+  },
   data() {
       return {
           jogo: null,
@@ -32,7 +41,7 @@ export default {
       if (!this.$session.has("token")) {
         router.push("/auth");
       }
-    }
+    },
   }
 }
 </script>
