@@ -12,7 +12,7 @@ import 'bulma/css/bulma.css';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-require('../dist/static/css/login.css')
+require('../dist/static/css/index.css')
 
 
 Vue.use(BootstrapVue)

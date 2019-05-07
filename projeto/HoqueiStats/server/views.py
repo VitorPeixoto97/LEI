@@ -248,8 +248,8 @@ def gJogosView(request, clube):
     return render(request, 'jogos.html', {'out': aux})
 
 
-#@login_required
-#@permission_required('view_jogo', raise_exception=True)
+@login_required
+@permission_required('view_jogo', raise_exception=True)
 def gJogoView(request, id):
     jogo = get_object_or_404(models.Jogo, id=id)
     return JsonResponse(model_to_dict(jogo))

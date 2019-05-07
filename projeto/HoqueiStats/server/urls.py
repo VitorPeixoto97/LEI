@@ -1,6 +1,5 @@
 from django.urls import include, path, register_converter
 from . import converters, views
-from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView, RedirectView
 
 register_converter(converters.BoolConverter, 'bool')
@@ -9,9 +8,6 @@ register_converter(converters.TimeConverter, 'time')
 
 app_name = 'server'
 urlpatterns = [
-	
-	path('', RedirectView.as_view(url='login/')),
-    path('', include('django.contrib.auth.urls')),
 
     path('clubes/', TemplateView.as_view(template_name='clubes.html')),
     path('jogos/', TemplateView.as_view(template_name='jogos.html')),

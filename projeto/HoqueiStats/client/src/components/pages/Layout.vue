@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     Movies Page
-    {{jogo.tipo}}
+    {{jogo.casa}}
   </div>
 </template>
 
