@@ -44,6 +44,14 @@ def logoutView(request):
     logout(request)
 '''
 
+def infoUserView(request, email):
+  if models.Gestor.objects.filter(email=email) is None:
+    clube = models.Tecnico.objects.get(email=email).clube
+  else:
+    clube = models.Gestor.objects.get(email=email).clube
+
+  return JsonResponse(clube)
+
 
 @login_required
 @permission_required('add_clube', raise_exception=True)
