@@ -2,15 +2,16 @@
   <layout-basic>
     <div id="app">
 
-      Movies Page
-      {{jogo.tipo}}
-    
+      {{jogo.casa}}
+      
+      {{this.userEmail}}
+
 
     </div>
   </layout-basic>
 </template>
 
-<script>
+<script> 
 import router from "../../router";
 import LayoutBasic from '@/components/layouts/basic'
 import axios from 'axios';

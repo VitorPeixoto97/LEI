@@ -25,12 +25,19 @@ Vue.use(BootstrapVue)
 Vue.use(Vuetify)
 Vue.use(VueSession)
 
+Vue.prototype.userEmail = '123';
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
+var hs = new Vue({
   el: '#app',
   router,
   components: { App },
+  data: {
+  	user_email: "djie",
+  	clube: 0,
+  	jogo: 0
+  },
   template: '<App/>'
 })
