@@ -1,5 +1,5 @@
 <template>
-    <div class="container">    
+    <div class="container" id="app">    
       <div class="row">
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
           <img src="../../assets/hoqueistats.png" alt="HoqueiStats" style="width:70%; display: block;
@@ -12,10 +12,11 @@
                   <input 
                     type="text"
                     id="inputEmail"
-                    placeholder="Email address"
+                    ref="email"
+                    placeholder="Endereço email"
                     v-model="credentials.username"
                     class="form-control"
-                    label="nome de utilizador"
+                    label="Endereço email"
                     :rules="rules.username"
                     maxlength="70"
                     required
@@ -28,10 +29,10 @@
                   <input 
                     type="password"
                     id="inputPassword"
-                    placeholder="Password"
+                    placeholder="Palavra-passe"
                     v-model="credentials.password"
                     class="form-control"
-                    label="palavra-passe"
+                    label="Palavra-passe"
                     :rules="rules.password"
                     maxlength="20"
                     required
@@ -53,6 +54,7 @@
 </template>
 
 <script>
+import main from '../../main.js';
 import axios from 'axios';
 import swal from 'sweetalert2';
 import router from '../../router';
@@ -81,6 +83,7 @@ export default {
             if (this.$refs.form.validate()) {
               this.loading = true;
               this.error = 0;
+              this.userEmail = 'joses';
               axios.post('http://localhost:8000/auth/obtain/', this.credentials).then(res => {
                 this.$session.start();
                 this.$session.set('token', res.data.token);
