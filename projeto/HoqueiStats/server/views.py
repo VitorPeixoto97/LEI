@@ -45,12 +45,16 @@ def logoutView(request):
 '''
 
 def infoUserView(request, email):
-  if models.Gestor.objects.filter(email=email) is None:
+  if models.Gestor.objects.filter(email=email).count()==0:
     clube = models.Tecnico.objects.get(email=email).clube
   else:
     clube = models.Gestor.objects.get(email=email).clube
 
-  return JsonResponse(clube)
+  return JsonResponse(model_to_dict(clube))
+
+def advNome(request, form_id):
+  formacao = get_object_or_404(models.Formacao, id=form_id)
+  return JsonResponse(model_to_dict(formacao.clube))
 
 
 @login_required
@@ -241,8 +245,8 @@ def cJogoView(request, idJogo, grelhaC, grelhaB):
     return HttpResponse('ok')
 
 
-@login_required
-@permission_required('view_jogo', raise_exception=True)
+#@login_required
+#@permission_required('view_jogo', raise_exception=True)
 def gJogosView(request, clube):
     clubex = get_object_or_404(models.Clube, id=clube)
     formacoes = clubex.formacao_set.all()
@@ -251,8 +255,27 @@ def gJogosView(request, clube):
         formacaox = get_object_or_404(models.Formacao, nome=formacao.nome, clube=formacao.clube)
         jogos = formacaox.minhaequipa.all()
         for jogo in jogos:
-            aux.append(model_to_dict(jogo))
+            new_jogo = {}
+            new_jogo['id'] = jogo.id
+            new_jogo['tipo'] = jogo.tipo
+            if(jogo.casa):
+                new_jogo['casa'] = "C"
+            else:
+                new_jogo['casa'] = "F"
+            new_jogo['data'] = jogo.data
+            new_jogo['hora'] = jogo.hora
+            new_jogo['grelhaCampo'] = jogo.grelhaCampo
+            new_jogo['grelhaBaliza'] = jogo.grelhaBaliza
+            new_jogo['adversario'] = jogo.adversario.id
+            new_jogo['formacao'] = jogo.formacao.id
+            new_jogo['adv_nome'] = jogo.adversario.clube.nome
+            new_jogo['form_nome'] = jogo.formacao.nome
+            aux.append(new_jogo)
     return JsonResponse(aux, safe=False)
+
+def adversario(form_id):
+    formacao = get_object_or_404(models.Formacao, id=form_id)
+    return formacao.clube
 
 
 #@login_required

@@ -10,7 +10,7 @@
             <md-bottom-bar-item id="bottom-bar-item-home" md-label="Jogos" md-icon="menu"></md-bottom-bar-item>
             <md-bottom-bar-item id="bottom-bar-item-pages" md-label="Jogo" md-icon="home"></md-bottom-bar-item>
             <md-bottom-bar-item id="bottom-bar-item-posts" md-label="Definições" md-icon="settings"></md-bottom-bar-item>
-            <md-bottom-bar-item id="bottom-bar-item-favorites" @click="$router.push('/auth')" md-label="Logout" md-icon="power_settings_new"></md-bottom-bar-item>
+            <md-bottom-bar-item id="bottom-bar-item-favorites" @click="logout" md-label="Logout" md-icon="power_settings_new"></md-bottom-bar-item>
           </div>
         </md-bottom-bar>
       </div>
@@ -25,10 +25,9 @@
     },
     methods: {
       logout() {
-        if (this.$session.has("token")) {
-          this.$store.dispatch('logout').then(() => {
-            $router.push("/auth");
-          })
+        if (this.$session.has('token')) {
+          this.$session.remove('token');
+          this.$router.push("/auth");
         }
       }
     },

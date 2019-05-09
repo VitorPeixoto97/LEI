@@ -13,6 +13,7 @@ urlpatterns = [
     path('jogos/', TemplateView.as_view(template_name='jogos.html')),
 
     path('info_user/<str:email>/', views.infoUserView, name='info'),
+    path('adversario_nome/<int:form_id>/', views.advNome, name='adversarionome'),
 
     path('clube/<str:nome>/<str:cor>/<str:simbolo>/', views.clubeView, name='clube'),
     path('change_clube/<int:id>/<str:cor>/<str:simbolo>/', views.cClubeView, name='cclube'),

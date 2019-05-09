@@ -83,7 +83,7 @@ export default {
             if (this.$refs.form.validate()) {
               this.loading = true;
               this.error = 0;
-              this.userEmail = 'joses';
+              this.$session.set('user_email', this.$refs.email.value);
               axios.post('http://localhost:8000/auth/obtain/', this.credentials).then(res => {
                 this.$session.start();
                 this.$session.set('token', res.data.token);
