@@ -1,7 +1,7 @@
 <template>
   <layout-basic>
     <div id="app">
-        == JOGO PAGE ==
+        == STATS PAGE ==
         {{this.$session.get('jogoTab')}}
 
     </div>

@@ -26,7 +26,7 @@
               </thead>
 
               <tbody>
-                <tr style="cursor: pointer" @click="verJogo(jogo.id)" v-for="jogo in jogos">
+                <tr style="cursor: pointer" @click="verJogo(jogo.id, jogo.resultado)" v-for="jogo in jogos">
                   <th scope="row">{{jogo.id}}</th>
                   <td>{{jogo.casa}}</td>
                   <td>{{jogo.adv_nome}}</td>
@@ -80,12 +80,11 @@ export default {
       }
     },
 
-    verJogo(id) {
+    verJogo(id, res) {
       this.$session.set('jogoTab', id)
-      router.push("/jogo")
-    }
-
-    
+      if(res=="") router.push("/jogo");
+      else router.push("/stats")
+    } 
   }
 }
 </script>
