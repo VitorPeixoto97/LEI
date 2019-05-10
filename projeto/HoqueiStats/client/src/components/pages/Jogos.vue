@@ -82,6 +82,7 @@ export default {
 
     verJogo(id, res) {
       this.$session.set('jogoTab', id)
+      this.$session.set('activeTab',"jogo")
       if(res=="") router.push("/jogo");
       else router.push("/stats")
     } 

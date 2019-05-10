@@ -52,5 +52,3 @@ export default {
   }
 }
 </script>
-
-<style src="../../../dist/static/css/table.css">

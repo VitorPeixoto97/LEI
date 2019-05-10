@@ -28,10 +28,6 @@ export default {
   },
   methods: {
     FetchData: function() {
-      var app = this;
-      axios.get(process.env.API_URL + "/server/get_jogos/1/").then(response => {
-        app.jogos = response.data;
-      });
       axios.get(process.env.API_URL + "/server/info_user/" + this.$session.get('user_email') + "/").then(response => {
         this.$session.set('clube', response.data.nome);
       })
@@ -52,5 +48,3 @@ export default {
   }
 }
 </script>
-
-<style src="../../../dist/static/css/table.css">
