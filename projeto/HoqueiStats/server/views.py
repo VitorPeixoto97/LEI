@@ -264,6 +264,7 @@ def gJogosView(request, clube):
                 new_jogo['casa'] = "F"
             new_jogo['data'] = jogo.data
             new_jogo['hora'] = jogo.hora
+            new_jogo['resultado'] = gResultado(jogo.id)
             new_jogo['grelhaCampo'] = jogo.grelhaCampo
             new_jogo['grelhaBaliza'] = jogo.grelhaBaliza
             new_jogo['adversario'] = jogo.adversario.id
@@ -283,6 +284,21 @@ def adversario(form_id):
 def gJogoView(request, id):
     jogo = get_object_or_404(models.Jogo, id=id)
     return JsonResponse(model_to_dict(jogo))
+
+def gResultado(id):
+    jogo = get_object_or_404(models.Jogo, id=id)
+    eventos = jogo.evento_set.all()
+    aux = []
+    golosC=0
+    golosF=0
+    if (len(eventos)==0): return ""
+    for evento in eventos:
+        if (evento.tipo.id==0 and evento.equipa==jogo.formacao):
+            golosC+=1
+        elif (evento.tipo.id==0 and evento.equipa==jogo.adversario):
+            golosF+=1
+    return str(golosC)+"-"+str(golosF) 
+
 
 
 @login_required

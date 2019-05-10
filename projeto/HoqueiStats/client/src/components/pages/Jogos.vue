@@ -42,7 +42,7 @@
                                 <th scope="row">{{jogo.id}}</th>
                                 <td>{{jogo.casa}}</td>
                                 <td>{{jogo.adv_nome}}</td>
-                                <td>Resultado</td>
+                                <td>{{jogo.resultado}}</td>
                                 <td>{{jogo.data}}</td>
                                 <td>{{jogo.form_nome}}</td>
                             </tr>
