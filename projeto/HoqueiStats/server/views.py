@@ -291,7 +291,7 @@ def gResultado(id):
     aux = []
     golosC=0
     golosF=0
-    if (len(eventos)==0): return ""
+    if (eventos.count()==0): return ""
     for evento in eventos:
         if (evento.tipo.id==0 and evento.equipa==jogo.formacao):
             golosC+=1
