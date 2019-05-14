@@ -65,13 +65,13 @@ export default {
   methods: {
     FetchData: function() {
       var app = this;
-      axios.get(process.env.API_URL + "/server/get_jogos/"+this.$session.get('clubeid')+"/").then(response => {
-        app.jogos = response.data;
-      });
       axios.get(process.env.API_URL + "/server/info_user/" + this.$session.get('user_email') + "/").then(response => {
         this.$session.set('clube', response.data.nome)
         this.$session.set('clubeid', response.data.id)
-      })
+      });
+      axios.get(process.env.API_URL + "/server/get_jogos/"+this.$session.get('clubeid')+"/").then(response => {
+        app.jogos = response.data;
+      });
     },
       
     checkLoggedIn() {
@@ -83,7 +83,10 @@ export default {
     verJogo(id, res) {
       this.$session.set('jogoTab', id)
       this.$session.set('activeTab',"jogo")
-      if(res=="") router.push("/jogo");
+      if(res=="") {
+        this.$session.set('js', )
+        router.push("/jogo");
+      }
       else router.push("/stats")
     } 
   }
