@@ -12,7 +12,7 @@
 
 <script> 
 import router from "../../router";
-import LayoutBasic from '@/components/layouts/basic'
+import LayoutBasic from '../layouts/Basic.vue'
 import axios from 'axios';
 export default {
   name: 'Movies',

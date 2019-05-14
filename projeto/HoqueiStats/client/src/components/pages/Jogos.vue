@@ -46,7 +46,7 @@
 
 <script> 
 import router from "../../router";
-import LayoutBasic from '@/components/layouts/basic'
+import LayoutBasic from '../layouts/Basic.vue'
 import axios from 'axios';
 export default {
   name: 'Movies',
@@ -65,13 +65,13 @@ export default {
   methods: {
     FetchData: function() {
       var app = this;
-      axios.get(process.env.API_URL + "/server/get_jogos/"+this.$session.get('clubeid')+"/").then(response => {
-        app.jogos = response.data;
-      });
       axios.get(process.env.API_URL + "/server/info_user/" + this.$session.get('user_email') + "/").then(response => {
         this.$session.set('clube', response.data.nome)
         this.$session.set('clubeid', response.data.id)
-      })
+      });
+      axios.get(process.env.API_URL + "/server/get_jogos/"+this.$session.get('clubeid')+"/").then(response => {
+        app.jogos = response.data;
+      });
     },
       
     checkLoggedIn() {
