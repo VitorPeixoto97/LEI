@@ -14,8 +14,8 @@ import 'jquery/dist/jquery.min.js';
 import 'bulma/css/bulma.css';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'vue-material/dist/vue-material.min.css'
-import 'vue-material/dist/theme/default.css'
+import 'vue-material/dist/vue-material.min.css';
+import 'vue-material/dist/theme/default.css';
 
 
 require('../dist/static/css/index.css')
