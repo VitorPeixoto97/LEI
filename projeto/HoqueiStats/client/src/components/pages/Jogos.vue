@@ -1,37 +1,35 @@
 <template>
   <layout-basic>
     <div id="app">
-      
+      <div>
+        <md-table v-model="searched" md-sort="name" md-sort-order="asc"  md-fixed-header>
+          <md-table-toolbar>
+            <div class="md-toolbar-section-start">
+              <h1 class="md-title"> </h1>
+            </div>
 
-  <div>
+            <md-field md-clearable class="md-toolbar-section-end">
+              <md-input placeholder="Pesquisar por adversário..." v-model="search" @input="searchOnTable" />
+            </md-field>
+          </md-table-toolbar>
 
-    <md-table v-model="searched" md-sort="name" md-sort-order="asc"  md-fixed-header>
-      <md-table-toolbar>
-        <div class="md-toolbar-section-start">
-          <h1 class="md-title"> </h1>
-        </div>
+          <md-table-empty-state
+            md-label="Sem jogos"
+            :md-description="'Não foram encontrados jogos para a sua pesquisa.'">
+          </md-table-empty-state>
 
-        <md-field md-clearable class="md-toolbar-section-end">
-          <md-input placeholder="Pesquisar por adversário..." v-model="search" @input="searchOnTable" />
-        </md-field>
-      </md-table-toolbar>
-
-      <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.resultado)">
-        <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Local" md-sort-by="casa">{{ item.casa }}</md-table-cell>
-        <md-table-cell md-label="Adversário" md-sort-by="adv_nome">{{ item.adv_nome }}</md-table-cell>
-        <md-table-cell md-label="Resultado" md-sort-by="resultado">{{ item.resultado }}</md-table-cell>
-        <md-table-cell md-label="Data" md-sort-by="data">{{ item.data }}</md-table-cell>
-      </md-table-row>
-    </md-table>
-  </div>
+          <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.resultado)">
+            <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
+            <md-table-cell md-label="Local" md-sort-by="casa">{{ item.casa }}</md-table-cell>
+            <md-table-cell md-label="Adversário" md-sort-by="adv_nome">{{ item.adv_nome }}</md-table-cell>
+            <md-table-cell md-label="Resultado" md-sort-by="resultado">{{ item.resultado }}</md-table-cell>
+            <md-table-cell md-label="Data" md-sort-by="data">{{ item.data }}</md-table-cell>
+          </md-table-row>
+        </md-table>
+      </div>
     </div>
   </layout-basic>
 </template>
-
-
-
-
 
 <script> 
 import router from "../../router";

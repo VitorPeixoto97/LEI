@@ -283,7 +283,26 @@ def adversario(form_id):
 #@permission_required('view_jogo', raise_exception=True)
 def gJogoView(request, id):
     jogo = get_object_or_404(models.Jogo, id=id)
-    return JsonResponse(model_to_dict(jogo))
+    new_jogo = {}
+    new_jogo['id'] = jogo.id
+    new_jogo['tipo'] = jogo.tipo
+    if(jogo.casa):
+        new_jogo['casa'] = "C"
+    else:
+        new_jogo['casa'] = "F"
+    new_jogo['data'] = jogo.data
+    new_jogo['hora'] = jogo.hora
+    new_jogo['resultado'] = gResultado(jogo.id)
+    new_jogo['grelhaCampo'] = jogo.grelhaCampo
+    new_jogo['grelhaBaliza'] = jogo.grelhaBaliza
+    new_jogo['adversario'] = jogo.adversario.id
+    new_jogo['formacao'] = jogo.formacao.id
+    new_jogo['adv_nome'] = jogo.adversario.clube.nome
+    new_jogo['form_nome'] = jogo.formacao.nome
+    new_jogo['clube_nome'] = jogo.formacao.clube.nome
+    new_jogo['logoMe'] = jogo.formacao.clube.simbolo
+    new_jogo['logoAdv'] = jogo.adversario.clube.simbolo
+    return JsonResponse(new_jogo)
 
 def gResultado(id):
     jogo = get_object_or_404(models.Jogo, id=id)
