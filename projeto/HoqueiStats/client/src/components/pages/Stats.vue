@@ -1,6 +1,9 @@
 <template>
   <layout-basic>
     <div id="app">
+      <div class="row">
+        deden
+      </div>
       == STATS PAGE ==
       {{this.$session.get('jogoTab')}}
       <div>

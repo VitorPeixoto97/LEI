@@ -1,61 +1,62 @@
 <template>
   <layout-basic>
     <div id="app">
-      <div class="container mt-4">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="input-group md-form form-sm form-2 pl-0">
-                  <input class="form-control my-0 py-1 pl-3 purple-border" type="text" placeholder="Pesquisar..." aria-label="Search">
-                  <span class="input-group-addon waves-effect purple lighten-2" id="basic-addon1"><a><i class="fa fa-search white-text" aria-hidden="true"></i></a></span>
-                </div>
-              </div>
-            </div>
+      
 
-            <table class="table searchable table-striped sortable">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Local</th>
-                  <th>Adversário</th>
-                  <th>Resultado</th>
-                  <th>Data</th>
-                  <th>Formação</th>
-                </tr>
-              </thead>
+  <div>
 
-              <tbody>
-                <tr style="cursor: pointer" @click="verJogo(jogo.id, jogo.resultado)" v-for="jogo in jogos">
-                  <th scope="row">{{jogo.id}}</th>
-                  <td>{{jogo.casa}}</td>
-                  <td>{{jogo.adv_nome}}</td>
-                  <td>{{jogo.resultado}}</td>
-                  <td>{{jogo.data}}</td>
-                  <td>{{jogo.form_nome}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+    <md-table v-model="searched" md-sort="name" md-sort-order="asc"  md-fixed-header>
+      <md-table-toolbar>
+        <div class="md-toolbar-section-start">
+          <h1 class="md-title"> </h1>
         </div>
-        <!-- SEPARADOR: <hr class="my-4"> -->            
-      </div>
+
+        <md-field md-clearable class="md-toolbar-section-end">
+          <md-input placeholder="Pesquisar por adversário..." v-model="search" @input="searchOnTable" />
+        </md-field>
+      </md-table-toolbar>
+
+      <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.resultado)">
+        <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
+        <md-table-cell md-label="Local" md-sort-by="casa">{{ item.casa }}</md-table-cell>
+        <md-table-cell md-label="Adversário" md-sort-by="adv_nome">{{ item.adv_nome }}</md-table-cell>
+        <md-table-cell md-label="Resultado" md-sort-by="resultado">{{ item.resultado }}</md-table-cell>
+        <md-table-cell md-label="Data" md-sort-by="data">{{ item.data }}</md-table-cell>
+      </md-table-row>
+    </md-table>
+  </div>
     </div>
   </layout-basic>
 </template>
+
+
+
+
 
 <script> 
 import router from "../../router";
 import LayoutBasic from '../layouts/Basic.vue'
 import axios from 'axios';
+const toLower = text => {
+  return text.toString().toLowerCase()
+}
+const searchByName = (items, term) => {
+  if (term) {
+    return items.filter(item => toLower(item.adv_nome).includes(toLower(term)))
+  }
+  return items
+}
+
 export default {
-  name: 'Movies',
+  name: 'Jogos',
   components: {
       LayoutBasic
   },
   data() {
       return {
           jogos: null,
+          search: null,
+          searched: [],
       }
   },
   mounted: function() {
@@ -70,7 +71,8 @@ export default {
         this.$session.set('clubeid', response.data.id)
       });
       axios.get(process.env.API_URL + "/server/get_jogos/"+this.$session.get('clubeid')+"/").then(response => {
-        app.jogos = response.data;
+        app.jogos = response.data
+        this.searched = this.jogos
       });
     },
       
@@ -88,9 +90,22 @@ export default {
         router.push("/jogo");
       }
       else router.push("/stats")
-    } 
+    },
+
+    newUser () {
+      window.alert('Noop')
+    },
+
+    searchOnTable () {
+      this.searched = searchByName(this.jogos, this.search)
+    }
   }
 }
 </script>
 
-<style src="../../../dist/static/css/table.css">
+
+<style lang="scss" scoped>
+  .md-field {
+    max-width: 300px;
+  }
+</style>
