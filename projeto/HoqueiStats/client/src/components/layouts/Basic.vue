@@ -38,7 +38,10 @@
       },
       jogo() {
         this.$session.set('activeTab',"jogo")
-        this.$router.push('/jogo')
+        if(this.$session.get('js')==1){
+          this.$router.push('/jogo')
+        }
+        else this.$router.push('/stats')
       }
     }
   }

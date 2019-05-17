@@ -84,10 +84,13 @@ export default {
       this.$session.set('jogoTab', id)
       this.$session.set('activeTab',"jogo")
       if(res=="") {
-        this.$session.set('js', )
+        this.$session.set('js', 1)
         router.push("/jogo");
       }
-      else router.push("/stats")
+      else {
+        this.$session.set('js', 0)
+        router.push("/stats")
+      }
     },
 
     newUser () {

@@ -291,7 +291,7 @@ def gJogoView(request, id):
     else:
         new_jogo['casa'] = "F"
     new_jogo['data'] = jogo.data
-    new_jogo['hora'] = jogo.hora
+    new_jogo['hora'] = jogo.hora.strftime('%H:%M')
     new_jogo['resultado'] = gResultado(jogo.id)
     new_jogo['grelhaCampo'] = jogo.grelhaCampo
     new_jogo['grelhaBaliza'] = jogo.grelhaBaliza
