@@ -63,6 +63,7 @@ export default {
   data: function() {
     return {
       jogo: null,
+      eventos: null,
       series: [{
         name: 'Bubble1',
         data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
@@ -102,15 +103,18 @@ export default {
     this.checkLoggedIn();
     this.FetchData();
   },
-  
+
   methods: {
     FetchData: function() {
       var app = this;
       axios.get(process.env.API_URL + "/server/get_jogo/"+this.$session.get('jogoTab')+"/").then(response => {
         app.jogo = response.data;
-      });
+      })
       axios.get(process.env.API_URL + "/server/info_user/" + this.$session.get('user_email') + "/").then(response => {
         this.$session.set('clube', response.data.nome);
+      })
+      axios.get(process.env.API_URL + "/server/get_eventos/" + this.$session.get('jogoTab') + "/").then(response => {
+        app.eventos = response.data;
       })
     },
       

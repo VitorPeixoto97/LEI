@@ -409,15 +409,15 @@ def dEventoView(request, id):
     return HttpResponse('ok')
 
 
-@login_required
-@permission_required('view_evento', raise_exception=True)
+#@login_required
+#@permission_required('view_evento', raise_exception=True)
 def gEventosView(request, idJogo):
     jogo = get_object_or_404(models.Jogo, id=idJogo)
     eventos = jogo.evento_set.all()
     aux = []
     for evento in eventos:
         aux.append(model_to_dict(evento))
-    return JsonResponse(aux)
+    return JsonResponse(aux, safe=False)
 
 
 @login_required

@@ -22,7 +22,6 @@
           </v-card>
         </v-flex>
       </v-container>
-
     </div>
   </layout-basic>
 </template>
