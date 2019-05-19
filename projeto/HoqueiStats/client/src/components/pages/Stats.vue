@@ -27,9 +27,6 @@
         <apexchart type=bubble height=350 :options="chartOptions" :series="series" />
       </div>
 
-      <div>
-        <apexchart width="500" type="bar" :options="options" :series="series"></apexchart>
-      </div>
     </div>
   </layout-basic>
 </template>
@@ -51,6 +48,15 @@ function generateData(baseval, count, yrange) {
       return series;
     }
 
+function generateBubbles(eventos){
+  var series = [];
+  for(evento in eventos) {
+    series.push([evento.gcx, evento.gcy, 100]);
+  }
+  console.log(eventos.length);
+  return series;
+}
+
 
 import router from "../../router";
 import LayoutBasic from '../layouts/Basic.vue'
@@ -64,20 +70,7 @@ export default {
     return {
       jogo: null,
       eventos: null,
-      series: [{
-        name: 'Bubble1',
-        data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
-          min: 10,
-          max: 60
-        })
-      },
-      {
-        name: 'Bubble2',
-        data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
-          min: 10,
-          max: 60
-        })
-      }],
+      series: null,
       chartOptions: {
         dataLabels: {
           enabled: false
@@ -102,6 +95,7 @@ export default {
   mounted: function() {
     this.checkLoggedIn();
     this.FetchData();
+    this.bubbles();
   },
 
   methods: {
@@ -127,8 +121,14 @@ export default {
     verJogo(id) {
       this.$session.set('jogoTab', id)
       router.push("/jogo")
-    }
+    },
 
+    bubbles() {
+      this.series= [{
+        name: 'Bubble1',
+          data: generateBubbles(this.eventos)
+      }]
+    }
     
   }
 }
