@@ -256,6 +256,7 @@ def gJogosView(request, clube):
         jogos = formacaox.minhaequipa.all()
         for jogo in jogos:
             new_jogo = {}
+            new_jogo['numero'] = jogo.numero
             new_jogo['id'] = jogo.id
             new_jogo['tipo'] = jogo.tipo
             if(jogo.casa):
@@ -285,6 +286,7 @@ def gJogoView(request, id):
     jogo = get_object_or_404(models.Jogo, id=id)
     new_jogo = {}
     new_jogo['id'] = jogo.id
+    new_jogo['numero'] = jogo.numero
     new_jogo['tipo'] = jogo.tipo
     if(jogo.casa):
         new_jogo['casa'] = "C"

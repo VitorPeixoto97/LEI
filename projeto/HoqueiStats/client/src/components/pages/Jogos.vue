@@ -19,7 +19,7 @@
           </md-table-empty-state>
 
           <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.resultado)">
-            <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
+            <md-table-cell md-label="#" md-sort-by="id" md-numeric>{{ item.numero }}</md-table-cell>
             <md-table-cell md-label="Local" md-sort-by="casa">{{ item.casa }}</md-table-cell>
             <md-table-cell md-label="Adversário" md-sort-by="adv_nome">{{ item.adv_nome }}</md-table-cell>
             <md-table-cell md-label="Resultado" md-sort-by="resultado">{{ item.resultado }}</md-table-cell>
