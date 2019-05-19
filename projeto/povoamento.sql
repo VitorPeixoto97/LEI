@@ -62,7 +62,7 @@ INSERT INTO "public"."auth_user_groups" ("id", "user_id", "group_id") VALUES ('3
 ('4', '5', '3'),
 ('5', '6', '4');
 
-INSERT INTO "public"."server_tipoevento" ("id", "tipo", "atleta1", "atleta2", "zonaCampo", "zonaBaliza", "novoinstante") VALUES ('0', 'Golo', 't', 'f', 't', 't', 'f');
+INSERT INTO "public"."server_tipoevento" ("id", "tipo", "atleta1", "atleta2", "zonaCampo", "zonaBaliza", "novoinstante", "equipa") VALUES ('0', 'Golo', 't', 'f', 't', 't', 'f', 't');
 
 INSERT INTO "public"."server_clube" ("id", "nome", "cor", "simbolo") VALUES ('1', 'FC Porto', '#0F579E', 'https://www.zerozero.pt/img/logos/equipas/9_imgbank.png'),
 ('2', 'SL Benfica', '#EF2F22', 'https://www.zerozero.pt/img/logos/equipas/4_imgbank.png'),
@@ -101,13 +101,13 @@ INSERT INTO "public"."server_atleta" ("id", "nome", "licenca", "camisola", "form
 ('2', 'Reinaldo García', '2', '57', '1'),
 ('3', 'Matías Platero', '3', '7', '3');
 
-INSERT INTO "public"."server_jogo" ("id", "tipo", "casa", "data", "hora", "grelhaCampo", "grelhaBaliza", "adversario_id", "formacao_id") VALUES ('0', 'Competição', 'f', '2019-04-27', '17:00:00', '8x4', '3x3', '5', '1'),
-('1', 'Competição', 'f', '2019-05-04', '19:30:00', '8x4', '3x3', '3', '1'),
-('2', 'Competição', 'f', '2019-05-11', '12:00:00', '8x4', '3x3', '15', '1'),
-('3', 'Competição', 't', '2019-05-15', '21:00:00', '8x4', '3x3', '7', '1'),
-('4', 'Competição', 'f', '2019-05-19', '16:00:00', '8x4', '3x3', '10', '1'),
-('5', 'Competição', 't', '2019-05-25', '18:00:00', '8x4', '3x3', '9', '1'),
-('6', 'Competição', 't', '2019-03-16', '17:00:00', '8x4', '3x3', '3', '1');
+INSERT INTO "public"."server_jogo" ("id", "tipo", "casa", "data", "hora", "grelhaCampo", "grelhaBaliza", "adversario_id", "formacao_id", "numero") VALUES ('0', 'Competição', 'f', '2019-04-27', '17:00:00', '8x4', '3x3', '5', '1', '0'),
+('1', 'Competição', 'f', '2019-05-04', '19:30:00', '8x4', '3x3', '3', '1', '1'),
+('2', 'Competição', 'f', '2019-05-11', '12:00:00', '8x4', '3x3', '15', '1', '2'),
+('3', 'Competição', 't', '2019-05-15', '21:00:00', '8x4', '3x3', '7', '1', '3'),
+('4', 'Competição', 'f', '2019-05-19', '16:00:00', '8x4', '3x3', '10', '1', '4'),
+('5', 'Competição', 't', '2019-05-25', '18:00:00', '8x4', '3x3', '9', '1', '5'),
+('6', 'Competição', 't', '2019-03-16', '17:00:00', '8x4', '3x3', '3', '1', '6');
 
 INSERT INTO "public"."server_evento" ("id", "zonaCampo", "zonaBaliza", "instante", "novoinstante", "timestamp", "atleta1_id", "atleta2_id", "equipa_id", "jogo_id", "tipo_id") VALUES ('0', '6', '9', '00:05:12', NULL, '2019-03-16 17:05:14.347796+00', '0', NULL, '1', '6', '0'),
 ('1', '11', '9', '00:08:50', NULL, '2019-03-16 17:08:52.347796+00', '1', NULL, '1', '6', '0'),

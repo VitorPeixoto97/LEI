@@ -49,6 +49,7 @@ class Tecnico(models.Model):
         verbose_name_plural = 'Técnicos'
 
 class Jogo(models.Model):
+    numero = models.IntegerField()
     tipo = models.CharField(max_length=200)
     formacao = models.ForeignKey(Formacao, on_delete=models.CASCADE, related_name='minhaequipa')
     adversario = models.ForeignKey(Formacao, on_delete=models.CASCADE, related_name='adversario')
@@ -69,6 +70,7 @@ class Convocado(models.Model):
 
 class TipoEvento(models.Model):
     tipo = models.CharField(max_length=200)
+    equipa = models.BooleanField(default=True)
     atleta1 = models.BooleanField(default=True)
     atleta2 = models.BooleanField(default=True)
     zonaCampo = models.BooleanField(default=True)
