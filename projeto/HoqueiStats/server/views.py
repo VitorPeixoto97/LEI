@@ -417,7 +417,115 @@ def gEventosView(request, idJogo):
     eventos = jogo.evento_set.all()
     aux = []
     for evento in eventos:
-        aux.append(model_to_dict(evento))
+        new_evento = {}
+        new_evento['id'] = evento.id
+        new_evento['jogo'] = evento.jogo.id
+        new_evento['tipo'] = evento.tipo.id
+        new_evento['equipa'] = evento.equipa.id
+        new_evento['atleta1'] = evento.atleta1.id
+        if(evento.atleta2):
+            new_evento['atleta2'] = evento.atleta2.id
+        new_evento['instante'] = evento.instante
+        new_evento['novoinstante'] = evento.novoinstante
+        new_evento['timestamp'] = evento.timestamp
+        if(evento.jogo.grelhaCampo=="8x4"):
+            if(evento.zonaCampo==1):
+                new_evento['gcy'] = 13
+                new_evento['gcx'] = 7
+            elif(evento.zonaCampo==2):
+                new_evento['gcy'] = 38
+                new_evento['gcx'] = 7
+            elif(evento.zonaCampo==3):
+                new_evento['gcy'] = 61
+                new_evento['gcx'] = 7
+            elif(evento.zonaCampo==4):
+                new_evento['gcy'] = 86
+                new_evento['gcx'] = 7
+            elif(evento.zonaCampo==5):
+                new_evento['gcy'] = 13
+                new_evento['gcx'] = 27
+            elif(evento.zonaCampo==6):
+                new_evento['gcy'] = 38
+                new_evento['gcx'] = 27
+            elif(evento.zonaCampo==7):
+                new_evento['gcy'] = 61
+                new_evento['gcx'] = 27
+            elif(evento.zonaCampo==8):
+                new_evento['gcy'] = 86
+                new_evento['gcx'] = 27
+            elif(evento.zonaCampo==9):
+                new_evento['gcy'] = 13
+                new_evento['gcx'] = 55
+            elif(evento.zonaCampo==10):
+                new_evento['gcy'] = 38
+                new_evento['gcx'] = 55
+            elif(evento.zonaCampo==11):
+                new_evento['gcy'] = 61
+                new_evento['gcx'] = 55
+            elif(evento.zonaCampo==12):
+                new_evento['gcy'] = 86
+                new_evento['gcx'] = 55
+            elif(evento.zonaCampo==13):
+                new_evento['gcy'] = 13
+                new_evento['gcx'] = 85
+            elif(evento.zonaCampo==14):
+                new_evento['gcy'] = 38
+                new_evento['gcx'] = 85
+            elif(evento.zonaCampo==15):
+                new_evento['gcy'] = 61
+                new_evento['gcx'] = 85
+            elif(evento.zonaCampo==16):
+                new_evento['gcy'] = 86
+                new_evento['gcx'] = 85
+            elif(evento.zonaCampo==17):
+                new_evento['gcy'] = 13
+                new_evento['gcx'] = 115
+            elif(evento.zonaCampo==18):
+                new_evento['gcy'] = 38
+                new_evento['gcx'] = 115
+            elif(evento.zonaCampo==19):
+                new_evento['gcy'] = 61
+                new_evento['gcx'] = 115
+            elif(evento.zonaCampo==20):
+                new_evento['gcy'] = 86
+                new_evento['gcx'] = 115
+            elif(evento.zonaCampo==21):
+                new_evento['gcy'] = 13
+                new_evento['gcx'] = 144
+            elif(evento.zonaCampo==22):
+                new_evento['gcy'] = 38
+                new_evento['gcx'] = 144
+            elif(evento.zonaCampo==23):
+                new_evento['gcy'] = 61
+                new_evento['gcx'] = 144
+            elif(evento.zonaCampo==24):
+                new_evento['gcy'] = 86
+                new_evento['gcx'] = 144
+            elif(evento.zonaCampo==25):
+                new_evento['gcy'] = 13
+                new_evento['gcx'] = 172
+            elif(evento.zonaCampo==26):
+                new_evento['gcy'] = 38
+                new_evento['gcx'] = 172
+            elif(evento.zonaCampo==27):
+                new_evento['gcy'] = 61
+                new_evento['gcx'] = 172
+            elif(evento.zonaCampo==28):
+                new_evento['gcy'] = 86
+                new_evento['gcx'] = 172
+            elif(evento.zonaCampo==29):
+                new_evento['gcy'] = 13
+                new_evento['gcx'] = 193
+            elif(evento.zonaCampo==30):
+                new_evento['gcy'] = 38
+                new_evento['gcx'] = 193
+            elif(evento.zonaCampo==31):
+                new_evento['gcy'] = 61
+                new_evento['gcx'] = 193
+            elif(evento.zonaCampo==32):
+                new_evento['gcy'] = 86
+                new_evento['gcx'] = 193
+        aux.append(new_evento)
     return JsonResponse(aux, safe=False)
 
 
