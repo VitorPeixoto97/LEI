@@ -345,8 +345,8 @@ def gConvocadosView(request, idJogo):
     return JsonResponse(aux)
 
 
-@login_required
-@permission_required('add_evento', raise_exception=True)
+#@login_required
+#@permission_required('add_evento', raise_exception=True)
 def eventoView(request):
     form = forms.CriarEventoForm(request.POST)
     if form.is_valid():
@@ -378,7 +378,7 @@ def eventoView(request):
 def cEventoView(request):
     form = forms.CriarEventoForm(request.POST)
     if form.is_valid():
-        eq = form.cleaned_data['equipa']
+        '''eq = form.cleaned_data['equipa']
         at1 = form.cleaned_data['atleta1']
         at2 = form.cleaned_data['atleta2']
         zC = form.cleaned_data['zonaC']
@@ -394,7 +394,8 @@ def cEventoView(request):
         elif eq and at1 and zC:
             models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, atleta1=at1, zonaCampo=zC, instante=form.cleaned_data['instante'])
         elif eq:
-            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, instante=form.cleaned_data['instante'])
+            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, instante=form.cleaned_data['instante'])'''
+        print('yay')
 
         return HttpResponse('ok')
     else:
@@ -435,6 +436,14 @@ def tipoEventoView(request, tipo, atleta1, atleta2, zonaC, zonaB, novoinst):
         return HttpResponse('ok')
     else:
         return HttpResponseBadRequest(content='tipo already exists')
+
+
+#@login_required
+#@permission_required('view_tipoevento', raise_exception=True)
+def gTipoEventoView(request, id):
+    evento = get_object_or_404(models.Evento, id=id)
+    tipoe = get_object_or_404(models.TipoEvento, tipo=evento.tipo)
+    return JsonResponse(model_to_dict(tipoe))
 
 
 @login_required
