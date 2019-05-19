@@ -27,17 +27,16 @@
           <v-card color="white" class="my-card">
             <div class="row">
               <div class="column">
-                <form method="post"">
+                <form method="post" action="">
                   <div class="field">
-                    falta o relógio
+                    falta o relógio para igualar ao instante
                     <input v-model="tipo" class="input" type="text" placeholder="Tipo de evento" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()">
-                    <input v-model="evento.equipa" class="input" type="text" placeholder="Equipa" v-if="tipo_evento!=null" v-on:keyup.down="$event.target.nextElementSibling.focus()">
+                    <input v-model="evento.equipa" class="input" type="text" placeholder="Equipa" v-if="tipo_evento!=null && tipo_evento.equipa" v-on:keyup.down="$event.target.nextElementSibling.focus()">
                     <input v-model="evento.atleta1" class="input" type="text" placeholder="Atleta" v-if="tipo_evento!=null && tipo_evento.atleta1" v-on:keyup.down="$event.target.nextElementSibling.focus()">
                     <input v-model="evento.atleta2" class="input" type="text" placeholder="Atleta 2" v-if="tipo_evento!=null && tipo_evento.atleta2" v-on:keyup.down="$event.target.nextElementSibling.focus()">
-                    <input v-model="evento.zonaCampo" class="input" type="text" placeholder="Zona de campo" v-if="tipo_evento!=null && tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()">
-                    <input v-model="evento.zonaBaliza" class="input" type="text" placeholder="Zona da baliza" v-if="tipo_evento!=null && tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()">
-                    <input v-model="evento.zonaBaliza" class="input" type="text" placeholder="Novo instante" v-if="tipo_evento!=null && tipo_evento.novoInstante" v-on:keyup.down="$event.target.nextElementSibling.focus()">
-                    {{tipo_evento}}
+                    <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="tipo_evento!=null && tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()">
+                    <input v-model="evento.zonaB" class="input" type="text" placeholder="Zona da baliza" v-if="tipo_evento!=null && tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()">
+                    <input v-model="evento.novoinst" class="input" type="text" placeholder="Novo instante" v-if="tipo_evento!=null && tipo_evento.novoinstante" v-on:keyup.down="$event.target.nextElementSibling.focus()">
                   </div>
                 </form>
               </div>
@@ -64,12 +63,15 @@ export default {
       tipo: null,
       tipo_evento: null,
       evento: {
+        jogo: this.jogo,
         equipa: null,
+        tipo: null,
         atleta1: null,
         atleta2: null,
-        zonaCampo: null,
-        zonaBaliza: null,
-        novoInstante: null,
+        zonaC: null,
+        zonaB: null,
+        instante: null,
+        novoinst: null,
       },
     }
   },
@@ -82,6 +84,7 @@ export default {
       var app = this;
       axios.get(process.env.API_URL + "/server/get_jogo/"+this.$session.get('jogoTab')+"/").then(response => {
         app.jogo = response.data;
+        app.evento.jogo = app.jogo.id;
       })
     },
       
@@ -100,6 +103,7 @@ export default {
       var app = this;
       axios.get(process.env.API_URL + "/server/get_tipo_evento/"+app.tipo+"/").then(response => {
         app.tipo_evento = response.data;
+        app.evento.tipo = app.tipo_evento.id;
       })
     },
 
