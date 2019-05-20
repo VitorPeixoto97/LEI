@@ -6,16 +6,17 @@
           <v-card color="white" class="my-card">
             <div class="row">
               <div class="column">
-                <img :src="jogo.logoMe" style="display:inline-flex; max-width:40%; min-width:60px;"></img>
+                <img :src="jogo.logoMe" style="display:inline-flex; max-width:40%; min-width:60px;">
                 <v-card-title primary-title class="justify-center"><h5><b>{{jogo.clube_nome}}</b></h5></v-card-title>
               </div>
               <div class="column">
                 <p primary-title class=" justify-center resultado"><b>{{jogo.resultado}}</b>
                 <p class="justify-center"><h5><b>{{jogo.data}}</b></h5>
                 <p class="justify-center" style="margin-top:-15px;"><h5><b>{{jogo.hora}}</b></h5>
+                <!--p class="justify-center"><Relogio></Relogio></p></!-->
               </div>
               <div class="column">
-                <img :src="jogo.logoAdv" style="display:inline-flex; max-width:40%; min-width:60px;"></img>
+                <img :src="jogo.logoAdv" style="display:inline-flex; max-width:40%; min-width:60px;">
                 <v-card-title primary-title class="justify-center"><h5><b>{{jogo.adv_nome}}</b></h5></v-card-title>
               </div>
             </div>
@@ -69,6 +70,7 @@
 <script> 
 import router from "../../router";
 import LayoutBasic from '../layouts/Basic.vue'
+import Relogio from '../pages/Relogio.vue'
 import axios from 'axios';
 export default {
   name: 'Movies',
