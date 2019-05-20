@@ -22,16 +22,11 @@
           </v-card>
         </v-flex>
       </v-container>
-
-      <div id="chart">
-        <apexchart type=bubble height=350 :options="chartOptions" :series="series" />
-      </div>
-
-      <ul id="example-1">
-        <li v-for="evento in this.$session.get('eventos')">
-          {{evento.gcx}}-{{evento.gcy}}
-        </li>
-      </ul>
+      <v-card color="white" class="my-card chart">
+        <div id="chart">
+          <apexchart type=bubble width=60% :options="chartOptions" :series="series" />
+        </div>
+      </v-card>
 
     </div>
   </layout-basic>
@@ -79,9 +74,11 @@ export default {
           text: 'Simple Bubble Chart'
         },
         xaxis: {
+          min: 0,
           max: 200
         },
         yaxis: {
+          min: 0,
           max: 100
         }
       }
@@ -99,6 +96,7 @@ export default {
       var app = this;
       axios.get(process.env.API_URL + "/server/get_jogo/" + this.$session.get('jogoTab') + "/").then(response => {
         app.jogo = response.data;
+        this.$session.set('jogo', response.data);
       })
       axios.get(process.env.API_URL + "/server/info_user/" + this.$session.get('user_email') + "/").then(response => {
         this.$session.set('clube', response.data.nome);
@@ -119,11 +117,12 @@ export default {
       router.push("/jogo")
     },
 
-    genBubbles() {
+    genBubbles(equipa) {
       var series = [];
       var i = 0;
       while(i < this.$session.get('eventos').length){
-        series.push([this.$session.get('eventos')[i].gcx, this.$session.get('eventos')[i].gcy, 50]);
+        if(this.$session.get('eventos')[i].equipa == equipa)
+          series.push([this.$session.get('eventos')[i].gcx, this.$session.get('eventos')[i].gcy, i+1]);
         ++i;
       }
       return series;
@@ -132,14 +131,11 @@ export default {
     bubbles() {
       this.series= [{
         name: 'Bubble1',
-          data: this.genBubbles()
+        data: this.genBubbles(this.$session.get('jogo').formacao)
       },
       {
         name: 'Bubble2',
-        data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
-          min: 10,
-          max: 60
-        })
+        data: this.genBubbles(this.$session.get('jogo').adversario)
       }]
     }
   } 
@@ -153,6 +149,12 @@ export default {
     -moz-box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
     box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
   }
+  .chart{
+    min-width: 60%;
+    max-width:80%;
+    margin:auto;
+  }
+
   .resultado{
     top:-30px;
     color: #31043A;
