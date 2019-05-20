@@ -27,7 +27,7 @@
           <v-card color="white" class="my-card">
             <div class="row">
               <div class="column">
-                <form method="post" action="">
+                <form class="review-form" @submit.prevent="submitForm">
                   <div class="field">
                     falta o relógio para igualar ao instante
                     <input v-model="tipo" class="input" type="text" placeholder="Tipo de evento" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()">
@@ -37,7 +37,7 @@
                     <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="tipo_evento!=null && tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()">
                     <input v-model="evento.zonaB" class="input" type="text" placeholder="Zona da baliza" v-if="tipo_evento!=null && tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()">
                     <input v-model="evento.novoinst" class="input" type="text" placeholder="Novo instante" v-if="tipo_evento!=null && tipo_evento.novoinstante" v-on:keyup.down="$event.target.nextElementSibling.focus()">
-                    <button v-on:click="submitForm">Submit</button>
+                    <input type="submit" value="Submit" hidden>
                   </div>
                 </form>
               </div>
@@ -45,6 +45,23 @@
           </v-card>
         </v-flex>
       </v-container>
+      <div>
+        <md-table md-sort="instante" md-fixed-header>
+          <md-table-empty-state
+            md-label="Sem eventos"
+            :md-description="'Não foram encontrados eventos para este jogo.'">
+          </md-table-empty-state>
+
+          <md-table-row slot="md-table-row" style="cursor:pointer" v-for="item in eventos_jogov">
+            <md-table-cell md-label="Instante" md-sort-by="instante" md-numeric>{{ item.instante }}</md-table-cell>
+            <md-table-cell md-label="Evento" md-sort-by="tipo">{{ item.tipo }}</md-table-cell>
+            <md-table-cell md-label="Equipa" md-sort-by="equipa" v-if="item.equipa!=null">{{ item.equipa }}</md-table-cell>
+            <md-table-cell md-label="Equipa" md-sort-by="equipa" v-if="item.equipa==null">-</md-table-cell>
+            <md-table-cell md-label="Novo Instante" md-sort-by="novoinstante" v-if="item.novoinstante!=null">{{ item.novoinstante }}</md-table-cell>
+            <md-table-cell md-label="Data" md-sort-by="data">{{ item.data }}</md-table-cell>
+          </md-table-row>
+        </md-table>
+      </div>
     </div>
   </layout-basic>
 </template>
@@ -61,8 +78,12 @@ export default {
   data() {
     return {
       jogo: null,
+
+      eventos_jogo: null,
+
       tipo: null,
       tipo_evento: null,
+
       evento: {
         jogo: this.jogo,
         equipa: null,
@@ -86,6 +107,9 @@ export default {
       axios.get(process.env.API_URL + "/server/get_jogo/"+this.$session.get('jogoTab')+"/").then(response => {
         app.jogo = response.data;
         app.evento.jogo = app.jogo.id;
+      });
+      axios.get(process.env.API_URL + "/server/get_eventos/"+app.jogo.id+"/").then(response => {
+        app.eventos = response.data;
       })
     },
       
