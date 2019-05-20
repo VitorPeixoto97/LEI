@@ -27,6 +27,12 @@
         <apexchart type=bubble height=350 :options="chartOptions" :series="series" />
       </div>
 
+      <ul id="example-1">
+        <li v-for="evento in this.$session.get('eventos')">
+          {{evento.gcx}}-{{evento.gcy}}
+        </li>
+      </ul>
+
     </div>
   </layout-basic>
 </template>
@@ -47,15 +53,6 @@ function generateData(baseval, count, yrange) {
       }
       return series;
     }
-
-function generateBubbles(eventos){
-  var series = [];
-  for(evento in eventos) {
-    series.push([evento.gcx, evento.gcy, 100]);
-  }
-  console.log(eventos.length);
-  return series;
-}
 
 
 import router from "../../router";
@@ -82,11 +79,10 @@ export default {
           text: 'Simple Bubble Chart'
         },
         xaxis: {
-          tickAmount: 12,
-          type: 'category',
+          max: 200
         },
         yaxis: {
-          max: 70
+          max: 100
         }
       }
     }
@@ -101,14 +97,14 @@ export default {
   methods: {
     FetchData: function() {
       var app = this;
-      axios.get(process.env.API_URL + "/server/get_jogo/"+this.$session.get('jogoTab')+"/").then(response => {
+      axios.get(process.env.API_URL + "/server/get_jogo/" + this.$session.get('jogoTab') + "/").then(response => {
         app.jogo = response.data;
       })
       axios.get(process.env.API_URL + "/server/info_user/" + this.$session.get('user_email') + "/").then(response => {
         this.$session.set('clube', response.data.nome);
       })
       axios.get(process.env.API_URL + "/server/get_eventos/" + this.$session.get('jogoTab') + "/").then(response => {
-        app.eventos = response.data;
+        this.$session.set('eventos', response.data);
       })
     },
       
@@ -123,14 +119,30 @@ export default {
       router.push("/jogo")
     },
 
+    genBubbles() {
+      var series = [];
+      var i = 0;
+      while(i < this.$session.get('eventos').length){
+        series.push([this.$session.get('eventos')[i].gcx, this.$session.get('eventos')[i].gcy, 50]);
+        ++i;
+      }
+      return series;
+    },
+
     bubbles() {
       this.series= [{
         name: 'Bubble1',
-          data: generateBubbles(this.eventos)
+          data: this.genBubbles()
+      },
+      {
+        name: 'Bubble2',
+        data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
+          min: 10,
+          max: 60
+        })
       }]
     }
-    
-  }
+  } 
 }
 </script>
 
