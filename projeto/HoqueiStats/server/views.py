@@ -350,7 +350,7 @@ def gConvocadosView(request, idJogo):
 #@login_required
 #@permission_required('add_evento', raise_exception=True)
 def eventoView(request):
-    form = forms.CriarEventoForm(request.POST)
+    '''form = forms.CriarEventoForm(request.POST)
     if form.is_valid():
         eq = form.cleaned_data['equipa']
         at1 = form.cleaned_data['atleta1']
@@ -372,15 +372,20 @@ def eventoView(request):
 
         return HttpResponse('ok')
     else:
+        return HttpResponseBadRequest(content='bad form')'''
+    if request.method=='POST':
+        received = json.load(request.POST['evento'])
+        print('yay')
+        return HttpResponse('ok')
+    else:
         return HttpResponseBadRequest(content='bad form')
-
 
 @login_required
 @permission_required('change_evento', raise_exception=True)
 def cEventoView(request):
     form = forms.CriarEventoForm(request.POST)
     if form.is_valid():
-        '''eq = form.cleaned_data['equipa']
+        eq = form.cleaned_data['equipa']
         at1 = form.cleaned_data['atleta1']
         at2 = form.cleaned_data['atleta2']
         zC = form.cleaned_data['zonaC']
@@ -396,8 +401,7 @@ def cEventoView(request):
         elif eq and at1 and zC:
             models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, atleta1=at1, zonaCampo=zC, instante=form.cleaned_data['instante'])
         elif eq:
-            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, instante=form.cleaned_data['instante'])'''
-        print('yay')
+            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, instante=form.cleaned_data['instante'])
 
         return HttpResponse('ok')
     else:
