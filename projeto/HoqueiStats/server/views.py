@@ -304,6 +304,8 @@ def gJogoView(request, id):
     new_jogo['clube_nome'] = jogo.formacao.clube.nome
     new_jogo['logoMe'] = jogo.formacao.clube.simbolo
     new_jogo['logoAdv'] = jogo.adversario.clube.simbolo
+    new_jogo['clube_cor'] = jogo.formacao.clube.cor
+    new_jogo['adv_cor'] = jogo.adversario.clube.cor
     return JsonResponse(new_jogo)
 
 def gResultado(id):
@@ -528,6 +530,16 @@ def gEventosView(request, idJogo):
             elif(evento.zonaCampo==32):
                 new_evento['gcy'] = 86
                 new_evento['gcx'] = 193
+            elif(evento.zonaCampo is None):
+                new_evento['gcy'] = 200
+                new_evento['gcx'] = 200
+
+        if(evento.tipo.id==0):
+            new_evento['size'] = 2
+        elif(evento.tipo.id==4):
+            new_evento['size'] = 8
+        else:
+            new_evento['size'] = 1
         aux.append(new_evento)
     return JsonResponse(aux, safe=False)
 

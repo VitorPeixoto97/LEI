@@ -23,8 +23,9 @@
         </v-flex>
       </v-container>
       <v-card color="white" class="my-card chart">
+        <img class="background" src="../../assets/ring.png"></img>
         <div id="chart">
-          <apexchart type=bubble width=60% :options="chartOptions" :series="series" />
+          <apexchart type=bubble width=100% :options="chartOptions" :series="series" />
         </div>
       </v-card>
 
@@ -33,23 +34,6 @@
 </template>
 
 <script> 
-
-function generateData(baseval, count, yrange) {
-      var i = 0;
-      var series = [];
-      while (i < count) {
-        var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;;
-        var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-        var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
-
-        series.push([x, y, z]);
-        baseval += 86400000;
-        i++;
-      }
-      return series;
-    }
-
-
 import router from "../../router";
 import LayoutBasic from '../layouts/Basic.vue'
 import axios from 'axios';
@@ -64,22 +48,23 @@ export default {
       eventos: null,
       series: null,
       chartOptions: {
+        grid: { show: false },
         dataLabels: {
           enabled: false
         },
         fill: {
           opacity: 0.8
         },
-        title: {
-          text: 'Simple Bubble Chart'
-        },
+        colors: [this.$session.get('clube_cor'), this.$session.get('adv_cor'), '#FFFFFF00'],
         xaxis: {
           min: 0,
-          max: 200
+          max: 200,
+          labels: { show:false },
+          axisBorder: { show: false },
         },
         yaxis: {
           min: 0,
-          max: 100
+          max: 100,
         }
       }
     }
@@ -97,9 +82,10 @@ export default {
       axios.get(process.env.API_URL + "/server/get_jogo/" + this.$session.get('jogoTab') + "/").then(response => {
         app.jogo = response.data;
         this.$session.set('jogo', response.data);
-      })
-      axios.get(process.env.API_URL + "/server/info_user/" + this.$session.get('user_email') + "/").then(response => {
-        this.$session.set('clube', response.data.nome);
+        this.$session.set('clube', response.data.clube_nome);
+        this.$session.set('adv', response.data.adv_nome);
+        this.$session.set('clube_cor', response.data.clube_cor);
+        this.$session.set('adv_cor', response.data.adv_cor);
       })
       axios.get(process.env.API_URL + "/server/get_eventos/" + this.$session.get('jogoTab') + "/").then(response => {
         this.$session.set('eventos', response.data);
@@ -122,7 +108,7 @@ export default {
       var i = 0;
       while(i < this.$session.get('eventos').length){
         if(this.$session.get('eventos')[i].equipa == equipa)
-          series.push([this.$session.get('eventos')[i].gcx, this.$session.get('eventos')[i].gcy, i+1]);
+          series.push([this.$session.get('eventos')[i].gcx, this.$session.get('eventos')[i].gcy, this.$session.get('eventos')[i].size]);
         ++i;
       }
       return series;
@@ -130,11 +116,11 @@ export default {
 
     bubbles() {
       this.series= [{
-        name: 'Bubble1',
+        name: this.$session.get('clube'),
         data: this.genBubbles(this.$session.get('jogo').formacao)
       },
       {
-        name: 'Bubble2',
+        name: this.$session.get('adv'),
         data: this.genBubbles(this.$session.get('jogo').adversario)
       }]
     }
@@ -149,12 +135,25 @@ export default {
     -moz-box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
     box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
   }
-  .chart{
-    min-width: 60%;
-    max-width:80%;
-    margin:auto;
-  }
+  .background{
+    position: absolute;
+    margin-top:55px;
 
+  }
+  @media only screen and (min-width: 768px) {
+    .chart{
+      width:90%;
+      margin:auto;
+      position: relative;
+    }
+  }
+  @media only screen and (min-width: 900px) {
+    .chart{
+      width:60%;
+      margin:auto;
+      position: relative;
+    }
+  }
   .resultado{
     top:-30px;
     color: #31043A;
