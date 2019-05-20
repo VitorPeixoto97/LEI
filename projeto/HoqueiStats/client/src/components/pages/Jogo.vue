@@ -53,7 +53,7 @@
 <script> 
 import router from "../../router";
 import LayoutBasic from '../layouts/Basic.vue'
-import Relogio from '../pages/Relogio.vue'
+//import Relogio from '../pages/Relogio.vue'
 import axios from 'axios';
 export default {
   name: 'Movies',
@@ -123,8 +123,10 @@ export default {
     },
 
     submitForm() {
-      //meter o post a funcionar
-      router.push("/jogo")
+      var app = this;
+      axios.post(process.env.API_URL + "/server/evento/", JSON.stringify(app.evento)).then(response => {
+        router.push("/jogo")
+      }).catch(e => {})
     }
   }
 }

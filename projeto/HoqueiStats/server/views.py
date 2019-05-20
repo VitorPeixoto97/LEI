@@ -5,6 +5,7 @@ from django.forms.models import model_to_dict
 from django.contrib.auth.models import User, Group
 from . import models
 from django.contrib.auth.decorators import login_required, permission_required
+from django.views.decorators.csrf import csrf_exempt
 import json
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -351,57 +352,69 @@ def gConvocadosView(request, idJogo):
 
 #@login_required
 #@permission_required('add_evento', raise_exception=True)
+@csrf_exempt
 def eventoView(request):
-    '''
-        eq = form.cleaned_data['equipa']
-        at1 = form.cleaned_data['atleta1']
-        at2 = form.cleaned_data['atleta2']
-        zC = form.cleaned_data['zonaC']
-        zB = form.cleaned_data['zonaB']
-        novo = form.cleaned_data['novoinst']
-
-        if novo:
-            models.Evento.objects.create(tipo=form.cleaned_data['tipo'], jogo=form.cleaned_data['jogo'], instante=form.cleaned_data['instante'], novoinstante=novo)
-        elif eq and at1 and at2:
-            models.Evento.objects.create(tipo=form.cleaned_data['tipo'], jogo=form.cleaned_data['jogo'], equipa=eq, atleta1=at1, atleta2=at2, instante=form.cleaned_data['instante'])
-        elif eq and at1 and zC and zB:
-            models.Evento.objects.create(tipo=form.cleaned_data['tipo'], jogo=form.cleaned_data['jogo'], equipa=eq, atleta1=at1, zonaCampo=zC, zonaBaliza=zB, instante=form.cleaned_data['instante'])
-        elif eq and at1 and zC:
-            models.Evento.objects.create(tipo=form.cleaned_data['tipo'], jogo=form.cleaned_data['jogo'], equipa=eq, atleta1=at1, zonaCampo=zC, instante=form.cleaned_data['instante'])
-        elif eq:
-            models.Evento.objects.create(tipo=form.cleaned_data['tipo'], jogo=form.cleaned_data['jogo'], equipa=eq, instante=form.cleaned_data['instante'])
-    '''
     if request.method=='POST':
-        received = json.load(request.POST['evento'])
+        received = json.loads(request.body.decode('utf-8'))
+	
+        tp = received['tipo']
+        jg = received['jogo']
+        inst = received['instante']
+        eq = received['equipa']
+        at1 = received['atleta1']
+        at2 = received['atleta2']
+        zC = received['zonaC']
+        zB = received['zonaB']
+        novo = received['novoinst']
+	
+        if novo is not None:
+            models.Evento.objects.create(tipo=tp, jogo=jg, instante=inst, novoinstante=novo)
+        elif eq is not None and at1 is not None and at2 is not None:
+            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, atleta2=at2, instante=inst)
+        elif eq is not None and at1 is not None and zC is not None and zB is not None:
+            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, zonaCampo=zC, zonaBaliza=zB, instante=inst)
+        elif eq is not None and at1 is not None and zC is not None:
+            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, zonaCampo=zC, instante=inst)
+        elif eq is not None:
+            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, instante=inst)
+
         return HttpResponse('ok')
     else:
         return HttpResponseBadRequest(content='bad form')
 
 
-@login_required
-@permission_required('change_evento', raise_exception=True)
+#@login_required
+#@permission_required('change_evento', raise_exception=True)
+@csrf_exempt
 def cEventoView(request):
-    '''
-        eq = form.cleaned_data['equipa']
-        at1 = form.cleaned_data['atleta1']
-        at2 = form.cleaned_data['atleta2']
-        zC = form.cleaned_data['zonaC']
-        zB = form.cleaned_data['zonaB']
-        novo = form.cleaned_data['novoinst']
-
-        if novo:
-            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(instante=form.cleaned_data['instante'], novoinstante=novo)
-        elif eq and at1 and at2:
-            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, atleta1=at1, atleta2=at2, instante=form.cleaned_data['instante'])
-        elif eq and at1 and zC and zB:
-            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, atleta1=at1, zonaCampo=zC, zonaBaliza=zB, instante=form.cleaned_data['instante'])
-        elif eq and at1 and zC:
-            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, atleta1=at1, zonaCampo=zC, instante=form.cleaned_data['instante'])
-        elif eq:
-            models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, instante=form.cleaned_data['instante'])
-    '''
+        
     if request.method=='POST':
-        received = json.load(request.POST['evento'])
+        received = json.loads(request.body.decode('utf-8'))
+        
+        i = received['id']
+        inst = received['instante']
+        eq = received['equipa']
+        at1 = received['atleta1']
+        at2 = received['atleta2']
+        zC = received['zonaC']
+        zB = received['zonaB']
+        novo = received['novoinst']
+
+        if inst is not None:
+            models.Evento.objects.filter(id=i).update(instante=inst)
+        if novo is not None:
+            models.Evento.objects.filter(id=i).update(instante=inst, novoinstante=novo)
+        if eq is not None:
+            models.Evento.objects.filter(id=i).update(equipa=eq)
+        if at1 is not None:
+            models.Evento.objects.filter(id=i).update(atleta1=at1)
+        if at2 is not None:
+            models.Evento.objects.filter(id=i).update(atleta2=at2)
+        if zC is not None:
+            models.Evento.objects.filter(id=i).update(zonaCampo=zC)
+        if zB is not None:
+            models.Evento.objects.filter(id=i).update(zonaBaliza=zB)
+
         return HttpResponse('ok')
     else:
         return HttpResponseBadRequest(content='bad form')
