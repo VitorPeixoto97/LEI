@@ -37,6 +37,7 @@
                     <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="tipo_evento!=null && tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()">
                     <input v-model="evento.zonaB" class="input" type="text" placeholder="Zona da baliza" v-if="tipo_evento!=null && tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()">
                     <input v-model="evento.novoinst" class="input" type="text" placeholder="Novo instante" v-if="tipo_evento!=null && tipo_evento.novoinstante" v-on:keyup.down="$event.target.nextElementSibling.focus()">
+                    <button v-on:click="submitForm">Submit</button>
                   </div>
                 </form>
               </div>
@@ -107,8 +108,10 @@ export default {
       })
     },
 
-    submitForm: function (data) {
-      axios.post(process.env.API_URL + "/server/evento/", data)
+    submitForm() {
+      axios.post(process.env.API_URL + "/server/evento/", {name: 'salete'}).then(response => {
+        router.push("/jogo")
+      }).catch(error => {})
     }
   }
 }
