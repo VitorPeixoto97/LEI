@@ -30,13 +30,13 @@
                 <form class="review-form" @submit.prevent="submitForm">
                   <div class="field">
                     falta o relógio para igualar ao instante
-                    <input v-model="tipo" class="input" type="text" placeholder="Tipo de evento" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()">
-                    <input v-model="evento.equipa" class="input" type="text" placeholder="Equipa" v-if="tipo_evento!=null && tipo_evento.equipa" v-on:keyup.down="$event.target.nextElementSibling.focus()">
-                    <input v-model="evento.atleta1" class="input" type="text" placeholder="Atleta" v-if="tipo_evento!=null && tipo_evento.atleta1" v-on:keyup.down="$event.target.nextElementSibling.focus()">
-                    <input v-model="evento.atleta2" class="input" type="text" placeholder="Atleta 2" v-if="tipo_evento!=null && tipo_evento.atleta2" v-on:keyup.down="$event.target.nextElementSibling.focus()">
-                    <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="tipo_evento!=null && tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()">
-                    <input v-model="evento.zonaB" class="input" type="text" placeholder="Zona da baliza" v-if="tipo_evento!=null && tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()">
-                    <input v-model="evento.novoinst" class="input" type="text" placeholder="Novo instante" v-if="tipo_evento!=null && tipo_evento.novoinstante" v-on:keyup.down="$event.target.nextElementSibling.focus()">
+                    <input v-model="tipo" class="input" type="text" placeholder="Tipo de evento" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input v-model="evento.equipa" class="input" type="text" placeholder="Equipa" v-if="tipo_evento!=null && tipo_evento.equipa" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input v-model="evento.atleta1" class="input" type="text" placeholder="Atleta" v-if="tipo_evento!=null && tipo_evento.atleta1" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input v-model="evento.atleta2" class="input" type="text" placeholder="Atleta 2" v-if="tipo_evento!=null && tipo_evento.atleta2" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="tipo_evento!=null && tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input v-model="evento.zonaB" class="input" type="text" placeholder="Zona da baliza" v-if="tipo_evento!=null && tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input v-model="evento.novoinst" class="input" type="text" placeholder="Novo instante" v-if="tipo_evento!=null && tipo_evento.novoinstante" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
                     <input type="submit" value="Submit" hidden>
                   </div>
                 </form>
@@ -45,23 +45,6 @@
           </v-card>
         </v-flex>
       </v-container>
-      <div>
-        <md-table md-sort="instante" md-fixed-header>
-          <md-table-empty-state
-            md-label="Sem eventos"
-            :md-description="'Não foram encontrados eventos para este jogo.'">
-          </md-table-empty-state>
-
-          <md-table-row slot="md-table-row" style="cursor:pointer" v-for="item in eventos_jogov">
-            <md-table-cell md-label="Instante" md-sort-by="instante" md-numeric>{{ item.instante }}</md-table-cell>
-            <md-table-cell md-label="Evento" md-sort-by="tipo">{{ item.tipo }}</md-table-cell>
-            <md-table-cell md-label="Equipa" md-sort-by="equipa" v-if="item.equipa!=null">{{ item.equipa }}</md-table-cell>
-            <md-table-cell md-label="Equipa" md-sort-by="equipa" v-if="item.equipa==null">-</md-table-cell>
-            <md-table-cell md-label="Novo Instante" md-sort-by="novoinstante" v-if="item.novoinstante!=null">{{ item.novoinstante }}</md-table-cell>
-            <md-table-cell md-label="Data" md-sort-by="data">{{ item.data }}</md-table-cell>
-          </md-table-row>
-        </md-table>
-      </div>
     </div>
   </layout-basic>
 </template>
@@ -80,7 +63,6 @@ export default {
       jogo: null,
 
       eventos_jogo: null,
-
       tipo: null,
       tipo_evento: null,
 
@@ -132,10 +114,15 @@ export default {
       })
     },
 
+    getCookie(name) {
+      var re = new RegExp(name + "=([^;]+)");
+      var value = re.exec(document.cookie);
+      return (value != null) ? unescape(value[1]) : null;
+    },
+
     submitForm() {
-      axios.post(process.env.API_URL + "/server/evento/", {name: 'salete'}).then(response => {
-        router.push("/jogo")
-      }).catch(error => {})
+      //meter o post a funcionar
+      router.push("/jogo")
     }
   }
 }

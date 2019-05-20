@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os, datetime
+from corsheaders.defaults import default_methods
+
+CORS_ALLOW_METHODS = list(default_methods)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,7 +29,6 @@ SECRET_KEY = '#jmbjyshg^1ew_4pz5xxygv7lp+0x7lbwagy35%$avnlg*t766'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -169,3 +171,9 @@ WEBPACK_LOADER = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = False
+
+CSRF_TRUSTED_ORIGINS = [
+        'localhost', 
+        ]

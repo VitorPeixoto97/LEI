@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.forms.models import model_to_dict
 from django.contrib.auth.models import User, Group
-from . import models, forms
+from . import models
 from django.contrib.auth.decorators import login_required, permission_required
 import json
 from rest_framework.generics import ListAPIView
@@ -350,8 +350,7 @@ def gConvocadosView(request, idJogo):
 #@login_required
 #@permission_required('add_evento', raise_exception=True)
 def eventoView(request):
-    '''form = forms.CriarEventoForm(request.POST)
-    if form.is_valid():
+    '''
         eq = form.cleaned_data['equipa']
         at1 = form.cleaned_data['atleta1']
         at2 = form.cleaned_data['atleta2']
@@ -369,22 +368,18 @@ def eventoView(request):
             models.Evento.objects.create(tipo=form.cleaned_data['tipo'], jogo=form.cleaned_data['jogo'], equipa=eq, atleta1=at1, zonaCampo=zC, instante=form.cleaned_data['instante'])
         elif eq:
             models.Evento.objects.create(tipo=form.cleaned_data['tipo'], jogo=form.cleaned_data['jogo'], equipa=eq, instante=form.cleaned_data['instante'])
-
-        return HttpResponse('ok')
-    else:
-        return HttpResponseBadRequest(content='bad form')'''
+    '''
     if request.method=='POST':
         received = json.load(request.POST['evento'])
-        print('yay')
         return HttpResponse('ok')
     else:
         return HttpResponseBadRequest(content='bad form')
 
+
 @login_required
 @permission_required('change_evento', raise_exception=True)
 def cEventoView(request):
-    form = forms.CriarEventoForm(request.POST)
-    if form.is_valid():
+    '''
         eq = form.cleaned_data['equipa']
         at1 = form.cleaned_data['atleta1']
         at2 = form.cleaned_data['atleta2']
@@ -402,7 +397,9 @@ def cEventoView(request):
             models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, atleta1=at1, zonaCampo=zC, instante=form.cleaned_data['instante'])
         elif eq:
             models.Evento.objects.filter(id=form.cleaned_data['idEvento']).update(equipa=eq, instante=form.cleaned_data['instante'])
-
+    '''
+    if request.method=='POST':
+        received = json.load(request.POST['evento'])
         return HttpResponse('ok')
     else:
         return HttpResponseBadRequest(content='bad form')
@@ -544,9 +541,9 @@ def gEventoView(request, id):
 
 @login_required
 @permission_required('add_tipoevento', raise_exception=True)
-def tipoEventoView(request, tipo, atleta1, atleta2, zonaC, zonaB, novoinst):
+def tipoEventoView(request, tipo, equipa, atleta1, atleta2, zonaC, zonaB, novoinst):
     if models.TipoEvento.objects.get(tipo=tipo) is None:
-        models.TipoEvento.objects.create(tipo=tipo, atleta1=atleta1, atleta2=atleta2, zonaC=zonaC, zonaB=zonaB, novoinst=novoinst)
+        models.TipoEvento.objects.create(tipo=tipo, equipa=equipa, atleta1=atleta1, atleta2=atleta2, zonaC=zonaC, zonaB=zonaB, novoinst=novoinst)
         return HttpResponse('ok')
     else:
         return HttpResponseBadRequest(content='tipo already exists')
