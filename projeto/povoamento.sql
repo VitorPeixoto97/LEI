@@ -116,3 +116,6 @@ INSERT INTO "public"."server_evento" ("id", "zonaCampo", "zonaBaliza", "instante
 
 INSERT INTO "public"."server_tecnico" ("id", "email", "grelhaCampo", "grelhaBaliza", "clube_id") VALUES ('0', 'a79175@alunos.uminho.pt', '8x4', '3x3', '1');
 
+INSERT INTO "public"."server_tiposselecionados" ("tecnico_id", "tipo_id") VALUES ('0', '0');
+
+INSERT INTO "public"."server_convocado" ("emCampo", "atleta_id", "jogo_id") VALUES (TRUE, '0', '5'), (TRUE, '1', '5'), (FALSE, '2', '5');

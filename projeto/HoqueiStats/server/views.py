@@ -18,32 +18,16 @@ class IndexView(generic.ListView):
 	def get_queryset(self):
 		return models.Clube.objects.order_by('-nome')[:5]
 
+
 class PostsView(ListAPIView):
     authentication_class = (JSONWebTokenAuthentication,) # Don't forget to add a 'comma' after first element to make it a tuple
     permission_classes = (IsAuthenticated,)
+
 
 def index(request):
     context = 'Hello World'
     return render(request, 'server/index.html', context)
 
-
-
-'''
-def loginView(request):
-    form = forms.LoginForm(request.POST)
-    if form.is_valid():
-        user = authenticate(request, username=form.cleaned_data['email'], password=form.cleaned_data['password'])
-        if user is not None:
-            login(request, user)
-            return HttpResponse('ok')
-        else:
-            return HttpResponseBadRequest(content='invalid user')
-    else:
-        return HttpResponseBadRequest(content='bad form')
-
-def logoutView(request):
-    logout(request)
-'''
 
 def infoUserView(request, email):
   if models.Gestor.objects.filter(email=email).count()==0:
@@ -52,6 +36,7 @@ def infoUserView(request, email):
     clube = models.Gestor.objects.get(email=email).clube
 
   return JsonResponse(model_to_dict(clube))
+
 
 def advNome(request, form_id):
   formacao = get_object_or_404(models.Formacao, id=form_id)
@@ -91,9 +76,16 @@ def gClubeView(request, id):
 def gClubesView(request):
     clubes = models.Clube.objects.all()
     aux = []
+
     for clube in clubes:
-        aux.append(model_to_dict(clube))
-    return JsonResponse(aux)
+        new_clube = {}
+        new_clube['id'] = clube.id
+        new_clube['nome'] = clube.nome
+        new_clube['simbolo'] = clube.simbolo
+        new_clube['cor'] = clube.cor
+        aux.append(new_clube)
+
+    return JsonResponse(aux, safe=False)
 
 
 @login_required
@@ -145,9 +137,15 @@ def gFormacoesView(request, clube):
     clubex = get_object_or_404(models.Clube, id=clube)
     formacoes = clubex.formacao_set.all()
     aux = []
+
     for formacao in formacoes:
-        aux.append(model_to_dict(formacao))
-    return JsonResponse(aux)
+        new_formacao = {}
+        new_formacao['id'] = formacao.id
+        new_formacao['nome'] = formacao.nome
+        new_formacao['clube_id'] = formacao.clube.id
+        aux.append(new_formacao)
+
+    return JsonResponse(aux, safe=False)
 
 
 @login_required
@@ -183,26 +181,70 @@ def dAtletaView(request, id):
     return HttpResponse('ok')
 
 
-@login_required
-@permission_required('view_atleta', raise_exception=True)
-def gAtletas(request, formacao):
+#@login_required
+#@permission_required('view_atleta', raise_exception=True)
+def gAtletasView(request, formacao):
     formacaox = get_object_or_404(models.Formacao, id=formacao)
     atletas = formacaox.atleta_set.all()
     aux = []
+
     for atleta in atletas:
-        aux.append(model_to_dict(atleta))
-    return JsonResponse(aux)
+        new_atleta = {}
+        new_atleta['id'] = atleta.id
+        new_atleta['nome'] = atleta.nome
+        aux.append(new_atleta)
+
+    return JsonResponse(aux, safe=False)
+
+
+#@login_required
+#@permission_required('view_atleta', raise_exception=True)
+def gAtletasEmCampoView(request, formacao, jogo):
+    formacaox = get_object_or_404(models.Formacao, id=formacao)
+    atletas = formacaox.atleta_set.all()
+    aux = []
+
+    for atleta in atletas:
+        if models.Convocado.objects.filter(atleta=atleta.id, jogo=jogo).count() > 0:
+            conv = get_object_or_404(models.Convocado, atleta=atleta.id, jogo=jogo)
+            if conv.emCampo:
+                new_atleta = {}
+                new_atleta['id'] = atleta.id
+                new_atleta['nome'] = atleta.nome
+                aux.append(new_atleta)
+
+    return JsonResponse(aux, safe=False)
+
+
+#@login_required
+#@permission_required('view_atleta', raise_exception=True)
+def gAtletasSuplentesView(request, formacao, jogo):
+    formacaox = get_object_or_404(models.Formacao, id=formacao)
+    atletas = formacaox.atleta_set.all()
+    aux = []
+
+    for atleta in atletas:
+        if models.Convocado.objects.filter(atleta=atleta.id, jogo=jogo).count() > 0:
+            conv = get_object_or_404(models.Convocado, atleta=atleta.id, jogo=jogo)
+            if not conv.emCampo:
+                new_atleta = {}
+                new_atleta['id'] = atleta.id
+                new_atleta['nome'] = atleta.nome
+                aux.append(new_atleta)
+
+    return JsonResponse(aux, safe=False)
 
 
 @login_required
 @permission_required('view_atleta', raise_exception=True)
-def gAtleta(request, id):
+def gAtletaView(request, id):
     atleta = get_object_or_404(models.Atleta, id=id)
     return JsonResponse(model_to_dict(atleta))
 
 
 @login_required
 @permission_required('add_tecnico', raise_exception=True)
+#ALTERAR ISTO, JÁ NÃO ESTAMOS A USAR FORMS
 def tecnicoView(request):
     form = forms.UserForm(request.POST)
     if form.is_valid():
@@ -307,6 +349,7 @@ def gJogoView(request, id):
     new_jogo['logoAdv'] = jogo.adversario.clube.simbolo
     new_jogo['clube_cor'] = jogo.formacao.clube.cor
     new_jogo['adv_cor'] = jogo.adversario.clube.cor
+    
     return JsonResponse(new_jogo)
 
 def gResultado(id):
@@ -345,9 +388,16 @@ def gConvocadosView(request, idJogo):
     jogo = get_object_or_404(models.Jogo, id=idJogo)
     convocados = jogo.convocado_set.all()
     aux = []
+
     for conv in convocados:
-        aux.append(model_to_dict(conv))
-    return JsonResponse(aux)
+        new_convocado = {}
+        new_convocado['id'] = conv.id
+        new_convocado['atleta'] = conv.atleta.id
+        new_convocado['jogo'] = conv.jogo.id
+        new_convocado['emCampo'] = conv.emCampo
+        aux.append(new_convocado)
+
+    return JsonResponse(aux, safe=False)
 
 
 #@login_required
@@ -371,6 +421,8 @@ def eventoView(request):
             models.Evento.objects.create(tipo=tp, jogo=jg, instante=inst, novoinstante=novo)
         elif eq is not None and at1 is not None and at2 is not None:
             models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, atleta2=at2, instante=inst)
+            models.Convocado.objects.filter(atleta=at1, jogo=jg).update(emCampo=False)
+            models.Convocado.objects.filter(atleta=at2, jogo=jg).update(emCampo=True)
         elif eq is not None and at1 is not None and zC is not None and zB is not None:
             models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, zonaCampo=zC, zonaBaliza=zB, instante=inst)
         elif eq is not None and at1 is not None and zC is not None:
@@ -410,6 +462,8 @@ def cEventoView(request):
             models.Evento.objects.filter(id=i).update(atleta1=at1)
         if at2 is not None:
             models.Evento.objects.filter(id=i).update(atleta2=at2)
+            models.Convocado.objects.filter(atleta=at1, jogo=jg).update(emCampo=False)
+            models.Convocado.objects.filter(atleta=at2, jogo=jg).update(emCampo=True)
         if zC is not None:
             models.Evento.objects.filter(id=i).update(zonaCampo=zC)
         if zB is not None:
@@ -630,6 +684,7 @@ def gTiposSelecionadosView(request, email):
         new_tipo = {}
         new_tipo['id'] = tipox.id
         new_tipo['tipo'] = tipox.tipo
+        aux.append(new_tipo)
 
     return JsonResponse(aux, safe=False)
 

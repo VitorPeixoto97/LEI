@@ -30,8 +30,10 @@ urlpatterns = [
     path('atleta/<int:licenca>/<str:nome>/<str:formacao>/<int:camisola>/', views.atletaView, name='atleta'),
     path('change_atleta/<int:id>/<int:formacao>/<int:camisola>/', views.cAtletaView, name='catleta'),
     path('del_atleta/<int:id>/', views.dAtletaView, name='datleta'),
-    path('get_atletas/<int:formacao>', views.gAtletas, name='gatletas'),
-    path('get_atleta/<int:id>/', views.gAtleta, name='gatleta'),
+    path('get_atletas/<int:formacao>/', views.gAtletasView, name='gatletas'),
+    path('get_atletas_campo/<int:formacao>/<int:jogo>/', views.gAtletasEmCampoView, name='gatletascampo'),
+    path('get_atletas_suplentes/<int:formacao>/<int:jogo>/', views.gAtletasSuplentesView, name='gatletassuplentes'),
+    path('get_atleta/<int:id>/', views.gAtletaView, name='gatleta'),
 
     path('tecnico/<int:clube>/<str:email>/<str:nome>/<str:password>/', views.tecnicoView, name='tecnico'),
     path('change_tecnico/<int:id>/<str:grelhaC>/<str:grelhaB>/', views.cTecnicoView, name='ctecnico'),
