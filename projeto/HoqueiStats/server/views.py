@@ -582,14 +582,25 @@ def gTipoEventoView(request, id):
     return JsonResponse(model_to_dict(tipoe))
 
 
-@login_required
-@permission_required('view_tipoevento', raise_exception=True)
+#@login_required
+#@permission_required('view_tipoevento', raise_exception=True)
 def gTiposEventosView(request):
     tipos = models.TipoEvento.objects.all()
     aux = []
+
     for tipo in tipos:
-        aux.append(model_to_dict(tipo))
-    return JsonResponse(aux)
+        new_tipo = {}
+        new_tipo['id'] = tipo.id
+        new_tipo['tipo'] = tipo.tipo
+        new_tipo['equipa'] = tipo.equipa
+        new_tipo['atleta1'] = tipo.atleta1
+        new_tipo['atleta2'] = tipo.atleta2
+        new_tipo['zonaCampo'] = tipo.zonaCampo
+        new_tipo['zonaBaliza'] = tipo.zonaBaliza
+        new_tipo['novoinstante'] = tipo.novoinstante
+        aux.append(new_tipo)
+
+    return JsonResponse(aux, safe=False)
 
 
 @login_required
@@ -607,13 +618,18 @@ def dTipoSelecionadoView(request, id):
     return HttpResponse('ok')
 
 
-@login_required
-@permission_required('view_tiposselecionados', raise_exception=True)
-def gTiposSelecionadosView(request, tecnico):
-    tecnicox = get_object_or_404(models.Tecnico, id=tecnico)
-    tipos = tecnicox.tiposselecionados_set.all()
+#@login_required
+#@permission_required('view_tiposselecionados', raise_exception=True)
+def gTiposSelecionadosView(request, email):
+    tecnico = get_object_or_404(models.Tecnico, email=email)
+    tipos = models.TiposSelecionados.objects.filter(tecnico=tecnico.id)
     aux=[]
-    for tipo in tipos:
-        aux.append(model_to_dict(tipo))
-    return JsonResponse(aux)
+    
+    for t in tipos:
+        tipox = get_object_or_404(models.TipoEvento, tipo=t.tipo)
+        new_tipo = {}
+        new_tipo['id'] = tipox.id
+        new_tipo['tipo'] = tipox.tipo
+
+    return JsonResponse(aux, safe=False)
 

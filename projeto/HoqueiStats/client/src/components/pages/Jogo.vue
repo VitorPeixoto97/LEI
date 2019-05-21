@@ -23,29 +23,46 @@
           </v-card>
         </v-flex>
       </v-container>
-      <v-container  text-xs-center>
-        <v-flex xs6 offset-xs3  style="min-width:500px; margin:auto;">
-          <v-card color="white" class="my-card">
-            <div class="row">
-              <div class="column">
-                <form class="review-form" @submit.prevent="submitForm">
-                  <div class="field">
-                    falta o relógio para igualar ao instante
-                    <input v-model="tipo" class="input" type="text" placeholder="Tipo de evento" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
-                    <input v-model="evento.equipa" class="input" type="text" placeholder="Equipa" v-if="tipo_evento!=null && tipo_evento.equipa" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
-                    <input v-model="evento.atleta1" class="input" type="text" placeholder="Atleta" v-if="tipo_evento!=null && tipo_evento.atleta1" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
-                    <input v-model="evento.atleta2" class="input" type="text" placeholder="Atleta 2" v-if="tipo_evento!=null && tipo_evento.atleta2" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
-                    <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="tipo_evento!=null && tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
-                    <input v-model="evento.zonaB" class="input" type="text" placeholder="Zona da baliza" v-if="tipo_evento!=null && tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
-                    <input v-model="evento.novoinst" class="input" type="text" placeholder="Novo instante" v-if="tipo_evento!=null && tipo_evento.novoinstante" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
-                    <input type="submit" value="Submit" hidden>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </v-card>
-        </v-flex>
-      </v-container>
+     <div class="row">
+       <div class="column">
+         <v-container  text-xs-center>
+           <v-flex xs6 offset-xs3  style="min-width:500px; margin:auto;">
+             <v-card color="white" class="my-card">
+               <div class="row">
+                 <div class="column">
+                   <div v-if="selT">
+                     {{sugestaoTipos}}
+                   </div>
+                 </div>
+               </div>
+             </v-card>
+           </v-flex>
+         </v-container>
+       </div>
+       <div class="column">
+         <v-container  text-xs-center>
+           <v-flex xs6 offset-xs3  style="min-width:500px; margin:auto;">
+             <v-card color="white" class="my-card">
+               <div class="column">
+                 <form class="review-form" @submit.prevent="submitForm">
+                   <div class="field">
+                     falta o relógio para igualar ao instante
+                     <input v-model="tipo" class="input" type="text" placeholder="Tipo de evento" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=true, selE=false, selA1=false, selA2=false">
+                     <input v-model="evento.equipa" class="input" type="text" placeholder="Equipa" v-if="tipo_evento!=null && tipo_evento.equipa" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=true, selA1=false, selA2=false">
+                     <input v-model="evento.atleta1" class="input" type="text" placeholder="Atleta" v-if="tipo_evento!=null && tipo_evento.atleta1" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=true, selA2=false">
+                     <input v-model="evento.atleta2" class="input" type="text" placeholder="Atleta 2" v-if="tipo_evento!=null && tipo_evento.atleta2" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=true">
+                     <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="tipo_evento!=null && tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
+                     <input v-model="evento.zonaB" class="input" type="text" placeholder="Zona da baliza" v-if="tipo_evento!=null && tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
+                     <input v-model="evento.novoinst" class="input" type="text" placeholder="Novo instante" v-if="tipo_evento!=null && tipo_evento.novoinstante" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
+                     <input type="submit" value="Submit" hidden>
+                   </div>
+                 </form>
+               </div>
+             </v-card>
+           </v-flex>
+         </v-container>
+       </div>
+     </div>
     </div>
   </layout-basic>
 </template>
@@ -63,6 +80,13 @@ export default {
   data() {
     return {
       jogo: null,
+      sugestaoTipos: null,
+
+      selT: false,
+      selE: false,
+      selA1: false,
+      selA2: false,
+      // ATENÇÃO: FALTA AS IMAGENS DO CAMPO E DA BALIZA
 
       eventos_jogo: null,
       tipo: null,
@@ -91,10 +115,15 @@ export default {
       axios.get(process.env.API_URL + "/server/get_jogo/"+this.$session.get('jogoTab')+"/").then(response => {
         app.jogo = response.data;
         app.evento.jogo = app.jogo.id;
+
+        axios.get(process.env.API_URL + "/server/get_eventos/"+app.jogo.id+"/").then(response => {
+          app.eventos = response.data;
+
+          axios.get(process.env.API_URL + "/server/get_tipos_selecionados/" + this.$session.get('user_email') + "/").then(response => {
+            app.sugestaoTipos = response.data;
+          });
+        });
       });
-      axios.get(process.env.API_URL + "/server/get_eventos/"+app.jogo.id+"/").then(response => {
-        app.eventos = response.data;
-      })
     },
       
     checkLoggedIn() {

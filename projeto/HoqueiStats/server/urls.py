@@ -57,5 +57,5 @@ urlpatterns = [
 
     path('tipo_selecionado/<int:tipo>/<int:tecnico>/', views.tipoSelecionadoView, name='tiposelecionado'),
     path('del_tipo_selecionado/<int:id>/', views.dTipoSelecionadoView, name='dtiposelecionado'),
-    path('get_tipos_selecionados/<int:tecnico>', views.gTiposSelecionadosView, name='gtiposselecionados'),
+    path('get_tipos_selecionados/<str:email>/', views.gTiposSelecionadosView, name='gtiposselecionados'),
 ]
