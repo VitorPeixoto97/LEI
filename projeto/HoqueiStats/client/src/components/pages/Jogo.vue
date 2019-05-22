@@ -13,7 +13,6 @@
                 <p primary-title class=" justify-center resultado"><b>{{jogo.resultado}}</b>
                 <p class="justify-center"><h5><b>{{jogo.data}}</b></h5>
                 <p class="justify-center" style="margin-top:-15px;"><h5><b>{{jogo.hora}}</b></h5>
-                <!--p class="justify-center"><Relogio></Relogio></p></!-->
               </div>
               <div class="column">
                 <img :src="jogo.logoAdv" style="display:inline-flex; max-width:40%; min-width:60px;">
@@ -23,7 +22,36 @@
           </v-card>
         </v-flex>
       </v-container>
-      <div class="row">
+      <v-container  text-xs-center>
+        <v-flex xs6 offset-xs3  style="min-width:500px; margin:auto;">
+          <v-card color="white" class="my-card">
+            <div class="row">
+              <div class="column">
+                <p class="justify-center" style="margin-top:20px;margin-left:20px;"><button class="btn btn-lg btn-primary btn-block text-uppercase" v-on:click="updateClock()" :disabled="change || timer == 0">{{ paused ? 'Start' : 'Stop' }}</button></p>
+              </div>
+              <div class="column">
+                <p class="justify-center"><h5>{{ this.parte }}ª Parte</h5>
+                <p class="justify-center"><h5>{{ this.minutos < 10 ? '0' + this.minutos : this.minutos }}:{{ this.segundos < 10 ? '0' + this.segundos : this.segundos }}</h5>
+              </div>
+              <div class="column">
+                <p class="justify-center" style="margin-top:20px;margin-right:20px;"><button class="btn btn-lg btn-primary btn-block text-uppercase" v-on:click="changeClock()" :disabled="!paused || interval == null">{{ this.change ? 'Confirm' : 'Change' }}</button></p>
+              </div>
+            </div>
+          </v-card>
+        </v-flex>
+      </v-container>
+      <v-container text-xs-center v-if="change">
+        <v-flex xs6 offset-xs3  style="min-width:500px; margin:auto;">
+          <v-card color="white" class="my-card">
+            <p class="justify-center" style="font-size: x-large;">
+              <input type="number" v-model="clockChange.minutos" name="time_m" id="min" min="0" max="19" style="width: 10%;">:
+              <input type="number" v-model="clockChange.segundos" name="time_s" id="sec" min="0" max="59" style="width: 10%;"> 
+              <input type="number" v-model="clockChange.parte" name="part" id="part" min="1" max="2" style="margin-left:20px;width: 5%;">ª Parte
+            </p>
+          </v-card>
+        </v-flex>
+      </v-container>
+      <div v-else class="row">
         <div class="column">
           <v-container  text-xs-center>
             <v-flex xs6 offset-xs3  style="min-width:500px; margin:auto;">
@@ -67,7 +95,7 @@
                 <div class="column">
                   <form class="review-form" @submit.prevent="submitForm">
                     <div class="field">
-                      falta o relógio para igualar ao instante
+                      <!--falta o relógio para igualar ao instante-->
                       <input v-model="tipo" class="input" type="text" placeholder="Tipo de evento" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=true, selE=false, selA1=false, selA2=false">
                       <input v-model="evento.equipa" class="input" type="text" placeholder="Equipa" v-if="tipo_evento!=null && tipo_evento.equipa" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=true, selA1=false, selA2=false">
                       <input v-model="evento.atleta1" class="input" type="text" placeholder="Atleta" v-if="tipo_evento!=null && tipo_evento.atleta1" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=true, selA2=false, getAtletas1()">
@@ -117,7 +145,6 @@
 <script> 
 import router from "../../router";
 import LayoutBasic from '../layouts/Basic.vue'
-//import Relogio from '../pages/Relogio.vue'
 import axios from 'axios';
 export default {
   name: 'Movies',
@@ -152,6 +179,19 @@ export default {
         instante: null,
         novoinst: null,
       },
+
+      timer: 2400,
+      parte: 1,
+      minutos: 20,
+      segundos: 0,
+      paused: true,
+      interval: null,
+      change: false,
+      clockChange: {
+        minutos: 0,
+        segundos: 0,
+        parte: 1,
+      }
     }
   },
   mounted: function() {
@@ -195,6 +235,10 @@ export default {
     },
 
     submitForm() {
+      /*
+      if(this.evento.tipo != clockchange)
+        this.evento.instante = this.timer;
+      */
       var app = this;
       axios.post(process.env.API_URL + "/server/evento/", JSON.stringify(app.evento)).then(response => {
         router.push("/jogo")
@@ -219,6 +263,84 @@ export default {
           app.sugestaoAtletas2 = response.data
         })
       }
+    },
+
+    updateClock(){
+      if (!this.paused) { // está prestes a parar
+        clearInterval(this.interval);
+        console.log(this.evento);
+        /* 
+        this.evento.tipo = stop;
+        this.evento.instante = this.timer;
+        submitForm();
+         */
+      } else { // está prestes a (re)começar
+        console.log('timer starts');
+        /* 
+        this.evento.tipo = start;
+        this.evento.instante = this.timer;
+        submitForm();
+        */
+        this.interval = setInterval(() => this.incrementTime(), 1000);
+      }
+      this.paused = !this.paused;
+    },
+    
+    incrementTime() {
+      if(this.timer > 0)
+        this.timer -= 1;
+      if(this.segundos == 0){
+        if(this.minutos == 0){
+          this.paused = true;
+          clearInterval(this.interval);
+          if(this.parte == 1){
+            this.parte += 1;
+            this.minutos = 20;
+            /*
+            this.evento.tipo = 2parte;
+            this.instante = this.timer;
+            submitForm();
+            */
+          }
+          else {
+            /*
+            this.evento.tipo = fim;
+            this.instante = this.timer;
+            submitForm();
+            */
+          }
+        }
+        else{
+          this.minutos -= 1;
+          this.segundos = 59;
+        }
+      }
+      else
+        this.segundos -= 1;
+    },
+
+    changeClock(){
+      if(!this.change) { //inicio de alteração
+        this.clockChange.minutos = this.minutos;
+        this.clockChange.segundos = this.segundos;
+        this.clockChange.parte = this.parte;
+      }
+      else { //fim de alteração
+          this.evento.instante = this.timer;
+          this.timer = this.clockChange.minutos * 60 + this.clockChange.segundos;
+          if(this.clockChange.parte == 1) this.timer += 1200;
+
+          this.evento.novoinst = this.timer;
+          this.minutos = this.clockChange.minutos;
+          this.segundos = this.clockChange.segundos;
+          this.parte = parseInt(this.clockChange.parte);
+
+          /*
+          this.evento.tipo = changeclock;
+          submitForm();
+          */
+      }
+      this.change = !this.change;
     }
   }
 }
