@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<changelog xmlns="http://www.omnigroup.com/namespace/OmniPlan/v2">
+  <version>2.1</version>
+  <task-change-set user="Vitor Peixoto" date="2019-04-02T15:24:22.434Z" timestamp="2019-04-02T15:24:22.434Z">
+    <change idref="t3" attribute="internalDuration" type="string" from="637200s" to="435600s" resolved="yes"/>
+    <change idref="t3" attribute="effort" type="real" from="637200" to="435600" resolved="yes"/>
+    <change idref="t3" attribute="startLockedDate" type="date" from="2019-03-06T08:00:00.000Z" resolved="yes"/>
+    <change idref="t3" attribute="noEarlierThanConstraintDate" type="date" to="2019-03-20T09:00:00.000Z" resolved="yes"/>
+    <change idref="t3" attribute="internalEffortDone" type="real" from="432000" to="273600" resolved="yes"/>
+    <change idref="t5" attribute="percentCompleteForMilestone" type="real" from="0" to="1" resolved="yes"/>
+    <change idref="t13" attribute="noEarlierThanConstraintDate" type="date" from="2019-03-28T08:00:00.000Z" resolved="yes"/>
+    <change idref="t32" from="t13" from-position="5" resolved="yes">
+      <change idref="t32" attribute="effort" type="real" from="28800" to="1288800"/>
+      <change idref="t32" attribute="noEarlierThanConstraintDate" type="date" to="2019-04-11T15:00:00.000Z"/>
+      <change idref="t32" attribute="title" type="string" to="Desenvolvimento e aprimoramento da interface"/>
+    </change>
+    <change idref="t35" from="t13" from-position="4" resolved="yes">
+      <change idref="t35" attribute="effort" type="real" from="28800" to="871200"/>
+      <change idref="t35" attribute="noEarlierThanConstraintDate" type="date" to="2019-05-02T10:00:00.000Z"/>
+      <change idref="t35" attribute="title" type="string" to="Implementar funcionalidades do técnico"/>
+    </change>
+    <change idref="t33" from="t13" from-position="3" resolved="yes">
+      <change idref="t33" attribute="effort" type="real" from="28800" to="504000"/>
+      <change idref="t33" attribute="noEarlierThanConstraintDate" type="date" to="2019-04-19T15:00:00.000Z"/>
+      <change idref="t33" attribute="title" type="string" to="Implementar funcionalidades do gestor"/>
+    </change>
+    <change idref="t31" from="t13" from-position="2" resolved="yes">
+      <change idref="t31" attribute="effort" type="real" from="28800" to="198000"/>
+      <change idref="t31" attribute="noEarlierThanConstraintDate" type="date" to="2019-04-11T15:00:00.000Z"/>
+      <change idref="t31" attribute="title" type="string" to="Implementar funcionalidades do administrador"/>
+    </change>
+    <change idref="t34" from="t13" from-position="0" resolved="yes">
+      <change idref="t34" attribute="effort" type="real" from="28800" to="176400"/>
+      <change idref="t34" attribute="noEarlierThanConstraintDate" type="date" to="2019-03-26T08:00:00.000Z"/>
+      <change idref="t34" attribute="title" type="string" to="Implementação da base de dados"/>
+    </change>
+    <change idref="t36" to="t13" to-position="1" resolved="yes">
+      <change idref="t36" attribute="effort" type="real" from="28800" to="144000"/>
+      <change idref="t36" attribute="noEarlierThanConstraintDate" type="date" to="2019-04-17T08:00:00.000Z"/>
+      <change idref="t36" attribute="title" type="string" to="Funcionalidade “Adicionar clube”"/>
+    </change>
+    <change idref="t37" to="t13" to-position="2" resolved="yes">
+      <change idref="t37" attribute="effort" type="real" from="28800" to="144000"/>
+      <change idref="t37" attribute="noEarlierThanConstraintDate" type="date" to="2019-04-17T08:00:00.000Z"/>
+      <change idref="t37" attribute="title" type="string" to="Funcionalidade “Adicionar gestor”"/>
+    </change>
+    <change idref="t38" to="t13" to-position="3" resolved="yes">
+      <change idref="t38" attribute="effort" type="real" from="28800" to="144000"/>
+      <change idref="t38" attribute="noEarlierThanConstraintDate" type="date" to="2019-04-17T08:00:00.000Z"/>
+      <change idref="t38" attribute="title" type="string" to="Funcionalidade “Adicionar técnico”"/>
+    </change>
+    <change idref="t39" to="t13" to-position="4" resolved="yes">
+      <change idref="t39" attribute="effort" type="real" from="28800" to="144000"/>
+      <change idref="t39" attribute="noEarlierThanConstraintDate" type="date" to="2019-04-17T08:00:00.000Z"/>
+      <change idref="t39" attribute="title" type="string" to="Funcionalidade “Adicionar atleta”"/>
+    </change>
+    <change idref="t40" to="t13" to-position="5" resolved="yes">
+      <change idref="t40" attribute="effort" type="real" from="28800" to="144000"/>
+      <change idref="t40" attribute="noEarlierThanConstraintDate" type="date" to="2019-04-24T08:00:00.000Z"/>
+      <change idref="t40" attribute="title" type="string" to="Funcionalidades “Adicionar formação” e “Associar atleta a formação”"/>
+    </change>
+    <change idref="t41" to="t13" to-position="6" resolved="yes">
+      <change idref="t41" attribute="effort" type="real" from="28800" to="230400"/>
+      <change idref="t41" attribute="noEarlierThanConstraintDate" type="date" to="2019-04-30T08:00:00.000Z"/>
+      <change idref="t41" attribute="title" type="string" to="Funcionalidade “Adicionar jogo”"/>
+    </change>
+    <change idref="t42" to="t13" to-position="7" resolved="yes">
+      <change idref="t42" attribute="effort" type="real" from="28800" to="144000"/>
+      <change idref="t42" attribute="noEarlierThanConstraintDate" type="date" to="2019-05-01T08:00:00.000Z"/>
+      <change idref="t42" attribute="title" type="string" to="API relógio e funcionalidade “Manipular relógio”"/>
+    </change>
+    <change idref="t43" to="t13" to-position="8" resolved="yes">
+      <change idref="t43" attribute="effort" type="real" from="28800" to="288000"/>
+      <change idref="t43" attribute="noEarlierThanConstraintDate" type="date" to="2019-05-10T08:00:00.000Z"/>
+      <change idref="t43" attribute="title" type="string" to="Funcionalidade “Registar evento”"/>
+    </change>
+    <change idref="t44" to="t13" to-position="9" resolved="yes">
+      <change idref="t44" attribute="effort" type="real" from="28800" to="288000"/>
+      <change idref="t44" attribute="noEarlierThanConstraintDate" type="date" to="2019-05-21T08:00:00.000Z"/>
+      <change idref="t44" attribute="title" type="string" to="Funcionalidade “Consultar estatísticas”"/>
+    </change>
+    <change idref="t45" to="t13" to-position="10" resolved="yes">
+      <change idref="t45" attribute="effort" type="real" from="28800" to="115200"/>
+      <change idref="t45" attribute="noEarlierThanConstraintDate" type="date" to="2019-05-29T08:00:00.000Z"/>
+      <change idref="t45" attribute="title" type="string" to="Funcionalidades “Sinalizar e editar evento”"/>
+    </change>
+    <change idref="t46" to="t13" to-position="11" resolved="yes">
+      <change idref="t46" attribute="effort" type="real" from="28800" to="115200"/>
+      <change idref="t46" attribute="noEarlierThanConstraintDate" type="date" to="2019-05-31T08:00:00.000Z"/>
+      <change idref="t46" attribute="title" type="string" to="Funcionalidade “Criar novo tipo de evento”"/>
+    </change>
+    <change idref="t47" to="t13" to-position="12" resolved="yes">
+      <change idref="t47" attribute="effort" type="real" from="28800" to="144000"/>
+      <change idref="t47" attribute="noEarlierThanConstraintDate" type="date" to="2019-06-06T08:00:00.000Z"/>
+      <change idref="t47" attribute="title" type="string" to="Funcionalidade “Personalizar matriz do campo”"/>
+    </change>
+    <change idref="t24" attribute="internalEffortDone" type="real" from="439200" to="518400" resolved="yes"/>
+    <change idref="t30" attribute="title" type="string" from="Implementação dos grupos" to="Implementação dos grupos de utilizadores" resolved="yes"/>
+    <change idref="t30" attribute="effort" type="real" from="154800" to="144000" resolved="yes"/>
+    <change idref="t30" attribute="noEarlierThanConstraintDate" type="date" from="2019-04-05T07:00:00.000Z" to="2019-04-10T08:00:00.000Z" resolved="yes"/>
+  </task-change-set>
+</changelog>
