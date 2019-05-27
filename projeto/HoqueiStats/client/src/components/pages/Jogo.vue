@@ -27,7 +27,9 @@
           <v-card color="white" class="my-card">
             <div class="row">
               <div class="column">
-                <p class="justify-center" style="margin-top:20px;margin-left:20px;"><button class="btn btn-lg btn-primary btn-block text-uppercase" v-on:click="updateClock()" :disabled="change || timer == 0">{{ paused ? 'Start' : 'Stop' }}</button></p>
+                <p class="justify-center" style="margin-top:20px;margin-left:20px;">
+                  <button class="btn btn-lg btn-primary btn-block text-uppercase" v-on:click="updateClock()" :disabled="change || timer == 0">{{ paused ? 'Start' : 'Stop' }}</button>
+                </p>
               </div>
               <div class="column">
                 <p class="justify-center"><h5>{{ this.parte }}ª Parte</h5>
@@ -54,7 +56,7 @@
       <div v-else class="row">
         <div class="column">
           <v-container  text-xs-center>
-            <v-flex xs6 offset-xs3  style="min-width:500px; margin:auto;">
+            <v-flex dist distleft xs6 offset-xs3 style="margin:auto">
               <v-card color="white" class="my-card">
                 <div class="row">
                   <div class="column">
@@ -90,7 +92,7 @@
         </div>
         <div class="column">
           <v-container  text-xs-center>
-            <v-flex xs6 offset-xs3  style="min-width:500px; margin:auto;">
+            <v-flex dist distright xs6 offset-xs3 style="margin:auto">
               <v-card color="white" class="my-card">
                 <div class="column">
                   <form class="review-form" @submit.prevent="submitForm">
@@ -345,3 +347,41 @@ export default {
   }
 }
 </script>
+
+
+
+<style>
+  .my-card{
+    border-radius:20px; 
+    -webkit-box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
+    -moz-box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
+    box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
+  }
+  .background{
+    position: absolute;
+    margin-top:55px;
+
+  }
+  @media only screen and (min-width: 0px) {
+    .dist{
+      margin:auto !important;
+      width:90%;
+      min-width:500px;
+    }
+  }
+  @media only screen and (min-width: 1000px) {
+    .distleft{
+      width:30%;
+      min-width:70%;
+      margin-right:15px !important;
+    }
+    .distright{
+      width:30%;
+      min-width:70%;
+      margin-left:15px !important;
+    }
+  }
+</style>
+
+
+

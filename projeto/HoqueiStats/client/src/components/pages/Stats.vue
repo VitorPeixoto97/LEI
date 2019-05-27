@@ -138,7 +138,6 @@ export default {
   .background{
     position: absolute;
     margin-top:55px;
-
   }
   @media only screen and (min-width: 768px) {
     .chart{
