@@ -350,38 +350,8 @@ export default {
 
 
 
-<style>
-  .my-card{
-    border-radius:20px; 
-    -webkit-box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
-    -moz-box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
-    box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
-  }
-  .background{
-    position: absolute;
-    margin-top:55px;
+<style src="../../../dist/static/css/jogo.css">
 
-  }
-  @media only screen and (min-width: 0px) {
-    .dist{
-      margin:auto !important;
-      width:90%;
-      min-width:500px;
-    }
-  }
-  @media only screen and (min-width: 1000px) {
-    .distleft{
-      width:30%;
-      min-width:70%;
-      margin-right:15px !important;
-    }
-    .distright{
-      width:30%;
-      min-width:70%;
-      margin-left:15px !important;
-    }
-  }
-</style>
 
 
 
