@@ -47,9 +47,9 @@ export default {
       eventos: null,
       series: null,
       chartOptions: {
-        grid: { show: true },
+        grid: { show: false },
         dataLabels: {
-          enabled: true
+          enabled: false
         },
         fill: {
           opacity: 0.8
@@ -58,8 +58,8 @@ export default {
         xaxis: {
           min: 0,
           max: 200,
-          labels: { show:true },
-          axisBorder: { show: true },
+          labels: { show:false },
+          axisBorder: { show: false },
         },
         yaxis: {
           min: 0,
@@ -116,11 +116,11 @@ export default {
     bubbles() {
       this.series= [{
         name: this.$session.get('clube'),
-        data: this.genBubbles(this.$session.get('jogo').formacao)
+        data: this.genBubbles(this.$session.get('clube'))
       },
       {
         name: this.$session.get('adv'),
-        data: this.genBubbles(this.$session.get('jogo').adversario)
+        data: this.genBubbles(this.$session.get('adv'))
       }]
     }
   } 

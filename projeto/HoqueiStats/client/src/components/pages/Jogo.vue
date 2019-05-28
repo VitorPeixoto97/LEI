@@ -9,7 +9,8 @@
                 <p primary-title class="justify-center teamname"><b>{{jogo.clube_nome}}</b></p>
               </div>
               <div class="column">
-                <p primary-title class="justify-center resultado"><b>{{jogo.resultado}}</b>
+                <p primary-title v-if="this.eventos.length > 0" class="justify-center resultado"><b>{{jogo.resultado}}</b>
+                <p primary-title v-if="this.eventos.length == 0" class="justify-center resultado"><b> </b>
                 <p v-if="!started" class="justify-center datahora"><b>{{jogo.data}}</b></p>
                 <p v-if="!started" class="justify-center datahora" style="margin-top:-15px;"><b>{{jogo.hora}}</b></p>
                 <p v-if="started" class="justify-center time"><b>{{ this.parte }}P | {{ this.minutos < 10 ? '0' + this.minutos : this.minutos }}:{{ this.segundos < 10 ? '0' + this.segundos : this.segundos }}</b></p>
