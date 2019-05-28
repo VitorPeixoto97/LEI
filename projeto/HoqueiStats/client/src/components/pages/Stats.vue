@@ -1,34 +1,33 @@
 <template>
   <layout-basic>
     <div id="app">
-      <v-container  text-xs-center>
-        <v-flex xs6 offset-xs3  style="min-width:500px; margin:auto;">
-          <v-card color="white" class="my-card">
+      <v-container text-xs-center>
+          <v-card color="white" class="my-card score">
             <div class="row">
               <div class="column">
-                <img :src="jogo.logoMe" style="display:inline-flex; max-width:40%; min-width:60px;"></img>
-                <v-card-title primary-title class="justify-center"><h5><b>{{jogo.clube_nome}}</b></h5></v-card-title>
+                <img class="crest" :src="jogo.logoMe">
+                <p primary-title class="justify-center teamname"><b>{{jogo.clube_nome}}</b></p>
               </div>
               <div class="column">
-                <p primary-title class=" justify-center resultado"><b>{{jogo.resultado}}</b></p>
-                <p class="justify-center"><h5><b>{{jogo.data}}</b></h5></p>
-                <p class="justify-center" style="margin-top:-15px;"><h5><b>{{jogo.hora}}</b></h5></p>
+                <p primary-title class="justify-center resultado"><b>{{jogo.resultado}}</b>
+                <p class="justify-center datahora"><b>{{jogo.data}}</b></p>
+                <p class="justify-center datahora" style="margin-top:-15px;"><b>{{jogo.hora}}</b></p>
               </div>
               <div class="column">
-                <img :src="jogo.logoAdv" style="display:inline-flex; max-width:40%; min-width:60px;"></img>
-                <v-card-title primary-title class="justify-center"><h5><b>{{jogo.adv_nome}}</b></h5></v-card-title>
+                <img class="crest" :src="jogo.logoAdv">
+                <p primary-title class="justify-center teamname"><b>{{jogo.adv_nome}}</b></p>
               </div>
             </div>
           </v-card>
-        </v-flex>
       </v-container>
-      <v-card color="white" class="my-card chart">
-        <img class="background" src="../../assets/ring.png"></img>
-        <div id="chart">
-          <apexchart type=bubble width=100% :options="chartOptions" :series="series" />
-        </div>
-      </v-card>
-
+      <v-container  text-xs-center>
+        <v-card color="white" class="my-card chart">
+          <img class="background" src="../../assets/ring.png"></img>
+          <div id="chart">
+            <apexchart type=bubble width=100% :options="chartOptions" :series="series" />
+          </div>
+        </v-card>
+      </v-container>
     </div>
   </layout-basic>
 </template>
@@ -48,9 +47,9 @@ export default {
       eventos: null,
       series: null,
       chartOptions: {
-        grid: { show: false },
+        grid: { show: true },
         dataLabels: {
-          enabled: false
+          enabled: true
         },
         fill: {
           opacity: 0.8
@@ -59,8 +58,8 @@ export default {
         xaxis: {
           min: 0,
           max: 200,
-          labels: { show:false },
-          axisBorder: { show: false },
+          labels: { show:true },
+          axisBorder: { show: true },
         },
         yaxis: {
           min: 0,
@@ -128,34 +127,5 @@ export default {
 }
 </script>
 
-<style>
-  .my-card{
-    border-radius:20px; 
-    -webkit-box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
-    -moz-box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
-    box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
-  }
-  .background{
-    position: absolute;
-    margin-top:55px;
-  }
-  @media only screen and (min-width: 768px) {
-    .chart{
-      width:90%;
-      margin:auto;
-      position: relative;
-    }
-  }
-  @media only screen and (min-width: 900px) {
-    .chart{
-      width:60%;
-      margin:auto;
-      position: relative;
-    }
-  }
-  .resultado{
-    top:-30px;
-    color: #31043A;
-    font-size:4em !important;
-  }
-</style>
+<style src="../../../dist/static/css/stats.css">
+

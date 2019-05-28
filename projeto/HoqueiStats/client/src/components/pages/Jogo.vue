@@ -1,49 +1,45 @@
 <template>
   <layout-basic>
     <div id="app">
-      <v-container  text-xs-center>
-        <v-flex xs6 offset-xs3  style="min-width:500px; margin:auto;">
-          <v-card color="white" class="my-card">
+      <v-container text-xs-center>
+          <v-card color="white" class="my-card score">
             <div class="row">
               <div class="column">
-                <img :src="jogo.logoMe" style="display:inline-flex; max-width:40%; min-width:60px;">
-                <v-card-title primary-title class="justify-center"><h5><b>{{jogo.clube_nome}}</b></h5></v-card-title>
+                <img class="crest" :src="jogo.logoMe">
+                <p primary-title class="justify-center teamname"><b>{{jogo.clube_nome}}</b></p>
               </div>
               <div class="column">
-                <p primary-title class=" justify-center resultado"><b>{{jogo.resultado}}</b>
-                <p class="justify-center"><h5><b>{{jogo.data}}</b></h5>
-                <p class="justify-center" style="margin-top:-15px;"><h5><b>{{jogo.hora}}</b></h5>
+                <p primary-title class="justify-center resultado"><b>{{jogo.resultado}}</b>
+                <p v-if="!started" class="justify-center datahora"><b>{{jogo.data}}</b></p>
+                <p v-if="!started" class="justify-center datahora" style="margin-top:-15px;"><b>{{jogo.hora}}</b></p>
+                <p v-if="started" class="justify-center time"><b>{{ this.parte }}P | {{ this.minutos < 10 ? '0' + this.minutos : this.minutos }}:{{ this.segundos < 10 ? '0' + this.segundos : this.segundos }}</b></p>
               </div>
               <div class="column">
-                <img :src="jogo.logoAdv" style="display:inline-flex; max-width:40%; min-width:60px;">
-                <v-card-title primary-title class="justify-center"><h5><b>{{jogo.adv_nome}}</b></h5></v-card-title>
+                <img class="crest" :src="jogo.logoAdv">
+                <p primary-title class="justify-center teamname"><b>{{jogo.adv_nome}}</b></p>
               </div>
             </div>
           </v-card>
-        </v-flex>
       </v-container>
-      <v-container  text-xs-center>
-        <v-flex xs6 offset-xs3  style="min-width:500px; margin:auto;">
-          <v-card color="white" class="my-card">
+
+      <v-container text-xs-center>
+          <v-card color="white" class="my-card timer">
             <div class="row">
-              <div class="column">
-                <p class="justify-center" style="margin-top:20px;margin-left:20px;">
-                  <button class="btn btn-lg btn-primary btn-block text-uppercase" v-on:click="updateClock()" :disabled="change || timer == 0">{{ paused ? 'Iniciar' : 'Parar' }}</button>
+              <div class="column" style="margin:auto">
+                <p class="justify-center" style="margin:auto">
+                  <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" v-on:click="updateClock()" :disabled="change || timer == 0">{{ paused ? 'Iniciar' : 'Parar' }}</button>
                 </p>
               </div>
-              <div class="column">
-                <p class="justify-center"><h5>{{ this.parte }}ª Parte</h5>
-                <p class="justify-center"><h5>{{ this.minutos < 10 ? '0' + this.minutos : this.minutos }}:{{ this.segundos < 10 ? '0' + this.segundos : this.segundos }}</h5>
-              </div>
-              <div class="column">
-                <p class="justify-center" style="margin-top:20px;margin-right:20px;"><button class="btn btn-lg btn-primary btn-block text-uppercase" v-on:click="changeClock()" :disabled="!paused || interval == null">{{ this.change ? 'Confirmar' : 'Alterar' }}</button></p>
+              <div class="column" style="margin:auto">
+                <p class="justify-center" style="margin:auto">
+                  <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" v-on:click="changeClock()" :disabled="!paused || interval == null">{{ this.change ? 'Confirmar' : 'Alterar' }}</button>
+                </p>
               </div>
             </div>
           </v-card>
-        </v-flex>
       </v-container>
+
       <v-container text-xs-center v-if="change">
-        <v-flex xs6 offset-xs3  style="min-width:500px; margin:auto;">
           <v-card color="white" class="my-card">
             <p class="justify-center" style="font-size: x-large;">
               <input type="number" v-model="clockChange.minutos" name="time_m" id="min" min="0" max="19" style="width: 10%;">:
@@ -51,12 +47,33 @@
               <input type="number" v-model="clockChange.parte" name="part" id="part" min="1" max="2" style="margin-left:20px;width: 5%;">ª Parte
             </p>
           </v-card>
-        </v-flex>
       </v-container>
-      <div v-else class="row">
-        <div class="column">
-          <v-container  text-xs-center>
-            <v-flex dist distleft xs6 offset-xs3 style="margin:auto">
+
+      <v-container text-xs-center v-else>
+        <div class="row v-row">
+          <div class="column v-column">
+            <v-flex dist distleft>
+              <v-card color="white" class="my-card">
+                <div class="column">
+                  <form class="review-form" @submit.prevent="submitForm">
+                    <div class="field">
+                      <!--falta o relógio para igualar ao instante-->
+                      <input v-model="tipo" class="input" type="text" placeholder="Tipo de evento" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=true, selE=false, selA1=false, selA2=false">
+                      <input v-model="evento.equipa" class="input" type="text" placeholder="Equipa" v-if="tipo_evento!=null && tipo_evento.equipa" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=true, selA1=false, selA2=false">
+                      <input v-model="evento.atleta1" class="input" type="text" placeholder="Atleta" v-if="tipo_evento!=null && tipo_evento.atleta1" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=true, selA2=false, getAtletas1()">
+                      <input v-model="evento.atleta2" class="input" type="text" placeholder="Atleta 2" v-if="tipo_evento!=null && tipo_evento.atleta2" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=true, getAtletas2()">
+                      <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="tipo_evento!=null && tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
+                      <input v-model="evento.zonaB" class="input" type="text" placeholder="Zona da baliza" v-if="tipo_evento!=null && tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
+                      <input v-model="evento.novoinst" class="input" type="text" placeholder="Novo instante" v-if="tipo_evento!=null && tipo_evento.novoinstante" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
+                      <input type="submit" value="Submit" hidden>
+                    </div>
+                  </form>
+                </div>
+              </v-card>
+            </v-flex>
+        </div>
+          <div class="column v-column">
+            <v-flex dist distright style="margin:auto">
               <v-card color="white" class="my-card">
                 <div class="row">
                   <div class="column">
@@ -88,66 +105,41 @@
                 </div>
               </v-card>
             </v-flex>
-          </v-container>
+          </div>
+          
+          
         </div>
-        <div class="column">
-          <v-container  text-xs-center>
-            <v-flex dist distright xs6 offset-xs3 style="margin:auto">
-              <v-card color="white" class="my-card">
-                <div class="column">
-                  <form class="review-form" @submit.prevent="submitForm">
-                    <div class="field">
-                      <!--falta o relógio para igualar ao instante-->
-                      <input v-model="tipo" class="input" type="text" placeholder="Tipo de evento" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=true, selE=false, selA1=false, selA2=false">
-                      <input v-model="evento.equipa" class="input" type="text" placeholder="Equipa" v-if="tipo_evento!=null && tipo_evento.equipa" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=true, selA1=false, selA2=false">
-                      <input v-model="evento.atleta1" class="input" type="text" placeholder="Atleta" v-if="tipo_evento!=null && tipo_evento.atleta1" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=true, selA2=false, getAtletas1()">
-                      <input v-model="evento.atleta2" class="input" type="text" placeholder="Atleta 2" v-if="tipo_evento!=null && tipo_evento.atleta2" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=true, getAtletas2()">
-                      <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="tipo_evento!=null && tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
-                      <input v-model="evento.zonaB" class="input" type="text" placeholder="Zona da baliza" v-if="tipo_evento!=null && tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
-                      <input v-model="evento.novoinst" class="input" type="text" placeholder="Novo instante" v-if="tipo_evento!=null && tipo_evento.novoinstante" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
-                      <input type="submit" value="Submit" hidden>
-                    </div>
-                  </form>
+      </v-container>
+
+      <v-container text-xs-center>
+          <v-card color="white" class="my-card eventos-table">
+            <md-table v-model="searched" md-sort="name" md-sort-order="asc"  md-fixed-header>
+              <md-table-toolbar>
+                <div class="md-toolbar-section-start">
+                  <h1 class="md-title"> </h1>
                 </div>
-              </v-card>
-            </v-flex>
-          </v-container>
-        </div>
-      </div>
-      <div class="row">
-        <div class="column">
-        <v-card color="white" class="my-card eventos-table">
-        <md-table v-model="searched" md-sort="name" md-sort-order="asc"  md-fixed-header>
-          <md-table-toolbar>
-            <div class="md-toolbar-section-start">
-              <h1 class="md-title"> </h1>
-            </div>
 
-            <md-field md-clearable class="md-toolbar-section-end">
-              <md-input placeholder="Pesquisar..." v-model="search" @input="searchOnTable" />
-            </md-field>
-          </md-table-toolbar>
+                <md-field md-clearable class="md-toolbar-section-end">
+                  <md-input placeholder="Pesquisar..." v-model="search" @input="searchOnTable" />
+                </md-field>
+              </md-table-toolbar>
 
-          <md-table-empty-state
-            md-label="Sem eventos"
-            :md-description="'Ainda não tem eventos registados para este jogo.'">
-          </md-table-empty-state>
+              <md-table-empty-state
+                md-label="Sem eventos"
+                :md-description="'Ainda não tem eventos registados para este jogo.'">
+              </md-table-empty-state>
 
-          <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.resultado)">
-            <md-table-cell md-label="Instante" md-sort-by="instante">{{ item.instante }}</md-table-cell>
-            <md-table-cell md-label="Equipa" md-sort-by="equipa">{{ item.equipa }}</md-table-cell>
-            <md-table-cell md-label="Tipo de Evento" md-sort-by="tipo">{{ item.tipo }}</md-table-cell>
-            <md-table-cell md-label="Atleta 1" md-sort-by="atleta1">{{ item.atleta1 }}</md-table-cell>
-            <md-table-cell md-label="Atleta 2" md-sort-by="atleta2">{{ item.atleta2 }}</md-table-cell>
-            <md-table-cell md-label="Timestamp" md-sort-by="timestamp">{{ item.timestamp }}</md-table-cell>
-          </md-table-row>
-        </md-table>
-        </v-card>
-        </div>
-
-
-        
-      </div>
+              <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.resultado)">
+                <md-table-cell md-label="Instante" md-sort-by="instante">{{ item.instante }}</md-table-cell>
+                <md-table-cell md-label="Equipa" md-sort-by="equipa">{{ item.equipa }}</md-table-cell>
+                <md-table-cell md-label="Tipo de Evento" md-sort-by="tipo">{{ item.tipo }}</md-table-cell>
+                <md-table-cell md-label="Atleta 1" md-sort-by="atleta1">{{ item.atleta1 }}</md-table-cell>
+                <md-table-cell md-label="Atleta 2" md-sort-by="atleta2">{{ item.atleta2 }}</md-table-cell>
+                <md-table-cell md-label="Timestamp" md-sort-by="timestamp">{{ item.timestamp }}</md-table-cell>
+              </md-table-row>
+            </md-table>
+          </v-card>
+      </v-container>
     </div>
   </layout-basic>
 </template>
@@ -166,7 +158,7 @@ const searchByName = (items, term) => {
   return items
 }
 export default {
-  name: 'Movies',
+  name: 'Jogo',
   components: {
       LayoutBasic
   },
@@ -203,6 +195,7 @@ export default {
       },
 
       timer: 2400,
+      started: false,
       parte: 1,
       minutos: 20,
       segundos: 0,
@@ -291,6 +284,7 @@ export default {
     },
 
     updateClock(){
+      this.started=true;
       if (!this.paused) { // está prestes a parar
         clearInterval(this.interval);
         console.log(this.evento);
@@ -371,10 +365,4 @@ export default {
 }
 </script>
 
-
-
 <style src="../../../dist/static/css/jogo.css">
-
-
-
-
