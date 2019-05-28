@@ -77,37 +77,37 @@
               <v-card color="white" class="my-card">
                 <div class="row">
                   <div class="column">
-                    <v-card-title primary-title class="justify-center"><h5><b>Sugestões de input</b></h5></v-card-title>
+                    <p primary-title class="justify-center"><b>Sugestões de input</b></p>
                     <div v-if="selT">
                       <li v-for="sugestao in sugestaoTipos">
-                        {{sugestao.id}} -> {{sugestao.tipo}}
+                        <b>{{sugestao.id}}</b> {{sugestao.tipo}}
                       </li>
                     </div>
                     <div v-if="selE">
                       <li>
-                        {{jogo.formacao}} -> minha equipa
+                        <b>{{jogo.formacao}}</b> minha equipa
                       </li>
                       <li>
-                        {{jogo.adversario}} -> adversario
+                        <b>{{jogo.adversario}}</b> adversario
                       </li>
                     </div>
                     <div v-if="selA1">
                       <li v-for="sugestao in sugestaoAtletas1">
-                        {{sugestao.id}} -> {{sugestao.nome}}
+                        <b>{{sugestao.id}}</b> {{sugestao.nome}}
                       </li>
                     </div>
                     <div v-if="selA2">
                       <li v-for="sugestao in sugestaoAtletas2">
-                        {{sugestao.id}} -> {{sugestao.nome}}
+                        <b>{{sugestao.id}}</b> {{sugestao.nome}}
                       </li>
                     </div>
                     <div v-if="selC">
-                      <img src="../../assets/grids/8x4_alt.png" v-if="jogo.grelhaCampo == '8x4'" style="width: 80%">
+                      <img src="../../assets/grids/8x4_alt.png" v-if="jogo.grelhaCampo == '8x4'" style="width: 90%">
                     </div>
                     <div v-if="selB">
-                      <img src="../../assets/grids/2x2.png" v-if="jogo.grelhaBaliza == '2x2'" style="width: 60%">
-                      <img src="../../assets/grids/2x3.png" v-if="jogo.grelhaBaliza == '2x3'" style="width: 60%">
-                      <img src="../../assets/grids/3x3.png" v-if="jogo.grelhaBaliza == '3x3'" style="width: 60%">
+                      <img src="../../assets/grids/2x2.png" v-if="jogo.grelhaBaliza == '2x2'" style="width: 50%">
+                      <img src="../../assets/grids/2x3.png" v-if="jogo.grelhaBaliza == '2x3'" style="width: 50%">
+                      <img src="../../assets/grids/3x3.png" v-if="jogo.grelhaBaliza == '3x3'" style="width: 50%">
                     </div>
                   </div>
                 </div>
