@@ -41,11 +41,13 @@
       </v-container>
 
       <v-container text-xs-center v-if="change">
-          <v-card color="white" class="my-card">
+          <v-card color="white" class="my-card timechange">
             <p class="justify-center" style="font-size: x-large;">
-              <input type="number" v-model="clockChange.minutos" name="time_m" id="min" min="0" max="19" style="width: 10%;">:
-              <input type="number" v-model="clockChange.segundos" name="time_s" id="sec" min="0" max="59" style="width: 10%;"> 
-              <input type="number" v-model="clockChange.parte" name="part" id="part" min="1" max="2" style="margin-left:20px;width: 5%;">ª Parte
+              <plusminsfield v-model="clockChange.minutos" :min="0" :max="19"></plusminsfield> : 
+              <plusminsfield v-model="clockChange.segundos" :min="0" :max="59"></plusminsfield>
+            </p>
+            <p class="justify-center" style="font-size: x-large;">
+              <plusminsfield style="margin-left:6%" v-model="clockChange.parte" :min="1" :max="2"></plusminsfield>ª Parte
             </p>
           </v-card>
       </v-container>
@@ -58,13 +60,14 @@
                 <div class="column">
                   <form class="review-form" @submit.prevent="submitForm">
                     <div class="field">
+
                       <input v-model="tipo" autofocus class="input" type="text" placeholder="Tipo de evento" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=true, selE=false, selA1=false, selA2=false, selC=false, selB=false">
-                      <input v-model="evento.equipa" class="input" type="text" placeholder="Equipa" v-if="tipo_evento!=null && tipo_evento.equipa" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=true, selA1=false, selA2=false">
-                      <input v-model="evento.atleta1" class="input" type="text" placeholder="Atleta" v-if="tipo_evento!=null && tipo_evento.atleta1" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=true, selA2=false, selC=false, selB=false, getAtletas1()">
-                      <input v-model="evento.atleta2" class="input" type="text" placeholder="Atleta 2" v-if="tipo_evento!=null && tipo_evento.atleta2" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=true, selC=false, selB=false, getAtletas2()">
-                      <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="tipo_evento!=null && tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false, selC=true, selB=false">
-                      <input v-model="evento.zonaB" class="input" type="text" placeholder="Zona da baliza" v-if="tipo_evento!=null && tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false, selC=false, selB=true">
-                      <input v-model="evento.novoinst" class="input" type="text" placeholder="Novo instante" v-if="tipo_evento!=null && tipo_evento.novoinstante" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false, selC=false, selB=false">
+                      <input v-model="evento.equipa" class="input" type="text" placeholder="Equipa" v-if="this.tipo_evento!=null && this.tipo_evento.equipa" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=true, selA1=false, selA2=false">
+                      <input v-model="evento.atleta1" class="input" type="text" placeholder="Atleta" v-if="this.tipo_evento!=null && this.tipo_evento.atleta1" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=true, selA2=false, selC=false, selB=false, getAtletas1()">
+                      <input v-model="evento.atleta2" class="input" type="text" placeholder="Atleta 2" v-if="this.tipo_evento!=null && this.tipo_evento.atleta2" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=true, selC=false, selB=false, getAtletas2()">
+                      <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="this.tipo_evento!=null && this.tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false, selC=true, selB=false">
+                      <input v-model="evento.zonaB" class="input" type="text" placeholder="Zona da baliza" v-if="this.tipo_evento!=null && this.tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false, selC=false, selB=true">
+                      <input v-model="evento.novoinst" class="input" type="text" placeholder="Novo instante" v-if="this.tipo_evento!=null && this.tipo_evento.novoinstante" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false, selC=false, selB=false">
                       <input type="submit" value="Submit" hidden>
                     </div>
                   </form>
@@ -155,6 +158,7 @@
 <script> 
 import router from "../../router";
 import LayoutBasic from '../layouts/Basic.vue'
+import PlusMinusField from '../helpers/PlusMinusField.vue'
 import axios from 'axios';
 const toLower = text => {
   return text.toString().toLowerCase()
@@ -168,7 +172,8 @@ const searchByName = (items, term) => {
 export default {
   name: 'Jogo',
   components: {
-      LayoutBasic
+      LayoutBasic,
+      'plusminsfield': PlusMinusField
   },
   data() {
     return {
@@ -234,7 +239,7 @@ export default {
         this.searched = this.eventos;
       });
       axios.get(process.env.API_URL + "/server/get_tipos_selecionados/" + this.$session.get('user_email') + "/").then(response => {
-        app.sugestaoTipos = response.data;  
+        app.sugestaoTipos = response.data;
       });
     },
       
@@ -257,6 +262,7 @@ export default {
       var app = this;
       axios.get(process.env.API_URL + "/server/get_tipo_evento/" + app.tipo + "/").then(response => {
         app.tipo_evento = response.data;
+        console.log(app.tipo_evento)
         app.evento.tipo = app.tipo_evento.id;
       })
     },

@@ -650,9 +650,9 @@ def tipoEventoView(request, tipo, equipa, atleta1, atleta2, zonaC, zonaB, novoin
 
 #@login_required
 #@permission_required('view_tipoevento', raise_exception=True)
+@csrf_exempt
 def gTipoEventoView(request, id):
-    evento = get_object_or_404(models.Evento, id=id)
-    tipoe = get_object_or_404(models.TipoEvento, tipo=evento.tipo)
+    tipoe = get_object_or_404(models.TipoEvento, id=id)
     return JsonResponse(model_to_dict(tipoe))
 
 
