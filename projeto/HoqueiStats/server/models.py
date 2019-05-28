@@ -56,6 +56,7 @@ class Jogo(models.Model):
     casa = models.BooleanField(default=True)
     data = models.DateField()
     hora = models.TimeField()
+    ativo = models.BooleanField(default=True)
     grelhaCampo = models.CharField(max_length=5)
     grelhaBaliza = models.CharField(max_length=5)
     def __str__(self):

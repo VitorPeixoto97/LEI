@@ -306,6 +306,7 @@ def gJogosView(request, clube):
                 new_jogo['casa'] = "C"
             else:
                 new_jogo['casa'] = "F"
+            new_jogo['ativo'] = jogo.ativo
             new_jogo['data'] = jogo.data
             new_jogo['hora'] = jogo.hora
             new_jogo['resultado'] = gResultado(jogo.id)
@@ -325,6 +326,7 @@ def adversario(form_id):
 
 #@login_required
 #@permission_required('view_jogo', raise_exception=True)
+@csrf_exempt
 def gJogoView(request, id):
     jogo = get_object_or_404(models.Jogo, id=id)
     new_jogo = {}
@@ -338,6 +340,7 @@ def gJogoView(request, id):
     new_jogo['data'] = jogo.data
     new_jogo['hora'] = jogo.hora.strftime('%H:%M')
     new_jogo['resultado'] = gResultado(jogo.id)
+    new_jogo['ativo'] = jogo.ativo
     new_jogo['grelhaCampo'] = jogo.grelhaCampo
     new_jogo['grelhaBaliza'] = jogo.grelhaBaliza
     new_jogo['adversario'] = jogo.adversario.id
@@ -492,14 +495,31 @@ def gEventosView(request, idJogo):
         new_evento = {}
         new_evento['id'] = evento.id
         new_evento['jogo'] = evento.jogo.id
-        new_evento['tipo'] = evento.tipo.id
-        new_evento['equipa'] = evento.equipa.id
-        new_evento['atleta1'] = evento.atleta1.id
+        new_evento['tipo'] = evento.tipo.tipo
+        if(evento.equipa):
+            new_evento['equipa'] = evento.equipa.clube.nome
+        else:
+            new_evento['equipa'] = " - "
+
+        if(evento.atleta1):
+            new_evento['atleta1'] = evento.atleta1.nome
+        else:
+            new_evento['atleta1'] = " - "
+
         if(evento.atleta2):
-            new_evento['atleta2'] = evento.atleta2.id
+            new_evento['atleta2'] = evento.atleta2.nome
+        else:
+            new_evento['atleta2'] = " - "
+        
         new_evento['instante'] = evento.instante
-        new_evento['novoinstante'] = evento.novoinstante
+        
+        if(evento.novoinstante):
+            new_evento['novoinstante'] = evento.novoinstante
+        else:
+            new_evento['novoinstante'] = " - "
+        
         new_evento['timestamp'] = evento.timestamp
+        
         if(evento.jogo.grelhaCampo=="8x4"):
             if(evento.zonaCampo==1):
                 new_evento['gcy'] = 13

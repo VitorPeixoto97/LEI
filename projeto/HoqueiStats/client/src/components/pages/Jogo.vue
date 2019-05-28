@@ -28,7 +28,7 @@
             <div class="row">
               <div class="column">
                 <p class="justify-center" style="margin-top:20px;margin-left:20px;">
-                  <button class="btn btn-lg btn-primary btn-block text-uppercase" v-on:click="updateClock()" :disabled="change || timer == 0">{{ paused ? 'Start' : 'Stop' }}</button>
+                  <button class="btn btn-lg btn-primary btn-block text-uppercase" v-on:click="updateClock()" :disabled="change || timer == 0">{{ paused ? 'Iniciar' : 'Parar' }}</button>
                 </p>
               </div>
               <div class="column">
@@ -36,7 +36,7 @@
                 <p class="justify-center"><h5>{{ this.minutos < 10 ? '0' + this.minutos : this.minutos }}:{{ this.segundos < 10 ? '0' + this.segundos : this.segundos }}</h5>
               </div>
               <div class="column">
-                <p class="justify-center" style="margin-top:20px;margin-right:20px;"><button class="btn btn-lg btn-primary btn-block text-uppercase" v-on:click="changeClock()" :disabled="!paused || interval == null">{{ this.change ? 'Confirm' : 'Change' }}</button></p>
+                <p class="justify-center" style="margin-top:20px;margin-right:20px;"><button class="btn btn-lg btn-primary btn-block text-uppercase" v-on:click="changeClock()" :disabled="!paused || interval == null">{{ this.change ? 'Confirmar' : 'Alterar' }}</button></p>
               </div>
             </div>
           </v-card>
@@ -116,29 +116,37 @@
       </div>
       <div class="row">
         <div class="column">
-          <md-table v-model="eventos_jogo" md-sort="instante" md-sort-order="asc" md-fixed-header>
-            <md-table-toolbar>
-              <div class="md-toolbar-section-start">
-                <h1 class="md-title"> </h1>
-              </div>
+        <v-card color="white" class="my-card eventos-table">
+        <md-table v-model="searched" md-sort="name" md-sort-order="asc"  md-fixed-header>
+          <md-table-toolbar>
+            <div class="md-toolbar-section-start">
+              <h1 class="md-title"> </h1>
+            </div>
 
-              <md-field md-clearable class="md-toolbar-section-end">
-                <md-input placeholder="Pesquisar por adversário..." v-model="search" @input="searchOnTable" />
-              </md-field>
-            </md-table-toolbar>
+            <md-field md-clearable class="md-toolbar-section-end">
+              <md-input placeholder="Pesquisar..." v-model="search" @input="searchOnTable" />
+            </md-field>
+          </md-table-toolbar>
 
-            <md-table-empty-state
-              md-label="Sem eventos"
-              :md-description="'Não foram encontrados eventos para este jogo.'">
-            </md-table-empty-state>
+          <md-table-empty-state
+            md-label="Sem eventos"
+            :md-description="'Ainda não tem eventos registados para este jogo.'">
+          </md-table-empty-state>
 
-            <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer">
-              <md-table-cell md-label="Instante" md-sort-by="instante" md-numeric>{{ item.instante }}</md-table-cell>
-              <md-table-cell md-label="Tipo de Evento" md-sort-by="tipo">{{ item.tipo }}</md-table-cell>
-              <md-table-cell md-label="Equipa" md-sort-by="equipa">{{ item.equipa }}</md-table-cell>
-            </md-table-row>
-          </md-table>
+          <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.resultado)">
+            <md-table-cell md-label="Instante" md-sort-by="instante">{{ item.instante }}</md-table-cell>
+            <md-table-cell md-label="Equipa" md-sort-by="equipa">{{ item.equipa }}</md-table-cell>
+            <md-table-cell md-label="Tipo de Evento" md-sort-by="tipo">{{ item.tipo }}</md-table-cell>
+            <md-table-cell md-label="Atleta 1" md-sort-by="atleta1">{{ item.atleta1 }}</md-table-cell>
+            <md-table-cell md-label="Atleta 2" md-sort-by="atleta2">{{ item.atleta2 }}</md-table-cell>
+            <md-table-cell md-label="Timestamp" md-sort-by="timestamp">{{ item.timestamp }}</md-table-cell>
+          </md-table-row>
+        </md-table>
+        </v-card>
         </div>
+
+
+        
       </div>
     </div>
   </layout-basic>
@@ -148,6 +156,15 @@
 import router from "../../router";
 import LayoutBasic from '../layouts/Basic.vue'
 import axios from 'axios';
+const toLower = text => {
+  return text.toString().toLowerCase()
+}
+const searchByName = (items, term) => {
+  if (term) {
+    return items.filter(item => toLower(item.tipo).includes(toLower(term)))
+  }
+  return items
+}
 export default {
   name: 'Movies',
   components: {
@@ -159,6 +176,9 @@ export default {
       sugestaoTipos: null,
       sugestaoAtletas1: null,
       sugestaoAtletas2: null,
+      
+      search: null,
+      searched: [],
 
       selT: false,
       selE: false,
@@ -206,14 +226,13 @@ export default {
       axios.get(process.env.API_URL + "/server/get_jogo/"+this.$session.get('jogoTab')+"/").then(response => {
         app.jogo = response.data;
         app.evento.jogo = app.jogo.id;
-
-        axios.get(process.env.API_URL + "/server/get_eventos/"+app.jogo.id+"/").then(response => {
-          app.eventos = response.data;
-
-          axios.get(process.env.API_URL + "/server/get_tipos_selecionados/" + this.$session.get('user_email') + "/").then(response => {
-            app.sugestaoTipos = response.data;
-          });
-        });
+      });
+      axios.get(process.env.API_URL + "/server/get_eventos/"+this.$session.get('jogoTab')+"/").then(response => {
+        app.eventos = response.data;
+        this.searched = this.eventos;
+      });
+      axios.get(process.env.API_URL + "/server/get_tipos_selecionados/" + this.$session.get('user_email') + "/").then(response => {
+        app.sugestaoTipos = response.data;  
       });
     },
       
@@ -221,6 +240,10 @@ export default {
       if (!this.$session.has('token')) {
         router.push("/auth");
       }
+    },
+
+    searchOnTable () {
+      this.searched = searchByName(this.eventos, this.search)
     },
 
     verJogo(id) {
