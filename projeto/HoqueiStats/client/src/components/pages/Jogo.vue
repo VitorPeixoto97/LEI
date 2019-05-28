@@ -58,14 +58,13 @@
                 <div class="column">
                   <form class="review-form" @submit.prevent="submitForm">
                     <div class="field">
-                      <!--falta o relógio para igualar ao instante-->
-                      <input v-model="tipo" class="input" type="text" placeholder="Tipo de evento" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=true, selE=false, selA1=false, selA2=false">
+                      <input v-model="tipo" autofocus class="input" type="text" placeholder="Tipo de evento" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=true, selE=false, selA1=false, selA2=false, selC=false, selB=false">
                       <input v-model="evento.equipa" class="input" type="text" placeholder="Equipa" v-if="tipo_evento!=null && tipo_evento.equipa" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=true, selA1=false, selA2=false">
-                      <input v-model="evento.atleta1" class="input" type="text" placeholder="Atleta" v-if="tipo_evento!=null && tipo_evento.atleta1" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=true, selA2=false, getAtletas1()">
-                      <input v-model="evento.atleta2" class="input" type="text" placeholder="Atleta 2" v-if="tipo_evento!=null && tipo_evento.atleta2" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=true, getAtletas2()">
-                      <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="tipo_evento!=null && tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
-                      <input v-model="evento.zonaB" class="input" type="text" placeholder="Zona da baliza" v-if="tipo_evento!=null && tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
-                      <input v-model="evento.novoinst" class="input" type="text" placeholder="Novo instante" v-if="tipo_evento!=null && tipo_evento.novoinstante" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
+                      <input v-model="evento.atleta1" class="input" type="text" placeholder="Atleta" v-if="tipo_evento!=null && tipo_evento.atleta1" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=true, selA2=false, selC=false, selB=false, getAtletas1()">
+                      <input v-model="evento.atleta2" class="input" type="text" placeholder="Atleta 2" v-if="tipo_evento!=null && tipo_evento.atleta2" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=true, selC=false, selB=false, getAtletas2()">
+                      <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="tipo_evento!=null && tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false, selC=true, selB=false">
+                      <input v-model="evento.zonaB" class="input" type="text" placeholder="Zona da baliza" v-if="tipo_evento!=null && tipo_evento.zonaBaliza" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false, selC=false, selB=true">
+                      <input v-model="evento.novoinst" class="input" type="text" placeholder="Novo instante" v-if="tipo_evento!=null && tipo_evento.novoinstante" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false, selC=false, selB=false">
                       <input type="submit" value="Submit" hidden>
                     </div>
                   </form>
@@ -101,6 +100,14 @@
                       <li v-for="sugestao in sugestaoAtletas2">
                         {{sugestao.id}} -> {{sugestao.nome}}
                       </li>
+                    </div>
+                    <div v-if="selC">
+                      <img src="../../assets/grids/8x4_alt.png" v-if="jogo.grelhaCampo == '8x4'" style="width: 80%">
+                    </div>
+                    <div v-if="selB">
+                      <img src="../../assets/grids/2x2.png" v-if="jogo.grelhaBaliza == '2x2'" style="width: 60%">
+                      <img src="../../assets/grids/2x3.png" v-if="jogo.grelhaBaliza == '2x3'" style="width: 60%">
+                      <img src="../../assets/grids/3x3.png" v-if="jogo.grelhaBaliza == '3x3'" style="width: 60%">
                     </div>
                   </div>
                 </div>
@@ -177,7 +184,8 @@ export default {
       selE: false,
       selA1: false,
       selA2: false,
-      // ATENÇÃO: FALTA AS IMAGENS DO CAMPO E DA BALIZA
+      selC: false,
+      selB: false,
 
       eventos_jogo: null,
       tipo: null,
@@ -253,15 +261,26 @@ export default {
       })
     },
 
+    allFieldsOk() {
+      if (tipo_evento == null || (tipo_evento.equipa && (evento.equipa == null)) || (tipo_evento.atleta1 && (evento.atleta1 == null)) || (tipo_evento.atleta2 && (evento.atleta2 == null)) || (tipo_evento.zonaCampo && (evento.zonaC == null)) || (tipo_evento.zonaBaliza && (evento.zonaB == null)) || (tipo_evento.novoinstante && (evento.novoinst == null))) {
+        return false;
+      }
+
+      return true;
+    },
+
     submitForm() {
       /*
       if(this.evento.tipo != clockchange)
         this.evento.instante = this.timer;
       */
-      var app = this;
-      axios.post(process.env.API_URL + "/server/evento/", JSON.stringify(app.evento)).then(response => {
-        router.push("/jogo")
-      }).catch(e => {})
+
+      if(this.allFieldsOk()){
+        var app = this;
+        axios.post(process.env.API_URL + "/server/evento/", JSON.stringify(app.evento)).then(response => {
+          router.push("/jogo")
+        }).catch(e => {})
+      }
     },
 
     getAtletas1() {
@@ -367,3 +386,4 @@ export default {
 </script>
 
 <style src="../../../dist/static/css/jogo.css">
+</style>
