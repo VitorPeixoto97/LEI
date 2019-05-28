@@ -181,6 +181,7 @@ export default {
       sugestaoTipos: null,
       sugestaoAtletas1: null,
       sugestaoAtletas2: null,
+      bug: 'oh',
       
       search: null,
       searched: [],
@@ -268,7 +269,7 @@ export default {
     },
 
     allFieldsOk() {
-      if (tipo_evento == null || (tipo_evento.equipa && (evento.equipa == null)) || (tipo_evento.atleta1 && (evento.atleta1 == null)) || (tipo_evento.atleta2 && (evento.atleta2 == null)) || (tipo_evento.zonaCampo && (evento.zonaC == null)) || (tipo_evento.zonaBaliza && (evento.zonaB == null)) || (tipo_evento.novoinstante && (evento.novoinst == null))) {
+      if (this.tipo_evento == null || (this.tipo_evento.equipa && (this.evento.equipa == null)) || (this.tipo_evento.atleta1 && (this.evento.atleta1 == null)) || (this.tipo_evento.atleta2 && (this.evento.atleta2 == null)) || (this.tipo_evento.zonaCampo && (this.evento.zonaC == null)) || (this.tipo_evento.zonaBaliza && (this.evento.zonaB == null)) || (this.tipo_evento.novoinstante && (this.evento.novoinst == null))) {
         return false;
       }
 
