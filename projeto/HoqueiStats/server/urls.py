@@ -50,6 +50,7 @@ urlpatterns = [
     path('evento/', views.eventoView, name='evento'),
     path('change_evento/', views.cEventoView, name='cevento'),
     path('del_evento/<int:id>/', views.dEventoView, name='devento'),
+    path('sinalizar_evento/<int:id>/', views.sinalizarEventoView, name='sevento'),
     path('get_eventos/<int:idJogo>/', views.gEventosView, name='geventos'),
     path('get_evento/<int:id>/', views.gEventoView, name='gevento'),
 

@@ -413,6 +413,7 @@ def eventoView(request):
         tp = received['tipo']
         jg = received['jogo']
         inst = received['instante']
+        pt = received['parte']
         eq = received['equipa']
         at1 = received['atleta1']
         at2 = received['atleta2']
@@ -421,17 +422,17 @@ def eventoView(request):
         novo = received['novoinst']
 	
         if novo is not None:
-            models.Evento.objects.create(tipo=tp, jogo=jg, instante=inst, novoinstante=novo)
+            models.Evento.objects.create(tipo=tp, jogo=jg, instante=inst, novoinstante=novo, parte=pt)
         elif eq is not None and at1 is not None and at2 is not None:
-            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, atleta2=at2, instante=inst)
+            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, atleta2=at2, instante=inst, parte=pt)
             models.Convocado.objects.filter(atleta=at1, jogo=jg).update(emCampo=False)
             models.Convocado.objects.filter(atleta=at2, jogo=jg).update(emCampo=True)
         elif eq is not None and at1 is not None and zC is not None and zB is not None:
-            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, zonaCampo=zC, zonaBaliza=zB, instante=inst)
+            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, zonaCampo=zC, zonaBaliza=zB, instante=inst, parte=pt)
         elif eq is not None and at1 is not None and zC is not None:
-            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, zonaCampo=zC, instante=inst)
+            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, zonaCampo=zC, instante=inst, parte=pt)
         elif eq is not None:
-            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, instante=inst)
+            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, instante=inst, parte=pt)
 
         return HttpResponse('ok')
     else:
@@ -477,11 +478,23 @@ def cEventoView(request):
         return HttpResponseBadRequest(content='bad form')
 
 
-@login_required
-@permission_required('delete_evento', raise_exception=True)
+#@login_required
+#@permission_required('delete_evento', raise_exception=True)
 def dEventoView(request, id):
     evento = get_object_or_404(models.Evento, id=id)
     evento.delete()
+    return HttpResponse('ok')
+
+
+#@login_required
+#@permission_required('delete_evento', raise_exception=True)
+def sinalizarEventoView(request, i):
+    evento = get_object_or_404(models.Evento, id=i)
+
+    if evento.sinalizado:
+        evento.update(sinalizado=False)
+    else:
+        evento.update(sinalizado=True)
     return HttpResponse('ok')
 
 
@@ -519,6 +532,8 @@ def gEventosView(request, idJogo):
             new_evento['novoinstante'] = " - "
         
         new_evento['timestamp'] = evento.timestamp
+        new_evento['parte'] = evento.parte
+        new_evento['sinalizado'] = evento.sinalizado
         
         if(evento.jogo.grelhaCampo=="8x4"):
             if(evento.zonaCampo==1):

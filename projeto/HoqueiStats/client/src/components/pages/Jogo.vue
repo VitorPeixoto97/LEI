@@ -142,6 +142,7 @@
 
               <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.resultado)">
                 <md-table-cell md-label="Instante" md-sort-by="instante">{{ item.instante }}</md-table-cell>
+                <md-table-cell md-label="Parte" md-sort-by="parte">{{ item.parte }}</md-table-cell>
                 <md-table-cell md-label="Equipa" md-sort-by="equipa">{{ item.equipa }}</md-table-cell>
                 <md-table-cell md-label="Tipo de Evento" md-sort-by="tipo">{{ item.tipo }}</md-table-cell>
                 <md-table-cell md-label="Atleta 1" md-sort-by="atleta1">{{ item.atleta1 }}</md-table-cell>
@@ -207,6 +208,7 @@ export default {
         zonaB: null,
         instante: null,
         novoinst: null,
+        parte: null,
       },
 
       timer: 2400,
@@ -277,10 +279,11 @@ export default {
     },
 
     submitForm() {
-      /*
-      if(this.evento.tipo != clockchange)
-        this.evento.instante = this.timer;
-      */
+
+      /*if(this.evento.tipo != "clockchange")
+        this.evento.instante = this.timer;*/
+
+      this.evento.parte = this.parte;
 
       if(this.allFieldsOk()){
         var app = this;

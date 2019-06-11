@@ -95,7 +95,9 @@ class Evento(models.Model):
     zonaCampo = models.IntegerField(default=None, blank=True, null=True)
     zonaBaliza = models.IntegerField(default=None, blank=True, null=True)
     instante = models.TimeField()
+    parte = models.IntegerField(default=1)
     novoinstante = models.TimeField(default=None, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    sinalizado = models.BooleanField(default=False)
     def __str__(self):
         return self.tipo
