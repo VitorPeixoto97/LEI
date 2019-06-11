@@ -418,8 +418,8 @@ def eventoView(request):
 
         tp = get_object_or_404(models.TipoEvento, id=received['tipo'])
         jg = get_object_or_404(models.Jogo, id=received['jogo'])
-        #inst = received['instante']
-        inst = '00:05:12'
+        inst = received['instante']
+        pt = received['parte']
         eq = get_object_or_404(models.Formacao, id=received['equipa'])
         at1 = get_object_or_404(models.Atleta, id=received['atleta1'])
         at2 = received['atleta2']
@@ -494,13 +494,13 @@ def dEventoView(request, id):
 
 #@login_required
 #@permission_required('delete_evento', raise_exception=True)
-def sinalizarEventoView(request, i):
-    evento = get_object_or_404(models.Evento, id=i)
+def sinalizarEventoView(request, id):
+    evento = get_object_or_404(models.Evento, id=id)
 
     if evento.sinalizado:
-        evento.update(sinalizado=False)
+        models.Evento.objects.filter(id=id).update(sinalizado=False)
     else:
-        evento.update(sinalizado=True)
+        models.Evento.objects.filter(id=id).update(sinalizado=True)
     return HttpResponse('ok')
 
 

@@ -5,21 +5,21 @@
           <v-card color="white" class="my-card score">
             <div class="row">
               <div class="column">
-                <img class="crest" :src="jogo.logoMe">
-                <p primary-title class="justify-center teamname"><b>{{jogo.clube_nome}}</b></p>
+                <img class="crest" :src="jogo.logoMe" v-if="jogo != null">
+                <p primary-title class="justify-center teamname" v-if="jogo != null"><b>{{jogo.clube_nome}}</b></p>
               </div>
               <div class="column">
-                <p v-if="started && this.jogo.resultado=='' " primary-title class="justify-center resultado"><b>0-0</b>
-                <p v-if="this.eventos.length > 0" primary-title class="justify-center resultado"><b>{{jogo.resultado}}</b>
-                <p v-if="this.eventos.length == 0" primary-title class="justify-center resultado"><b> </b>
-                <p v-if="!started" class="justify-center datahora"><b>{{jogo.data}}</b></p>
-                <p v-if="!started" class="justify-center datahora" style="margin-top:-15px;"><b>{{jogo.hora}}</b></p>
-                <p v-if="!started" class="justify-center datahora"><b>{{jogo.casa}}</b></p>
+                <p v-if="this.jogo != null && started && this.jogo.resultado=='' " primary-title class="justify-center resultado"><b>0-0</b>
+                <p v-if="this.jogo != null && this.eventos != null && this.eventos.length > 0" primary-title class="justify-center resultado"><b>{{jogo.resultado}}</b>
+                <p v-if="this.eventos != null && this.eventos.length == 0" primary-title class="justify-center resultado"><b> </b>
+                <p v-if="this.jogo != null && !started" class="justify-center datahora"><b>{{jogo.data}}</b></p>
+                <p v-if="this.jogo != null && !started" class="justify-center datahora" style="margin-top:-15px;"><b>{{jogo.hora}}</b></p>
+                <p v-if="this.jogo != null && !started" class="justify-center datahora"><b>{{jogo.casa}}</b></p>
                 <p v-if="started" class="justify-center time"><b>{{ this.parte }}P | {{ this.minutos < 10 ? '0' + this.minutos : this.minutos }}:{{ this.segundos < 10 ? '0' + this.segundos : this.segundos }}</b></p>
               </div>
               <div class="column">
-                <img class="crest" :src="jogo.logoAdv">
-                <p primary-title class="justify-center teamname"><b>{{jogo.adv_nome}}</b></p>
+                <img class="crest" :src="jogo != null && jogo.logoAdv">
+                <p primary-title class="justify-center teamname" v-if="jogo != null"><b>{{jogo.adv_nome}}</b></p>
               </div>
             </div>
           </v-card>
@@ -62,9 +62,8 @@
                 <div class="column">
                   <form class="review-form" @submit.prevent="submitForm">
                     <div class="field">
-
-                      <input v-model="tipo" autofocus class="input" ref="tipo" type="text" placeholder="Tipo de evento" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=true, selE=false, selA1=false, selA2=false, selC=false, selB=false">
-                      <input v-model="evento.equipa" class="input" type="text" placeholder="Equipa" v-if="this.tipo_evento!=null && this.tipo_evento.equipa" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=true, selA1=false, selA2=false">
+                      <input v-model="tipo" autofocus class="input" ref="tipo" type="text" placeholder="Tipo de evento" v-on:keypress="catchInstante" v-on:keydown.down="selectType" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=true, selE=false, selA1=false, selA2=false, selC=false, selB=false">
+                      <input v-model="codigoEquipa" class="input" type="text" placeholder="Equipa" v-if="this.tipo_evento!=null && this.tipo_evento.equipa" v-on:keyup.down="$event.target.nextElementSibling.focus(), chooseEquipa()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=true, selA1=false, selA2=false">
                       <input v-model="evento.atleta1" class="input" type="text" placeholder="Atleta" v-if="this.tipo_evento!=null && this.tipo_evento.atleta1" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=true, selA2=false, selC=false, selB=false, getAtletas1()">
                       <input v-model="evento.atleta2" class="input" type="text" placeholder="Atleta 2" v-if="this.tipo_evento!=null && this.tipo_evento.atleta2" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=true, selC=false, selB=false, getAtletas2()">
                       <input v-model="evento.zonaC" class="input" type="text" placeholder="Zona de campo" v-if="this.tipo_evento!=null && this.tipo_evento.zonaCampo" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false, selC=true, selB=false">
@@ -90,10 +89,10 @@
                     </div>
                     <div v-if="selE">
                       <li>
-                        <b>{{jogo.formacao}}</b> minha equipa
+                        <b>1</b> minha equipa
                       </li>
                       <li>
-                        <b>{{jogo.adversario}}</b> adversario
+                        <b>2</b> adversario
                       </li>
                     </div>
                     <div v-if="selA1">
@@ -149,7 +148,18 @@
                 <md-table-cell md-label="Tipo de Evento" md-sort-by="tipo">{{ item.tipo }}</md-table-cell>
                 <md-table-cell md-label="Atleta 1" md-sort-by="atleta1">{{ item.atleta1 }}</md-table-cell>
                 <md-table-cell md-label="Atleta 2" md-sort-by="atleta2">{{ item.atleta2 }}</md-table-cell>
-                <md-table-cell md-label="Timestamp" md-sort-by="timestamp">{{ item.timestamp }}</md-table-cell>
+                <md-table-cell md-label="Instante" md-sort-by="instante">{{ item.instante }}</md-table-cell>
+                <md-table-cell md-label="">
+                  <md-button class="md-icon-button md-raised" v-on:click="sinalizaEvento(item.id)">
+                    <i class="material-icons orange600" v-if="item.sinalizado">warning</i>
+                    <i class="material-icons" v-if="!item.sinalizado">warning</i>
+                  </md-button>
+                </md-table-cell>
+                <md-table-cell md-label="">
+                  <md-button class="md-icon-button md-raised" v-on:click="removeEvento(item.id)">
+                    <i class="material-icons">delete</i>
+                  </md-button>
+                </md-table-cell>
               </md-table-row>
             </md-table>
           </v-card>
@@ -184,7 +194,7 @@ export default {
       sugestaoTipos: null,
       sugestaoAtletas1: null,
       sugestaoAtletas2: null,
-      bug: 'oh',
+      codigoEquipa: null,
       
       search: null,
       searched: [],
@@ -196,7 +206,7 @@ export default {
       selC: false,
       selB: false,
 
-      eventos_jogo: null,
+      eventos: null,
       tipo: null,
       tipo_evento: null,
 
@@ -250,7 +260,7 @@ export default {
 
     updateTable() {
       var app = this;
-      axios.get(process.env.API_URL + "/server/get_eventos/"+this.$session.get('jogoTab')+"/").then(response => {
+      axios.get(process.env.API_URL + "/server/get_eventos/"+this.jogo.id+"/").then(response => {
         app.eventos = response.data;
         this.searched = this.eventos;
       });
@@ -296,28 +306,43 @@ export default {
       return true;
     },
 
+    chooseEquipa(){
+      if(this.codigoEquipa == 1)
+        this.evento.equipa = this.jogo.formacao;
+      else this.evento.equipa = this.jogo.adversario;
+
+    },
+
+    catchInstante(){
+      if(this.started){
+        this.evento.instante = '00:'+this.minutos+':'+this.segundos;
+        this.evento.parte = this.parte;
+      }
+      else{
+        this.updateClock();
+        this.evento.instante = '00:'+this.minutos+':'+this.segundos;
+        this.evento.parte = this.parte;
+      }
+    },
+
     submitForm() {
-
-      /*if(this.evento.tipo != "clockchange")
-        this.evento.instante = this.timer;*/
-
-      this.evento.parte = this.parte;
-
       if(this.allFieldsOk()){
         var app = this;
         axios.post(process.env.API_URL + "/server/evento/", JSON.stringify(app.evento)).then(response => {
-          router.push("/jogo")
+          router.push("/jogo");
           this.updateTable();
           this.updateJogo();
           this.tipo=null;
           this.evento.equipa=null;
+          this.codigoEquipa=null;
           this.evento.tipo=null;
           this.evento.atleta1=null;
           this.evento.atleta2=null;
           this.evento.zonaC=null;
           this.evento.zonaB=null;
-          this.instante=null;
-          this.novoinst=null;
+          this.evento.instante=null;
+          this.evento.parte = null;
+          this.evento.novoinst=null;
           this.$refs.tipo.focus();
         }).catch(e => {});
         
@@ -326,23 +351,49 @@ export default {
     },
 
     getAtletas1() {
-      if(this.evento.equipa != null){
+      if(this.codigoEquipa != null){
         var app = this;
 
-        axios.get(process.env.API_URL + "/server/get_atletas_campo/" + app.evento.equipa + "/" + app.evento.jogo + "/").then(response => {
-          app.sugestaoAtletas1 = response.data
-        })
+        if(this.codigoEquipa == 1){
+          axios.get(process.env.API_URL + "/server/get_atletas_campo/" + app.jogo.formacao + "/" + app.evento.jogo + "/").then(response => {
+            app.sugestaoAtletas1 = response.data
+          })
+        }
+        else{
+          axios.get(process.env.API_URL + "/server/get_atletas_campo/" + app.jogo.adversario + "/" + app.evento.jogo + "/").then(response => {
+            app.sugestaoAtletas1 = response.data
+          })
+        }
       }
     },
 
     getAtletas2() {
-      if(this.evento.equipa != null){
+      if(this.codigoEquipa != null){
         var app = this;
 
-        axios.get(process.env.API_URL + "/server/get_atletas_suplentes/" + app.evento.equipa + "/" + app.evento.jogo + "/").then(response => {
-          app.sugestaoAtletas2 = response.data
-        })
+        if(this.codigoEquipa == 1){
+          axios.get(process.env.API_URL + "/server/get_atletas_suplentes/" + app.jogo.formacao + "/" + app.evento.jogo + "/").then(response => {
+            app.sugestaoAtletas2 = response.data
+          })
+        }
+        else{
+          axios.get(process.env.API_URL + "/server/get_atletas_suplentes/" + app.jogo.adversario + "/" + app.evento.jogo + "/").then(response => {
+            app.sugestaoAtletas2 = response.data
+          })
+        }
       }
+    },
+
+    removeEvento(id){
+      axios.get(process.env.API_URL + "/server/del_evento/" + id + "/").then(response => {
+        this.updateTable();
+        this.updateJogo();
+      });
+    },
+
+    sinalizaEvento(id){
+      axios.get(process.env.API_URL + "/server/sinalizar_evento/" + id + "/").then(response => {
+        this.updateTable();});
     },
 
     updateClock(){

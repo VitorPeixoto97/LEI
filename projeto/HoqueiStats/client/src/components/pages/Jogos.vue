@@ -66,12 +66,13 @@ export default {
     FetchData: function() {
       var app = this;
       axios.get(process.env.API_URL + "/server/info_user/" + this.$session.get('user_email') + "/").then(response => {
-        this.$session.set('clube', response.data.nome)
+        this.$session.set('clube', response.data.nome);
         this.$session.set('clubeid', response.data.id)
-      });
-      axios.get(process.env.API_URL + "/server/get_jogos/"+this.$session.get('clubeid')+"/").then(response => {
-        app.jogos = response.data
-        this.searched = this.jogos
+
+        axios.get(process.env.API_URL + "/server/get_jogos/"+this.$session.get('clubeid')+"/").then(response => {
+          app.jogos = response.data;
+          this.searched = this.jogos
+        });
       });
     },
       
@@ -82,14 +83,14 @@ export default {
     },
 
     verJogo(id, jogo_ativo) {
-      this.$session.set('jogoTab', id)
-      this.$session.set('activeTab',"jogo")
+      this.$session.set('jogoTab', id);
+      this.$session.set('activeTab',"jogo");
       if (jogo_ativo){
-        this.$session.set('js', 1)
+        this.$session.set('js', 1);
         router.push("/jogo");
       }
       else {
-        this.$session.set('js', 0)
+        this.$session.set('js', 0);
         router.push("/stats")
       }
     },
