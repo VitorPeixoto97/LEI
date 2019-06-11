@@ -99,7 +99,7 @@ body {
   }
   .score{
     width:100%;
-    height:140px;
+    height:160px;
   }
   .crest{
     height: 80px !important;
@@ -156,7 +156,7 @@ body {
   .score{
     width:60%;
     margin:auto;
-    height:140px;
+    height:160px;
   }
   .crest{
     height: 80px !important;
@@ -212,8 +212,8 @@ body {
     position: relative;
   }
   .score{
-    width:60%;
-    height:140px;
+    width:50%;
+    height:160px;
     margin:auto;
   }
   .crest{
@@ -229,7 +229,7 @@ body {
     margin:auto;
   }
   .timer{
-    width:60%;
+    width:50%;
   }
   .btn-timer{
     width:90%;
@@ -257,7 +257,7 @@ body {
   }
   .score{
     width:50%;
-    height:140px;
+    height:160px;
   }
   .crest{
     height: 80px !important;

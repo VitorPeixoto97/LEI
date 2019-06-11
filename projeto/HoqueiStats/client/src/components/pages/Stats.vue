@@ -12,6 +12,7 @@
                 <p primary-title class="justify-center resultado"><b>{{jogo.resultado}}</b>
                 <p class="justify-center datahora"><b>{{jogo.data}}</b></p>
                 <p class="justify-center datahora" style="margin-top:-15px;"><b>{{jogo.hora}}</b></p>
+                <p class="justify-center datahora"><b>{{jogo.casa}}</b></p>
               </div>
               <div class="column">
                 <img class="crest" :src="jogo.logoAdv">

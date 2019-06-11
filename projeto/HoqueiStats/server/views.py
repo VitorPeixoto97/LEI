@@ -210,6 +210,7 @@ def gAtletasEmCampoView(request, formacao, jogo):
             if conv.emCampo:
                 new_atleta = {}
                 new_atleta['id'] = atleta.id
+                new_atleta['camisola'] = atleta.camisola
                 new_atleta['nome'] = atleta.nome
                 aux.append(new_atleta)
 
@@ -229,6 +230,7 @@ def gAtletasSuplentesView(request, formacao, jogo):
             if not conv.emCampo:
                 new_atleta = {}
                 new_atleta['id'] = atleta.id
+                new_atleta['camisola'] = atleta.camisola
                 new_atleta['nome'] = atleta.nome
                 aux.append(new_atleta)
 
@@ -303,9 +305,11 @@ def gJogosView(request, clube):
             new_jogo['id'] = jogo.id
             new_jogo['tipo'] = jogo.tipo
             if(jogo.casa):
-                new_jogo['casa'] = "C"
+                new_jogo['c'] = "C"
+                new_jogo['casa'] ="CASA"
             else:
-                new_jogo['casa'] = "F"
+                new_jogo['c'] = "F"
+                new_jogo['casa'] ="FORA"
             new_jogo['ativo'] = jogo.ativo
             new_jogo['data'] = jogo.data
             new_jogo['hora'] = jogo.hora
@@ -334,9 +338,11 @@ def gJogoView(request, id):
     new_jogo['numero'] = jogo.numero
     new_jogo['tipo'] = jogo.tipo
     if(jogo.casa):
-        new_jogo['casa'] = "C"
+        new_jogo['c'] = "C"
+        new_jogo['casa'] ="CASA"
     else:
-        new_jogo['casa'] = "F"
+        new_jogo['c'] = "F"
+        new_jogo['casa'] ="FORA"
     new_jogo['data'] = jogo.data
     new_jogo['hora'] = jogo.hora.strftime('%H:%M')
     new_jogo['resultado'] = gResultado(jogo.id)
@@ -409,17 +415,18 @@ def gConvocadosView(request, idJogo):
 def eventoView(request):
     if request.method=='POST':
         received = json.loads(request.body.decode('utf-8'))
-	
-        tp = received['tipo']
-        jg = received['jogo']
-        inst = received['instante']
-        eq = received['equipa']
-        at1 = received['atleta1']
+
+        tp = get_object_or_404(models.TipoEvento, id=received['tipo'])
+        jg = get_object_or_404(models.Jogo, id=received['jogo'])
+        #inst = received['instante']
+        inst = '00:05:12'
+        eq = get_object_or_404(models.Formacao, id=received['equipa'])
+        at1 = get_object_or_404(models.Atleta, id=received['atleta1'])
         at2 = received['atleta2']
         zC = received['zonaC']
         zB = received['zonaB']
         novo = received['novoinst']
-	
+
         if novo is not None:
             models.Evento.objects.create(tipo=tp, jogo=jg, instante=inst, novoinstante=novo)
         elif eq is not None and at1 is not None and at2 is not None:
