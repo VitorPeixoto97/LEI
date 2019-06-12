@@ -285,8 +285,16 @@ def jogoView(request, clube, formacao, formacaoAdv, casa, data, hora, tipo):
 
 @login_required
 @permission_required('change_jogo', raise_exception=True)
+#nao esta atualizado com todos os novos camos de um jogo
 def cJogoView(request, idJogo, grelhaC, grelhaB):
     models.Jogo.objects.filter(id=idJogo).update(grelhaCampo=grelhaC, grelhaBaliza=grelhaB)
+    return HttpResponse('ok')
+
+
+#@login_required
+#@permission_required('change_jogo', raise_exception=True)
+def endJogoView(request, id):
+    models.Jogo.objects.filter(id=id).update(ativo=False)
     return HttpResponse('ok')
 
 
@@ -320,6 +328,8 @@ def gJogosView(request, clube):
             new_jogo['formacao'] = jogo.formacao.id
             new_jogo['adv_nome'] = jogo.adversario.clube.nome
             new_jogo['form_nome'] = jogo.formacao.nome
+            new_jogo['duracao'] = jogo.duracao
+            new_jogo['partes'] = jogo.partes
             aux.append(new_jogo)
     return JsonResponse(aux, safe=False)
 
@@ -358,6 +368,8 @@ def gJogoView(request, id):
     new_jogo['logoAdv'] = jogo.adversario.clube.simbolo
     new_jogo['clube_cor'] = jogo.formacao.clube.cor
     new_jogo['adv_cor'] = jogo.adversario.clube.cor
+    new_jogo['duracao'] = jogo.duracao
+    new_jogo['partes'] = jogo.partes
     
     return JsonResponse(new_jogo)
 

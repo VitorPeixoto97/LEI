@@ -42,6 +42,7 @@ urlpatterns = [
     path('change_jogo/<int:idJogo>/<str:grelhaC>/<str:grelhaB>/', views.cJogoView, name='cjogo'),
     path('get_jogos/<str:clube>/', views.gJogosView, name='gjogos'),
     path('get_jogo/<int:id>/', views.gJogoView, name='gjogo'),
+    path('end_jogo/<int:id>/', views.endJogoView, name='ejogo'),
 
     path('convocado/<int:jogo>/<int:atleta>/<bool:emCampo>/', views.convocadoView, name='convocado'),
     path('change_convocado/<int:jogo>/<int:atleta>/<bool:emCampo>/', views.cConvocadoView, name='cconvocado'),

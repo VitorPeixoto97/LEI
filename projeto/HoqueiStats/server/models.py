@@ -59,6 +59,8 @@ class Jogo(models.Model):
     ativo = models.BooleanField(default=True)
     grelhaCampo = models.CharField(max_length=5)
     grelhaBaliza = models.CharField(max_length=5)
+    partes = models.IntegerField(default=2)
+    duracao = models.IntegerField(default=20)
     def __str__(self):
         return self.adversario
 

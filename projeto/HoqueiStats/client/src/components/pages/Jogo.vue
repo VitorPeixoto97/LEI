@@ -30,7 +30,8 @@
             <div class="row">
               <div class="column" style="margin:auto">
                 <p class="justify-center" style="margin:auto">
-                  <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" v-on:click="updateClock()" :disabled="change || timer == 0">{{ paused ? 'Iniciar' : 'Parar' }}</button>
+                  <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" v-if="timer != 0" v-on:click="updateClock()" :disabled="change">{{ paused ? 'Iniciar' : 'Parar' }}</button>
+                  <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" v-if="timer == 0" v-on:click="terminarJogo()">Terminar</button>
                 </p>
               </div>
               <div class="column" style="margin:auto">
@@ -45,11 +46,11 @@
       <v-container text-xs-center v-if="change">
           <v-card color="white" class="my-card timechange">
             <p class="justify-center" style="font-size: x-large;">
-              <plusminsfield v-model="clockChange.minutos" :min="0" :max="19"></plusminsfield> : 
+              <plusminsfield v-model="clockChange.minutos" :min="0" :max="this.jogo.duracao-1"></plusminsfield> :
               <plusminsfield v-model="clockChange.segundos" :min="0" :max="59"></plusminsfield>
             </p>
             <p class="justify-center" style="font-size: x-large;">
-              <plusminsfield style="margin-left:6%" v-model="clockChange.parte" :min="1" :max="2"></plusminsfield>ª Parte
+              <plusminsfield style="margin-left:6%" v-model="clockChange.parte" :min="1" :max="this.jogo.partes"></plusminsfield>ª Parte
             </p>
           </v-card>
       </v-container>
@@ -148,7 +149,6 @@
                 <md-table-cell md-label="Tipo de Evento" md-sort-by="tipo">{{ item.tipo }}</md-table-cell>
                 <md-table-cell md-label="Atleta 1" md-sort-by="atleta1">{{ item.atleta1 }}</md-table-cell>
                 <md-table-cell md-label="Atleta 2" md-sort-by="atleta2">{{ item.atleta2 }}</md-table-cell>
-                <md-table-cell md-label="Instante" md-sort-by="instante">{{ item.instante }}</md-table-cell>
                 <md-table-cell md-label="">
                   <md-button class="md-icon-button md-raised" v-on:click="sinalizaEvento(item.id)">
                     <i class="material-icons orange600" v-if="item.sinalizado">warning</i>
@@ -223,10 +223,10 @@ export default {
         parte: null,
       },
 
-      timer: 2400,
+      timer: null,
       started: false,
       parte: 1,
-      minutos: 20,
+      minutos: null,
       segundos: 0,
       paused: true,
       interval: null,
@@ -248,6 +248,8 @@ export default {
       axios.get(process.env.API_URL + "/server/get_jogo/"+this.$session.get('jogoTab')+"/").then(response => {
         app.jogo = response.data;
         app.evento.jogo = app.jogo.id;
+        app.timer = 60 * app.jogo.duracao * app.jogo.partes;
+        app.minutos = app.jogo.duracao;
       });
       axios.get(process.env.API_URL + "/server/get_eventos/"+this.$session.get('jogoTab')+"/").then(response => {
         app.eventos = response.data;
@@ -396,6 +398,14 @@ export default {
         this.updateTable();});
     },
 
+    terminarJogo(){
+      var app = this;
+
+      axios.get(process.env.API_URL + "/server/end_jogo/" + app.jogo.id + "/").then(response => {
+        router.push('/jogos')
+      });
+    },
+
     updateClock(){
       this.started=true;
       if (!this.paused) { // está prestes a parar
@@ -425,9 +435,9 @@ export default {
         if(this.minutos == 0){
           this.paused = true;
           clearInterval(this.interval);
-          if(this.parte == 1){
+          if(this.parte < this.jogo.partes){
             this.parte += 1;
-            this.minutos = 20;
+            this.minutos = this.jogo.duracao;
             /*
             this.evento.tipo = 2parte;
             this.instante = this.timer;
@@ -460,7 +470,7 @@ export default {
       else { //fim de alteração
           this.evento.instante = this.timer;
           this.timer = this.clockChange.minutos * 60 + this.clockChange.segundos;
-          if(this.clockChange.parte == 1) this.timer += 1200;
+          if(this.clockChange.parte < this.jogo.partes) this.timer += 60 * this.jogo.duracao;
 
           this.evento.novoinst = this.timer;
           this.minutos = this.clockChange.minutos;
