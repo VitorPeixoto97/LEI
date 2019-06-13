@@ -63,6 +63,11 @@
                 </md-button>
               </md-table-cell>
               <md-table-cell md-label="">
+                <md-button class="md-icon-button md-raised" v-if="item.sinalizado" v-on:click="openForm()">
+                  <i class="material-icons">edit</i>
+                </md-button>
+              </md-table-cell>
+              <md-table-cell md-label="">
                 <md-button class="md-icon-button md-raised" v-if="item.sinalizado" v-on:click="removeEvento(item.id)">
                   <i class="material-icons">delete</i>
                 </md-button>
@@ -177,11 +182,11 @@ export default {
 
     sinalizaEvento(id){
       axios.get(process.env.API_URL + "/server/sinalizar_evento/" + id + "/").then(response => {
-        this.updateTable();});
+        this.updateTable();
+      });
     },
 
     updateTable() {
-      var app = this;
       axios.get(process.env.API_URL + "/server/get_eventos/"+this.$session.get('jogoTab')+"/").then(response => {
         this.$session.set('eventos', response.data);
         this.searched = response.data;
@@ -189,7 +194,6 @@ export default {
     },
 
     updateJogo() {
-      var app = this;
       axios.get(process.env.API_URL + "/server/get_jogo/"+this.$session.get('jogoTab')+"/").then(response => {
         app.jogo = response.data;
         this.$session.set('jogo', response.data);
@@ -198,7 +202,14 @@ export default {
         this.$session.set('clube_cor', response.data.clube_cor);
         this.$session.set('adv_cor', response.data.adv_cor);
       });
+    },
 
+    openForm() {
+      document.getElementById("myForm").style.display = "block";
+    },
+
+    closeForm() {
+      document.getElementById("myForm").style.display = "none";
     }
   } 
 }
