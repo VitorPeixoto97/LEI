@@ -61,6 +61,7 @@ class Jogo(models.Model):
     grelhaBaliza = models.CharField(max_length=5)
     partes = models.IntegerField(default=2)
     duracao = models.IntegerField(default=20)
+    convocados = models.BooleanField(default=True)
     def __str__(self):
         return self.adversario
 

@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import axios from 'axios';
   export default {
     data() {
       return {
@@ -39,7 +40,11 @@
       jogo() {
         this.$session.set('activeTab',"jogo")
         if(this.$session.get('js')==1){
-          this.$router.push('/jogo')
+          axios.get(process.env.API_URL + "/server/get_jogo/"+this.$session.get('jogoTab')+"/").then(response => {
+            if(response.data.convocados)
+              this.$router.push('/convocados')
+            else this.$router.push('/jogo')
+          })
         }
         else this.$router.push('/stats')
       }

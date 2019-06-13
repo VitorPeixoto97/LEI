@@ -108,7 +108,15 @@ INSERT INTO "public"."server_tecnico" ("id", "email", "grelhaCampo", "grelhaBali
 INSERT INTO "public"."server_atleta" ("id", "nome", "licenca", "camisola", "formacao_id") VALUES ('0', 'Gonçalo Alves', '0', '77', '1'),
 ('1', 'Poka', '1', '18', '1'),
 ('2', 'Reinaldo García', '2', '57', '1'),
-('3', 'Matías Platero', '3', '7', '3');
+('3', 'Matías Platero', '3', '7', '3'),
+('4','Carlos Ferreira', '4', '10', '1'),
+('5','Cristiano Ronaldo', '5', '7', '1'),
+('6','Raméz Rodriguez','6','34','1'),
+('7','Del Horno','7','65','1'),
+('8','Will Smith','8','1','1'),
+('9','Tom Cruise','9','98','1'),
+('10','Gonçalo Camaz','10','4','1'),
+('11','Marco Silva','11','2','1');
 
 INSERT INTO "public"."server_tipoevento" ("id", "tipo", "atleta1", "atleta2", "zonaCampo", "zonaBaliza", "novoinstante", "equipa") VALUES ('0', 'Golo', 't', 'f', 't', 't', 'f', 't'),
 ('1', 'Remate à baliza', 't', 'f', 't', 't', 'f', 't'),
@@ -118,9 +126,9 @@ INSERT INTO "public"."server_tipoevento" ("id", "tipo", "atleta1", "atleta2", "z
 
 INSERT INTO "public"."server_tiposselecionados" ("id", "tecnico_id", "tipo_id") VALUES ('1', '0', '0');
 
-INSERT INTO "public"."server_convocado" ("id", "emCampo", "atleta_id", "jogo_id") VALUES ('1', 't', '0', '5'),
-('2', 't', '1', '5'),
-('3', 'f', '2', '5');
+-- INSERT INTO "public"."server_convocado" ("id", "emCampo", "atleta_id", "jogo_id") VALUES ('1', 't', '0', '5'),
+-- ('2', 't', '1', '5'),
+-- ('3', 'f', '2', '5');
 
 INSERT INTO "public"."server_evento" ("id", "zonaCampo", "zonaBaliza", "instante", "novoinstante", "timestamp", "atleta1_id", "atleta2_id", "equipa_id", "jogo_id", "tipo_id", "parte", "sinalizado") VALUES 
 ('0', '6', '9', '00:05:12', NULL, '2019-03-16 17:05:14.347796+00', '0', NULL, '1', '6', '0', '1', 't'),

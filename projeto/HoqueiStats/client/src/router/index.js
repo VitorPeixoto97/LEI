@@ -5,7 +5,7 @@ import Auth from '@/components/pages/Auth'
 import Jogos from '@/components/pages/Jogos'
 import Jogo from '@/components/pages/Jogo'
 import Stats from '@/components/pages/Stats'
-
+import Convocados from '@/components/pages/Convocados'
 
 Vue.use(Router)
 
@@ -30,6 +30,11 @@ export default new Router({
       path: '/stats',
       name: 'Stats',
       component: Stats
+    },
+    {
+      path: '/convocados',
+      name: 'Convocados',
+      component: Convocados
     }
   ]
 })

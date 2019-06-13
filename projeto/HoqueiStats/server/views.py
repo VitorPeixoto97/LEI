@@ -184,17 +184,17 @@ def dAtletaView(request, id):
 #@login_required
 #@permission_required('view_atleta', raise_exception=True)
 def gAtletasView(request, formacao):
-    formacaox = get_object_or_404(models.Formacao, id=formacao)
-    atletas = formacaox.atleta_set.all()
-    aux = []
+    formacaox = models.Atleta.objects.filter(formacao=formacao).order_by('camisola')
+    atletas = []
 
-    for atleta in atletas:
+    for atleta in formacaox:
         new_atleta = {}
         new_atleta['id'] = atleta.id
         new_atleta['nome'] = atleta.nome
-        aux.append(new_atleta)
+        new_atleta['camisola'] = atleta.camisola
+        atletas.append(new_atleta)
 
-    return JsonResponse(aux, safe=False)
+    return JsonResponse(atletas, safe=False)
 
 
 #@login_required
@@ -373,6 +373,10 @@ def gJogoView(request, id):
     
     return JsonResponse(new_jogo)
 
+def confirmConvocadosView(request, id):
+    models.Jogo.objects.filter(id=id).update(convocados=False)
+    return HttpResponse('ok')
+
 def gResultado(id):
     jogo = get_object_or_404(models.Jogo, id=id)
     eventos = jogo.evento_set.all()
@@ -395,6 +399,27 @@ def convocadoView(request, jogo, atleta, emCampo):
     models.Convocado.objects.create(atleta=atleta, jogo=jogo, emCampo=emCampo)
     return HttpResponse('ok')
 
+@csrf_exempt
+def convocadosView(request):
+    if request.method=='POST':
+        received = json.loads(request.body.decode('utf-8'))
+
+        atletas = received['atletas']
+        inicial = received['inicial']
+        jogo = models.Jogo.objects.get(id=received['jogo'])
+
+        for atleta in atletas:
+            convocado = models.Atleta.objects.get(id=atleta['id'])
+
+            if atleta in inicial:
+                models.Convocado.objects.create(atleta=convocado, jogo=jogo, emCampo=True)
+
+            else:
+                models.Convocado.objects.create(atleta=convocado, jogo=jogo, emCampo=False)
+
+        return HttpResponse('ok')
+    else:
+        return HttpResponseBadRequest(content='bad form')
 
 @login_required
 @permission_required('change_convocado', raise_exception=True)

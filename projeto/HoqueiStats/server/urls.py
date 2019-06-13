@@ -43,8 +43,10 @@ urlpatterns = [
     path('get_jogos/<str:clube>/', views.gJogosView, name='gjogos'),
     path('get_jogo/<int:id>/', views.gJogoView, name='gjogo'),
     path('end_jogo/<int:id>/', views.endJogoView, name='ejogo'),
+    path('confirm_convocados/<int:id>/', views.confirmConvocadosView, name='confjogo'),
 
     path('convocado/<int:jogo>/<int:atleta>/<bool:emCampo>/', views.convocadoView, name='convocado'),
+    path('convocados/', views.convocadosView, name='convocados'),
     path('change_convocado/<int:jogo>/<int:atleta>/<bool:emCampo>/', views.cConvocadoView, name='cconvocado'),
     path('get_convocados/<int:idJogo>/', views.gConvocadosView, name='gconvocados'),
 
