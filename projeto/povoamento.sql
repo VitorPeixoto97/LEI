@@ -129,10 +129,11 @@ INSERT INTO "public"."server_tipoevento" ("id", "tipo", "atleta1", "atleta2", "z
 ('8', 'Cartão vermelho', 't', 'f', 't', 'f', 'f', 't'), --Podia-se pro o novo instante 4 minutos à frente para quando puder vir alguém substituir talvez?
 ('9', 'Erro próprio', 't', 'f', 't', 'f', 'f', 't'),
 ('10', 'Powerplay', 'f', 'f', 'f', 'f', 'f', 't'), --Principalmente um resultado de cartão azul/vermelho
-('11', 'Livre Direto', 't', 'f', 't', 'f', 'f', 't'),
-('12', 'Penalti', 't', 'f', 't', 'f', 'f', 't'),
-('13', 'Golpe duplo', 'f', 'f', 't', 'f', 'f', 'f'),
-('14', 'Time-out', 'f', 'f', 'f', 'f', 'f', 't'); --Cada equipa pode solicitar um desconto de tempo (“time-out”), com a duração de um minuto, em cada uma das partes do tempo regulamentar (no prolongamento de um jogo não podem ser concedidos descontos de tempo).
+('11', 'Fim de Powerplay', 'f', 'f', 'f', 'f', 'f', 't'),
+('12', 'Livre Direto', 't', 'f', 't', 'f', 'f', 't'),
+('13', 'Penalti', 't', 'f', 't', 'f', 'f', 't'),
+('14', 'Golpe duplo', 'f', 'f', 't', 'f', 'f', 'f'),
+('15', 'Time-out', 'f', 'f', 'f', 'f', 'f', 't'); --Cada equipa pode solicitar um desconto de tempo (“time-out”), com a duração de um minuto, em cada uma das partes do tempo regulamentar (no prolongamento de um jogo não podem ser concedidos descontos de tempo).
 
 INSERT INTO "public"."server_tiposselecionados" ("id", "tecnico_id", "tipo_id") VALUES ('1', '0', '0');
 
