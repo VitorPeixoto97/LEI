@@ -94,14 +94,14 @@ INSERT INTO "public"."server_formacao" ("id", "nome", "clube_id") VALUES ('1', '
 ('14', 'Séniores', '14'),
 ('15', 'Séniores', '15');
 
-INSERT INTO "public"."server_jogo" ("id", "tipo", "casa", "data", "hora", "grelhaCampo", "grelhaBaliza", "adversario_id", "formacao_id", "numero", "ativo", "duracao", "partes") VALUES 
-('0', 'Competição', 'f', '2019-04-27', '17:00:00', '8x4', '3x3', '5', '1', '0', 't', '20', '2'),
-('1', 'Competição', 'f', '2019-05-04', '19:30:00', '8x4', '3x3', '3', '1', '1', 't', '20', '2'),
-('2', 'Competição', 'f', '2019-05-11', '12:00:00', '8x4', '3x3', '15', '1', '2', 't', '20', '2'),
-('3', 'Competição', 't', '2019-05-15', '21:00:00', '8x4', '3x3', '7', '1', '3', 't', '20', '2'),
-('4', 'Competição', 'f', '2019-05-19', '16:00:00', '8x4', '3x3', '10', '1', '4', 't', '20', '2'),
-('5', 'Competição', 't', '2019-05-25', '18:00:00', '8x4', '3x3', '9', '1', '5', 't', '10', '4'),
-('6', 'Competição', 't', '2019-03-16', '17:00:00', '8x4', '3x3', '3', '1', '6', 'f', '20', '2');
+INSERT INTO "public"."server_jogo" ("id", "tipo", "casa", "data", "hora", "grelhaCampo", "grelhaBaliza", "adversario_id", "formacao_id", "numero", "ativo", "duracao", "partes", "convocados") VALUES 
+('0', 'Competição', 'f', '2019-04-27', '17:00:00', '8x4', '3x3', '5', '1', '0', 't', '20', '2', 't'),
+('1', 'Competição', 'f', '2019-05-04', '19:30:00', '8x4', '3x3', '3', '1', '1', 't', '20', '2', 't'),
+('2', 'Competição', 'f', '2019-05-11', '12:00:00', '8x4', '3x3', '15', '1', '2', 't', '20', '2', 't'),
+('3', 'Competição', 't', '2019-05-15', '21:00:00', '8x4', '3x3', '7', '1', '3', 't', '20', '2', 't'),
+('4', 'Competição', 'f', '2019-05-19', '16:00:00', '8x4', '3x3', '10', '1', '4', 't', '20', '2', 't'),
+('5', 'Competição', 't', '2019-05-25', '18:00:00', '8x4', '3x3', '9', '1', '5', 't', '10', '4', 't'),
+('6', 'Competição', 't', '2019-03-16', '17:00:00', '8x4', '3x3', '3', '1', '6', 'f', '20', '2', 't');
 
 INSERT INTO "public"."server_tecnico" ("id", "email", "grelhaCampo", "grelhaBaliza", "clube_id") VALUES ('0', 'a79175@alunos.uminho.pt', '8x4', '3x3', '1');
 
@@ -133,9 +133,14 @@ INSERT INTO "public"."server_tipoevento" ("id", "tipo", "atleta1", "atleta2", "z
 ('12', 'Livre Direto', 't', 'f', 't', 'f', 'f', 't'),
 ('13', 'Penalti', 't', 'f', 't', 'f', 'f', 't'),
 ('14', 'Golpe duplo', 'f', 'f', 't', 'f', 'f', 'f'),
-('15', 'Time-out', 'f', 'f', 'f', 'f', 'f', 't'); --Cada equipa pode solicitar um desconto de tempo (“time-out”), com a duração de um minuto, em cada uma das partes do tempo regulamentar (no prolongamento de um jogo não podem ser concedidos descontos de tempo).
+('15', 'Time-out', 'f', 'f', 'f', 'f', 'f', 't'), --Cada equipa pode solicitar um desconto de tempo (“time-out”), com a duração de um minuto, em cada uma das partes do tempo regulamentar (no prolongamento de um jogo não podem ser concedidos descontos de tempo).
+('16', 'Alterar relógio', 'f', 'f', 'f', 'f', 't', 'f');
 
-INSERT INTO "public"."server_tiposselecionados" ("id", "tecnico_id", "tipo_id") VALUES ('1', '0', '0');
+INSERT INTO "public"."server_tiposselecionados" ("id", "tecnico_id", "tipo_id") VALUES
+('0', '0', '0'),
+('1', '0', '1'),
+('2', '0', '4'),
+('3', '0', '15');
 
 -- INSERT INTO "public"."server_convocado" ("id", "emCampo", "atleta_id", "jogo_id") VALUES ('1', 't', '0', '5'),
 -- ('2', 't', '1', '5'),

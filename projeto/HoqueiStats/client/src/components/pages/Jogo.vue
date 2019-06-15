@@ -142,7 +142,7 @@
                 :md-description="'Ainda não tem eventos registados para este jogo.'">
               </md-table-empty-state>
 
-              <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.resultado)">
+              <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.resultado)" v-if="item.tipo != 16">
                 <md-table-cell md-label="Instante" md-sort-by="instante">{{ item.instante }}</md-table-cell>
                 <md-table-cell md-label="Parte" md-sort-by="parte">{{ item.parte }}</md-table-cell>
                 <md-table-cell md-label="Equipa" md-sort-by="equipa">{{ item.equipa }}</md-table-cell>
@@ -438,18 +438,6 @@ export default {
           if(this.parte < this.jogo.partes){
             this.parte += 1;
             this.minutos = this.jogo.duracao;
-            /*
-            this.evento.tipo = 2parte;
-            this.instante = this.timer;
-            submitForm();
-            */
-          }
-          else {
-            /*
-            this.evento.tipo = fim;
-            this.instante = this.timer;
-            submitForm();
-            */
           }
         }
         else{
@@ -466,9 +454,18 @@ export default {
         this.clockChange.minutos = this.minutos;
         this.clockChange.segundos = this.segundos;
         this.clockChange.parte = this.parte;
+
+        this.evento.instante = '00:'+this.minutos+':'+this.segundos;
+        this.tipo = 16;
+        this.evento.parte = this.parte;
+        this.evento.equipa = null;
+        this.evento.atleta1 = null;
+        this.evento.atleta2 = null;
+        this.evento.zonaC = null;
+        this.evento.zonaB = null;
+        this.selectType();
       }
       else { //fim de alteração
-          this.evento.instante = this.timer;
           this.timer = this.clockChange.minutos * 60 + this.clockChange.segundos;
           if(this.clockChange.parte < this.jogo.partes) this.timer += 60 * this.jogo.duracao;
 
@@ -477,10 +474,9 @@ export default {
           this.segundos = this.clockChange.segundos;
           this.parte = parseInt(this.clockChange.parte);
 
-          /*
-          this.evento.tipo = changeclock;
-          submitForm();
-          */
+
+          this.evento.novoinst = '00:'+this.clockChange.minutos+':'+this.clockChange.segundos;
+          this.submitForm();
       }
       this.change = !this.change;
     }
