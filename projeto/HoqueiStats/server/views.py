@@ -495,12 +495,15 @@ def cEventoView(request):
         eq = received['equipa']
         at1 = received['atleta1']
         at2 = received['atleta2']
-        zC = received['zonaC']
-        zB = received['zonaB']
-        novo = received['novoinst']
+        zC = received['zonaCampo']
+        zB = received['zonaBaliza']
+        novo = received['novoinstante']
+        pt = received['parte']
 
         if inst is not None:
             models.Evento.objects.filter(id=i).update(instante=inst)
+        if pt is not None:
+            models.Evento.objects.filter(id=i).update(parte=pt)
         if novo is not None:
             models.Evento.objects.filter(id=i).update(instante=inst, novoinstante=novo)
         if eq is not None:
@@ -539,6 +542,51 @@ def sinalizarEventoView(request, id):
     else:
         models.Evento.objects.filter(id=id).update(sinalizado=True)
     return HttpResponse('ok')
+
+
+#@login_required
+#@permission_required('view_evento', raise_exception=True)
+def gEventoView(request, id):
+    evento = get_object_or_404(models.Evento, id=id)
+    
+    new_evento = {}
+    new_evento['id'] = evento.id
+    new_evento['jogo'] = evento.jogo.id
+    new_evento['tipo'] = evento.tipo.id
+    new_evento['equipa'] = evento.equipa.id
+
+    if evento.atleta1 :
+        new_evento['atleta1'] = evento.atleta1.id
+    else:
+        new_evento['atleta1'] = None
+
+    if evento.atleta2 :
+        new_evento['atleta2'] = evento.atleta2.id
+    else:
+        new_evento['atleta2'] = None
+
+    if evento.novoinstante :
+        new_evento['novoinstante'] = evento.novoinstante
+    else:
+        new_evento['novoinstante'] = None
+
+    new_evento['instante'] = evento.instante
+    new_evento['timestamp'] = evento.timestamp
+    new_evento['parte'] = evento.parte
+    new_evento['sinalizado'] = evento.sinalizado
+    
+    if evento.zonaCampo :
+        new_evento['zonaCampo'] = evento.zonaCampo
+    else:
+        new_evento['zonaCampo'] = None
+
+    if evento.zonaBaliza :
+        new_evento['zonaBaliza'] = evento.zonaBaliza
+    else:
+        new_evento['zonaBaliza'] = None
+
+    return JsonResponse(new_evento, safe=False)
+
 
 
 #@login_required
@@ -687,13 +735,6 @@ def gEventosView(request, idJogo):
             new_evento['size'] = 1
         aux.append(new_evento)
     return JsonResponse(aux, safe=False)
-
-
-@login_required
-@permission_required('view_evento', raise_exception=True)
-def gEventoView(request, id):
-    evento = get_object_or_404(models.Evento, id=id)
-    return JsonResponse(model_to_dict(evento))
 
 
 @login_required

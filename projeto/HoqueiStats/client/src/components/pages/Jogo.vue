@@ -119,8 +119,6 @@
               </v-card>
             </v-flex>
           </div>
-          
-          
         </div>
       </v-container>
 
