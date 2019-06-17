@@ -30,7 +30,7 @@
                 :id="atleta.id"
                 :value="atleta"
                 :disabled="convocados.atletas.length > 9 && convocados.atletas.indexOf(atleta) === -1"> 
-              <input class="txt_conv" v-model.number="atleta.camisola" :disabled="convocados.atletas.indexOf(atleta) === -1">
+              <input class="txt_conv" v-model.number="atleta.camisola" type="number" min="1" :disabled="convocados.atletas.indexOf(atleta) === -1">
               <label>{{ atleta.nome }}</label>
             </li>
           </ul>
@@ -95,7 +95,7 @@ export default {
       axios.get(process.env.API_URL + "/server/get_jogo/"+this.$session.get('jogoTab')+"/").then(response => {
         app.jogo = response.data;
         axios.get(process.env.API_URL + "/server/get_atletas/" + app.jogo.formacao + "/").then(response => {
-          app.atletas = response.data
+          app.atletas = response.data.sort(function(a, b){return a.camisola - b.camisola})
         });
       });
     },
@@ -108,8 +108,8 @@ export default {
 
     has_null() {
       var nulls = false
-      for(var atleta in this.atletas){
-        if(atleta.camisola == ''){
+      for(var atleta in this.convocados.atletas){
+        if(atleta.camisola === null){
           nulls = true
           break
         }
