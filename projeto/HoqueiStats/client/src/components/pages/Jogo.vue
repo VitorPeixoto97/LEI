@@ -36,12 +36,16 @@
               </div>
               <div class="column" style="margin:auto">
                 <p class="justify-center" style="margin:auto">
-                  <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" v-on:click="changeClock()" :disabled="!paused || interval == null">{{ this.change ? 'Confirmar' : 'Alterar' }}</button>
+                  <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" type="submit" style="margin:auto" v-on:click="changeClock()" :disabled="!paused || interval == null">{{ this.change ? 'Confirmar' : 'Alterar' }}</button>
+                </p>
+                <p class="justify-center" style="margin:auto" v-if="change">
+                  <br>
+                  <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" v-on:click="resetClock()">Reset</button>
                 </p>
               </div>
             </div>
           </v-card>
-      </v-container>
+      </v-container>s
 
       <v-container text-xs-center v-if="change">
           <v-card color="white" class="my-card timechange">
@@ -140,13 +144,14 @@
                 :md-description="'Ainda não tem eventos registados para este jogo.'">
               </md-table-empty-state>
 
-              <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.resultado)" v-if="item.tipo != 16">
+              <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.resultado)">
                 <md-table-cell md-label="Instante" md-sort-by="instante">{{ item.instante }}</md-table-cell>
                 <md-table-cell md-label="Parte" md-sort-by="parte">{{ item.parte }}</md-table-cell>
                 <md-table-cell md-label="Equipa" md-sort-by="equipa">{{ item.equipa }}</md-table-cell>
                 <md-table-cell md-label="Tipo de Evento" md-sort-by="tipo">{{ item.tipo }}</md-table-cell>
                 <md-table-cell md-label="Atleta 1" md-sort-by="atleta1">{{ item.atleta1 }}</md-table-cell>
                 <md-table-cell md-label="Atleta 2" md-sort-by="atleta2">{{ item.atleta2 }}</md-table-cell>
+                <md-table-cell md-label="Novo Instante" md-sort-by="novoinstante">{{ item.novoinstante }}</md-table-cell>
                 <md-table-cell md-label="">
                   <md-button class="md-icon-button md-raised" v-on:click="sinalizaEvento(item.id)">
                     <i class="material-icons orange600" v-if="item.sinalizado">warning</i>
@@ -163,6 +168,10 @@
           </v-card>
       </v-container>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
   </layout-basic>
 </template>
 
@@ -299,7 +308,9 @@ export default {
     },
 
     allFieldsOk() {
-      if (this.tipo_evento == null || (this.tipo_evento.equipa && (this.evento.equipa == null)) || (this.tipo_evento.atleta1 && (this.evento.atleta1 == null)) || (this.tipo_evento.atleta2 && (this.evento.atleta2 == null)) || (this.tipo_evento.zonaCampo && (this.evento.zonaC == null)) || (this.tipo_evento.zonaBaliza && (this.evento.zonaB == null)) || (this.tipo_evento.novoinstante && (this.evento.novoinst == null))) {
+      if (this.tipo_evento == null || (this.tipo_evento.equipa && (this.evento.equipa == null)) || (this.tipo_evento.atleta1 && (this.evento.atleta1 == null)) ||
+         (this.tipo_evento.atleta2 && (this.evento.atleta2 == null)) || (this.tipo_evento.zonaCampo && (this.evento.zonaC == null)) || (this.tipo_evento.zonaBaliza && (this.evento.zonaB == null)) ||
+         (this.tipo_evento.novoinstante && (this.evento.novoinst == null))) {
         return false;
       }
 
@@ -332,6 +343,7 @@ export default {
           router.push("/jogo");
           this.updateTable();
           this.updateJogo();
+          this.tipo_evento = null;
           this.tipo=null;
           this.evento.equipa=null;
           this.codigoEquipa=null;
@@ -409,18 +421,8 @@ export default {
       if (!this.paused) { // está prestes a parar
         clearInterval(this.interval);
         console.log(this.evento);
-        /* 
-        this.evento.tipo = stop;
-        this.evento.instante = this.timer;
-        submitForm();
-         */
       } else { // está prestes a (re)começar
         console.log('timer starts');
-        /* 
-        this.evento.tipo = start;
-        this.evento.instante = this.timer;
-        submitForm();
-        */
         this.interval = setInterval(() => this.incrementTime(), 1000);
       }
       this.paused = !this.paused;
@@ -477,6 +479,12 @@ export default {
           this.submitForm();
       }
       this.change = !this.change;
+    },
+
+    resetClock(){
+      this.minutos = this.jogo.duracao;
+      this.segundos = 0;
+      this.timer = (this.jogo.partes - this.parte) * this.jogo.duracao * 60;
     }
   }
 }

@@ -87,7 +87,12 @@ export default {
               axios.post('http://localhost:8000/auth/obtain/', this.credentials).then(res => {
                 this.$session.start();
                 this.$session.set('token', res.data.token);
-                router.push('/jogos');
+
+                axios.get('http://localhost:8000/server/info_user/' + this.$session.get('user_email') + '/').then(res => {
+                  this.$session.set('user_info', res.data);
+                  router.push('/jogos');
+                });
+
               }).catch(e => {
                 this.loading = false;
                 this.error = 1;

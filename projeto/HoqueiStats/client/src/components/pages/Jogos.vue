@@ -24,6 +24,16 @@
             <md-table-cell md-label="Adversário" md-sort-by="adv_nome">{{ item.adv_nome }}</md-table-cell>
             <md-table-cell md-label="Resultado" md-sort-by="resultado">{{ item.resultado }}</md-table-cell>
             <md-table-cell md-label="Data" md-sort-by="data">{{ item.data }}</md-table-cell>
+            <md-table-cell md-label="">
+              <md-button class="md-button" @click="statsgame = true" v-if="item.ativo">
+                estatísticas
+              </md-button>
+            </md-table-cell>
+            <md-table-cell md-label="">
+              <md-button class="md-button" @click="statsgamelive = true" v-if="item.ativo">
+                estatísticas ao vivo
+              </md-button>
+            </md-table-cell>
           </md-table-row>
         </md-table>
       </div>
@@ -53,9 +63,11 @@ export default {
   },
   data() {
       return {
-          jogos: null,
-          search: null,
-          searched: [],
+        jogos: null,
+        search: null,
+        searched: [],
+        statsgame: false,
+        statsgamelive: false,
       }
   },
   mounted: function() {
@@ -65,14 +77,9 @@ export default {
   methods: {
     FetchData: function() {
       var app = this;
-      axios.get(process.env.API_URL + "/server/info_user/" + this.$session.get('user_email') + "/").then(response => {
-        this.$session.set('clube', response.data.nome);
-        this.$session.set('clubeid', response.data.id)
-
-        axios.get(process.env.API_URL + "/server/get_jogos/"+this.$session.get('clubeid')+"/").then(response => {
-          app.jogos = response.data;
-          this.searched = this.jogos
-        });
+      axios.get(process.env.API_URL + "/server/get_jogos/"+this.$session.get('user_info').clube+"/").then(response => {
+        app.jogos = response.data;
+        this.searched = this.jogos
       });
     },
       
@@ -83,18 +90,38 @@ export default {
     },
 
     verJogo(id, jogo_ativo, convocados) {
-      this.$session.set('jogoTab', id);
-      this.$session.set('activeTab',"jogo");
-      if (jogo_ativo){
-        this.$session.set('js', 1);
-        if (convocados)
-          router.push("/convocados");
-        else router.push("/jogo");
+      if(this.statsgame) {
+        this.verStats();
+        this.statsgame = false;
       }
       else {
-        this.$session.set('js', 0);
-        router.push("/stats")
+        if (this.statsgamelive) {
+          this.verStatsLive();
+          this.statsgamelive = false;
+        }
+        else{
+          this.$session.set('jogoTab', id);
+          this.$session.set('activeTab',"jogo");
+          if (jogo_ativo){
+            this.$session.set('js', 1);
+            if (convocados)
+              router.push("/convocados");
+            else router.push("/jogo");
+          }
+          else {
+            this.$session.set('js', 0);
+            router.push("/stats")
+          }
+        }
       }
+    },
+
+    verStats(){
+      router.push('/statsgame')
+    },
+
+    verStatsLive(){
+      router.push('/statsgamelive')
     },
 
     newUser () {

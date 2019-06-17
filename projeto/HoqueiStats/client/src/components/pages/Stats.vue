@@ -82,7 +82,7 @@
             <v-flex dist distleft>
               <v-card color="white" class="my-card">
                 <div class="column">
-                  <form class="review-form" @submit.prevent="submitForm">
+                  <form class="review-form" @submit.prevent="submitChange">
                     <div class="field">
                       <input v-model="evento.instante" autofocus class="input" type="text" placeholder="Instante" v-if="this.evento_inicial!=null" v-on:keyup.down="$event.target.nextElementSibling.focus(), chooseEquipa()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
                       <input v-model="evento.parte" class="input" type="text" placeholder="Parte" v-if="this.evento_inicial!=null" v-on:keyup.down="$event.target.nextElementSibling.focus(), chooseEquipa()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selT=false, selE=false, selA1=false, selA2=false">
@@ -144,6 +144,10 @@
         </div>
       </v-container>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
   </layout-basic>
 </template>
 
@@ -163,7 +167,8 @@ export default {
       searched: [],
       evento_inicial: null,
       evento: {
-        jogo: this.jogo,
+        jogo: null,
+        id: null,
         equipa: null,
         atleta1: null,
         atleta2: null,
@@ -221,6 +226,7 @@ export default {
         this.$session.set('adv', response.data.adv_nome);
         this.$session.set('clube_cor', response.data.clube_cor);
         this.$session.set('adv_cor', response.data.adv_cor);
+        this.evento.jogo = this.$session.get('jogoTab');
       });
       axios.get(process.env.API_URL + "/server/get_eventos/" + this.$session.get('jogoTab') + "/").then(response => {
         this.$session.set('eventos', response.data);
@@ -349,15 +355,6 @@ export default {
       }
     },
 
-    allFieldsOk() {
-      if (this.evento_inicial == null || ((this.evento_inicial.equipa != null) && (this.evento.equipa == null)) || ((this.evento_inicial.atleta1 != null) && (this.evento.atleta1 == null)) ||
-        ((this.evento_inicial.atleta2 != null) && (this.evento.atleta2 == null)) || ((this.evento_inicial.zonaCampo != null) && (this.evento.zonaC == null)) ||
-        ((this.evento_inicial.zonaBaliza != null) && (this.evento.zonaB == null)) || ((this.evento_inicial.novoinstante != null) && (this.evento.novoinst == null))) {
-        return false;
-      }
-
-      return true;
-    },
     chooseEquipa(){
       if(this.codigoEquipa == 1)
         this.evento.equipa = this.jogo.formacao;
@@ -365,7 +362,25 @@ export default {
 
     },
 
-    submitForm(){
+    allFieldsOk() {
+      var app = this;
+      axios.get(process.env.API_URL + "/server/get_tipo_evento/" + app.evento_inicial.tipo + "/").then(response => {
+        var tipo_evento = response.data;
+
+        if ((tipo_evento.equipa && (this.evento.equipa == null)) || (tipo_evento.atleta1 && (this.evento.atleta1 == null)) || (tipo_evento.atleta2 && (this.evento.atleta2 == null)) ||
+          (tipo_evento.zonaCampo && (this.evento.zonaCampo == null)) || (tipo_evento.zonaBaliza && (this.evento.zonaBaliza == null)) ||
+          (tipo_evento.novoinstante && (this.evento.novoinstante == null)) || this.evento.instante == null) {
+          alert('oh')
+          return false;
+        }
+        return true;
+
+      }).catch(e => {
+        return false;
+      })
+    },
+
+    submitChange(){
       //if(this.allFieldsOk()){
         var app = this;
         axios.post(process.env.API_URL + "/server/change_evento/", JSON.stringify(app.evento)).then(response => {

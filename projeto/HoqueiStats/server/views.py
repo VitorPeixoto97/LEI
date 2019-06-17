@@ -30,12 +30,26 @@ def index(request):
 
 
 def infoUserView(request, email):
-  if models.Gestor.objects.filter(email=email).count()==0:
-    clube = models.Tecnico.objects.get(email=email).clube
-  else:
-    clube = models.Gestor.objects.get(email=email).clube
+    user_info = {}
+    user_info['email'] = email
+    user_info['nome'] = get_object_or_404(User, email=email).first_name
+    user_info['pass'] = get_object_or_404(User, email=email).password
 
-  return JsonResponse(model_to_dict(clube))
+    if models.Gestor.objects.filter(email=email).count() > 0:
+        clube = get_object_or_404(models.Gestor, email=email).clube
+        user_info['tipo'] = 'gestor'
+        user_info['clube'] = clube.id
+        user_info['clube_logo'] = clube.simbolo
+
+    elif models.Tecnico.objects.filter(email=email).count() > 0:
+        tecnico = get_object_or_404(models.Tecnico, email=email)
+        user_info['tipo'] = 'tecnico'
+        user_info['clube'] = tecnico.clube.id
+        user_info['clube_logo'] = tecnico.clube.simbolo
+        user_info['grelhaCampo'] = tecnico.grelhaCampo
+        user_info['grelhaBaliza'] = tecnico.grelhaBaliza
+
+    return JsonResponse(user_info, safe=False)
 
 
 def advNome(request, form_id):
@@ -457,25 +471,33 @@ def eventoView(request):
         jg = get_object_or_404(models.Jogo, id=received['jogo'])
         inst = received['instante']
         pt = received['parte']
-        eq = get_object_or_404(models.Formacao, id=received['equipa'])
-        at1 = get_object_or_404(models.Atleta, id=received['atleta1'])
+        eq = received['equipa']
+        at1 = received['atleta1']
         at2 = received['atleta2']
         zC = received['zonaC']
         zB = received['zonaB']
         novo = received['novoinst']
 
-        if novo is not None:
+        if tp.id == 16 and novo is not None:
+            print(novo)
             models.Evento.objects.create(tipo=tp, jogo=jg, instante=inst, novoinstante=novo, parte=pt)
-        elif eq is not None and at1 is not None and at2 is not None:
-            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, atleta2=at2, instante=inst, parte=pt)
-            models.Convocado.objects.filter(atleta=at1, jogo=jg).update(emCampo=False)
-            models.Convocado.objects.filter(atleta=at2, jogo=jg).update(emCampo=True)
-        elif eq is not None and at1 is not None and zC is not None and zB is not None:
-            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, zonaCampo=zC, zonaBaliza=zB, instante=inst, parte=pt)
-        elif eq is not None and at1 is not None and zC is not None:
-            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, atleta1=at1, zonaCampo=zC, instante=inst, parte=pt)
+
         elif eq is not None:
-            models.Evento.objects.create(tipo=tp, jogo=jg, equipa=eq, instante=inst, parte=pt)
+            equipa = get_object_or_404(models.Formacao, id=eq)
+            if at1 is not None:
+                atleta1 = get_object_or_404(models.Atleta, id=at1)
+                if at2 is not None:
+                    atleta2 = get_object_or_404(models.Atleta, id=at2)
+                    models.Evento.objects.create(tipo=tp, jogo=jg, equipa=equipa, atleta1=atleta1, atleta2=atleta2, instante=inst, parte=pt)
+                    models.Convocado.objects.filter(atleta=atleta1, jogo=jg).update(emCampo=False)
+                    models.Convocado.objects.filter(atleta=atleta2, jogo=jg).update(emCampo=True)
+                elif zC is not None:
+                    if zB is not None:
+                        models.Evento.objects.create(tipo=tp, jogo=jg, equipa=equipa, atleta1=atleta1, zonaCampo=zC, zonaBaliza=zB, instante=inst, parte=pt)
+                    else:
+                        models.Evento.objects.create(tipo=tp, jogo=jg, equipa=equipa, atleta1=atleta1, zonaCampo=zC, instante=inst, parte=pt)
+            else:
+                models.Evento.objects.create(tipo=tp, jogo=jg, equipa=equipa, instante=inst, parte=pt)
 
         return HttpResponse('ok')
     else:
@@ -485,8 +507,7 @@ def eventoView(request):
 #@login_required
 #@permission_required('change_evento', raise_exception=True)
 @csrf_exempt
-def cEventoView(request):
-        
+def cEventoView(request): 
     if request.method=='POST':
         received = json.loads(request.body.decode('utf-8'))
         
@@ -499,6 +520,7 @@ def cEventoView(request):
         zB = received['zonaBaliza']
         novo = received['novoinstante']
         pt = received['parte']
+        jg = get_object_or_404(models.Jogo, id=received['jogo'])
 
         if inst is not None:
             models.Evento.objects.filter(id=i).update(instante=inst)
@@ -509,11 +531,13 @@ def cEventoView(request):
         if eq is not None:
             models.Evento.objects.filter(id=i).update(equipa=eq)
         if at1 is not None:
-            models.Evento.objects.filter(id=i).update(atleta1=at1)
-        if at2 is not None:
-            models.Evento.objects.filter(id=i).update(atleta2=at2)
-            models.Convocado.objects.filter(atleta=at1, jogo=jg).update(emCampo=False)
-            models.Convocado.objects.filter(atleta=at2, jogo=jg).update(emCampo=True)
+            atleta1 = get_object_or_404(models.Atleta, id=at1)
+            models.Evento.objects.filter(id=i).update(atleta1=atleta1)
+            if at2 is not None:
+                atleta2 = get_object_or_404(models.Atleta, id=at2)
+                models.Evento.objects.filter(id=i).update(atleta2=atleta2)
+                models.Convocado.objects.filter(atleta=atleta1, jogo=jg).update(emCampo=False)
+                models.Convocado.objects.filter(atleta=atleta2, jogo=jg).update(emCampo=True)
         if zC is not None:
             models.Evento.objects.filter(id=i).update(zonaCampo=zC)
         if zB is not None:
@@ -737,14 +761,30 @@ def gEventosView(request, idJogo):
     return JsonResponse(aux, safe=False)
 
 
-@login_required
-@permission_required('add_tipoevento', raise_exception=True)
-def tipoEventoView(request, tipo, equipa, atleta1, atleta2, zonaC, zonaB, novoinst):
-    if models.TipoEvento.objects.get(tipo=tipo) is None:
-        models.TipoEvento.objects.create(tipo=tipo, equipa=equipa, atleta1=atleta1, atleta2=atleta2, zonaC=zonaC, zonaB=zonaB, novoinst=novoinst)
-        return HttpResponse('ok')
+#@login_required
+#@permission_required('add_tipoevento', raise_exception=True)
+@csrf_exempt
+def tipoEventoView(request):
+    if request.method=='POST':
+        received = json.loads(request.body.decode('utf-8'))
+        
+        tipo = received['tipo']
+        equipa = received['equipa']
+        atleta1 = received['atleta1']
+        atleta2 = received['atleta2']
+        zonaC = received['zonaC']
+        zonaB = received['zonaB']
+        novoinst = received['novoinst']
+
+        if models.TipoEvento.objects.filter(tipo=tipo).count() == 0:
+            models.TipoEvento.objects.create(tipo=tipo, equipa=equipa, atleta1=atleta1, atleta2=atleta2, zonaCampo=zonaC, zonaBaliza=zonaB, novoinstante=novoinst)
+            return HttpResponse('ok')
+        else:
+            return HttpResponseBadRequest(content='tipo already exists')
     else:
-        return HttpResponseBadRequest(content='tipo already exists')
+        return HttpResponseBadRequest(content='bad form')
+
+    
 
 
 #@login_required
@@ -776,15 +816,20 @@ def gTiposEventosView(request):
     return JsonResponse(aux, safe=False)
 
 
-@login_required
-@permission_required('add_tiposselecionados', raise_exception=True)
-def tipoSelecionadoView(request, tipo, tecnico):
-    models.TiposSelecionados.objects.create(tecnico=tecnico, tipo=tipo)
+#@login_required
+#@permission_required('add_tiposselecionados', raise_exception=True)
+def tipoSelecionadoView(request, tipo, email):
+    tecnico = get_object_or_404(models.Tecnico, email=email)
+    tipoE = get_object_or_404(models.TipoEvento, id=tipo)
+
+    if models.TiposSelecionados.objects.filter(tecnico=tecnico, tipo=tipoE).count() == 0:
+    	models.TiposSelecionados.objects.create(tecnico=tecnico, tipo=tipoE)
+
     return HttpResponse('ok')
 
 
-@login_required
-@permission_required('delete_tiposselecionados', raise_exception=True)
+#@login_required
+#@permission_required('delete_tiposselecionados', raise_exception=True)
 def dTipoSelecionadoView(request, id):
     tipo = get_object_or_404(models.TiposSelecionados, id=id)
     tipo.delete()
@@ -801,7 +846,8 @@ def gTiposSelecionadosView(request, email):
     for t in tipos:
         tipox = get_object_or_404(models.TipoEvento, tipo=t.tipo)
         new_tipo = {}
-        new_tipo['id'] = tipox.id
+        new_tipo['id'] = t.id
+        new_tipo['idEvento'] = tipox.id
         new_tipo['tipo'] = tipox.tipo
         aux.append(new_tipo)
 

@@ -57,11 +57,11 @@ urlpatterns = [
     path('get_eventos/<int:idJogo>/', views.gEventosView, name='geventos'),
     path('get_evento/<int:id>/', views.gEventoView, name='gevento'),
 
-    path('tipo_evento/<str:tipo>/<bool:equipa>/<bool:atleta1>/<bool:atleta2>/<bool:zonaC>/<bool:zonaB>/<bool:novoinst>/', views.tipoEventoView, name='tipoevento'),
+    path('tipo_evento/', views.tipoEventoView, name='tipoevento'),
     path('get_tipo_evento/<int:id>/', views.gTipoEventoView, name='gtipoevento'),
     path('get_tipos_eventos/', views.gTiposEventosView, name='gtiposeventos'),
 
-    path('tipo_selecionado/<int:tipo>/<int:tecnico>/', views.tipoSelecionadoView, name='tiposelecionado'),
+    path('tipo_selecionado/<int:tipo>/<str:email>/', views.tipoSelecionadoView, name='tiposelecionado'),
     path('del_tipo_selecionado/<int:id>/', views.dTipoSelecionadoView, name='dtiposelecionado'),
     path('get_tipos_selecionados/<str:email>/', views.gTiposSelecionadosView, name='gtiposselecionados'),
 ]

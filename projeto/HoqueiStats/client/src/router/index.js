@@ -6,6 +6,9 @@ import Jogos from '@/components/pages/Jogos'
 import Jogo from '@/components/pages/Jogo'
 import Stats from '@/components/pages/Stats'
 import Convocados from '@/components/pages/Convocados'
+import Definicao from '@/components/pages/Definicao'
+import StatsGame from '@/components/pages/StatsGame'
+import StatsGameLive from '@/components/pages/StatsGameLive'
 
 Vue.use(Router)
 
@@ -35,6 +38,21 @@ export default new Router({
       path: '/convocados',
       name: 'Convocados',
       component: Convocados
+    },
+    {
+      path: '/definicao',
+      name: 'Definicao',
+      component: Definicao
+    },
+    {
+      path: '/statsgame',
+      name: 'StatsGame',
+      component: StatsGame
+    },
+    {
+      path: '/statsgamelive',
+      name: 'StatsGameLive',
+      component: StatsGameLive
     }
   ]
 })
