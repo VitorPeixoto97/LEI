@@ -30,12 +30,13 @@
                 :id="atleta.id"
                 :value="atleta"
                 :disabled="convocados.atletas.length > 9 && convocados.atletas.indexOf(atleta) === -1"> 
-              <label>{{ atleta.camisola }} - {{ atleta.nome }}</label>
+              <input class="txt_conv" v-model.number="atleta.camisola" :disabled="convocados.atletas.indexOf(atleta) === -1">
+              <label>{{ atleta.nome }}</label>
             </li>
           </ul>
           <button class="btn btn-lg btn-primary btn-block text-uppercase"  
                   v-on:click="menuConv = false; convocados.atletas.sort(function(a, b){return a.camisola - b.camisola})" 
-                  :disabled="convocados.atletas.length < 10 && convocados.atletas.indexOf(atleta) === -1">Avançar
+                  :disabled="convocados.atletas.length < 10 && convocados.atletas.indexOf(atleta) === -1 && has_null">Avançar
           </button>
         </v-card>
       </v-container>
@@ -105,39 +106,24 @@ export default {
       }
     },
 
-    addConvocados(){
+    has_null() {
+      var nulls = false
+      for(var atleta in this.atletas){
+        if(atleta.camisola == ''){
+          nulls = true
+          break
+        }
+      }
+      return nulls
+    },
+
+    addConvocados() {
       axios.post(process.env.API_URL + "/server/convocados/", JSON.stringify(this.convocados)).then(response => {
-        axios.get(process.env.API_URL + "/server/confirm_convocados/" + this.$session.get('jogoTab') + "/").then(response => {
-          router.push("/jogo");
-        })
+        router.push("/jogo");
       })
     }
   },
-
-  // computed: {
-  //   sortedAtletas: function() {
-  //     function compare(a, b) {
-  //       if (a.camisola < b.camisola)
-  //         return -1;
-  //       if (a.camisola > b.camisola)
-  //         return 1;
-  //       return 0;
-  //     }
-
-  //     return this.atletas.sort(compare);
-  //   },
-
-  //   sortedConvocados: function() {
-  //     function compare(a, b) {
-  //       if (a.camisola < b.camisola)
-  //         return -1;
-  //       if (a.camisola > b.camisola)
-  //         return 1;
-  //       return 0;
-  //     }
-
-  //     return this.convocados.sort(compare);
-  //   }
-  // }
 }
 </script>
+
+<style src="../../../dist/static/css/index.css">
