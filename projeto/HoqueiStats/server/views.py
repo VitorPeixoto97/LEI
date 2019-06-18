@@ -374,6 +374,7 @@ def gJogosView(request, clube):
             new_jogo['form_nome'] = jogo.formacao.nome
             new_jogo['duracao'] = jogo.duracao
             new_jogo['partes'] = jogo.partes
+            new_jogo['convocados'] = jogo.convocados
             aux.append(new_jogo)
     return JsonResponse(aux, safe=False)
 
@@ -454,12 +455,17 @@ def convocadosView(request):
 
         for atleta in atletas:
             convocado = models.Atleta.objects.get(id=atleta['id'])
+            convocado.camisola = atleta['camisola']
+            convocado.save()
 
             if atleta in inicial:
                 models.Convocado.objects.create(atleta=convocado, jogo=jogo, emCampo=True)
 
             else:
                 models.Convocado.objects.create(atleta=convocado, jogo=jogo, emCampo=False)
+
+        jogo.convocados = False
+        jogo.save()
 
         return HttpResponse('ok')
     else:

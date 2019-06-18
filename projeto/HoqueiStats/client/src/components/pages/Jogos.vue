@@ -54,7 +54,7 @@
             :md-description="'Não foram encontrados jogos para a sua pesquisa.'">
           </md-table-empty-state>
 
-          <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.ativo, item.convocado)">
+          <md-table-row slot="md-table-row" slot-scope="{ item }" style="cursor:pointer" @click="verJogo(item.id, item.ativo, item.convocados)">
             <md-table-cell md-label="#" md-sort-by="id" md-numeric>{{ item.numero }}</md-table-cell>
             <md-table-cell md-label="Local" md-sort-by="casa">{{ item.c }}</md-table-cell>
             <md-table-cell md-label="Adversário" md-sort-by="adv_nome">{{ item.adv_nome }}</md-table-cell>
