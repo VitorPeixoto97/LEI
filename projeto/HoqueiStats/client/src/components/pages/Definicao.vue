@@ -45,6 +45,16 @@
               </p>
             </div>
           </div>
+
+          <div class="row" v-if="userGestor()">
+            <div class="column" style="margin:auto">
+              <p class="justify-center" style="margin:auto">
+                <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" :disabled="criarAtleta || criarGestor || criarTecnico" @click="criarGestor = true">Adicionar Gestor</button>
+                <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" :disabled="criarAtleta || criarGestor || criarTecnico" @click="criarTecnico = true">Adicionar Técnico</button>
+                <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" :disabled="criarAtleta || criarGestor || criarTecnico" @click="criarAtleta = true">Adicionar Atleta</button>
+              </p>
+            </div>
+          </div>
         </v-card>
       </v-container>
 
@@ -52,9 +62,11 @@
         <v-card color="white" class="my-card">
           <div class="row">
             <div class="column" v-if="selecionar">
-              <li v-if="tiposEventos != null" v-for="tipoE in tiposEventos">
-                <b>{{tipoE.id}}</b> {{tipoE.tipo}}
-              </li>
+              <div class="column">
+                <li v-if="tiposEventos != null" v-for="tipoE in tiposEventos">
+                  <b>{{tipoE.id}}</b> {{tipoE.tipo}}
+                </li>
+              </div>
               <div class="column">
                 <form class="review-form" @submit.prevent="submitSelecionado">
                   <div class="field">
@@ -78,6 +90,51 @@
                     <input v-model="novoTipo.novoinst" type="checkbox">novo instante<br>
                     <input type="submit" value="Confirmar">
                     <button @click="criar = false, novoTipo.tipo = null, novoTipo.equipa = false, novoTipo.atleta1 = false, novoTipo.atleta2 = false, novoTipo.zonaCampo = false, novoTipo.zonaBaliza = false, novoTipo.novoinstante = false">Cancelar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="column" v-if="criarAtleta">
+              <div class="column">
+                <li v-if="formacoes != null" v-for="formacao in formacoes">
+                  <b>{{formacao.id}}</b> {{formacao.nome}}
+                </li>
+              </div>
+              <div class="column">
+                <form class="review-form" @submit.prevent="submitAtleta">
+                  <div class="field">
+                    <input v-model="atleta.licenca" class="input" type="text" placeholder="Número de licença" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input v-model="atleta.nome" class="input" type="text" placeholder="Nome" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input v-model="atleta.camisola" class="input" type="text" placeholder="Número de camisola" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input v-model="atleta.formacao" class="input" type="text" placeholder="ID da formacao" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input type="submit" value="Confirmar">
+                    <button @click="criarAtleta = false, atleta.licenca = null, atleta.nome = null, atleta.camisola = null, atleta.formacao = null">Cancelar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="column" v-if="criarTecnico">
+              <div class="column">
+                <form class="review-form" @submit.prevent="submitTecnico">
+                  <div class="field">
+                    <input v-model="tecnico.email" class="input" type="text" placeholder="Email" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input v-model="tecnico.nome" class="input" type="text" placeholder="Nome" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input v-model="tecnico.password" class="input" type="text" placeholder="Password" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input type="submit" value="Confirmar">
+                    <button @click="criarTecnico = false, tecnico.email = null, tecnico.nome = null, tecnico.password = null">Cancelar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="column" v-if="criarGestor">
+              <div class="column">
+                <form class="review-form" @submit.prevent="submitGestor">
+                  <div class="field">
+                    <input v-model="gestor.email" class="input" type="text" placeholder="Email" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input v-model="gestor.nome" class="input" type="text" placeholder="Nome" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input v-model="gestor.password" class="input" type="text" placeholder="Password" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()">
+                    <input type="submit" value="Confirmar">
+                    <button @click="criarGestor = false, gestor.email = null, gestor.nome = null, gestor.password = null">Cancelar</button>
                   </div>
                 </form>
               </div>
@@ -121,7 +178,30 @@ export default {
         zonaC: false,
         zonaB: false,
         novoinst: false
-      }
+      },
+
+      formacoes: null,
+      criarGestor: false,
+      criarTecnico: false,
+      criarAtleta: false,
+      atleta: {
+        licenca: null,
+        nome: null,
+        camisola: null,
+        formacao: null
+      },
+      tecnico: {
+        email: null,
+        nome: null,
+        password: null,
+        clube: null
+      },
+      gestor: {
+        email: null,
+        nome: null,
+        password: null,
+        clube: null
+      },
     }
   },
   mounted: function() {
@@ -145,6 +225,9 @@ export default {
         app.tiposSelecionados = response.data;
         app.searched = app.tiposSelecionados;
       });
+      axios.get(process.env.API_URL + "/server/get_formacoes/" + this.$session.get('user_info').clube + "/").then(response => {
+        app.formacoes = response.data;
+      })
     },
 
     submitSelecionado(){
@@ -173,6 +256,47 @@ export default {
       }
     },
 
+    submitAtleta(){
+      if(this.atleta.licenca != null && this.atleta.nome != null && this.atleta.camisola != null && this.atleta.formacao != null){
+        axios.post(process.env.API_URL + "/server/atleta/", JSON.stringify(this.atleta)).then(response => {
+          router.push('/definicao');
+          this.atleta.licenca = null;
+          this.atleta.nome = null;
+          this.atleta.camisola = null;
+          this.atleta.formacao = null;
+          this.criarAtleta = false;
+        })
+      }
+    },
+
+    submitTecnico(){
+      if(this.tecnico.email != null && this.tecnico.nome != null && this.tecnico.password != null){
+        this.tecnico.clube = this.$session.get('user_info').clube;
+        axios.post(process.env.API_URL + "/server/tecnico/", JSON.stringify(this.tecnico)).then(response => {
+          router.push('/definicao');
+          this.tecnico.email = null;
+          this.tecnico.nome = null;
+          this.tecnico.password = null;
+          this.tecnico.clube = null;
+          this.criarTecnico= false;
+        })
+      }
+    },
+
+    submitGestor(){
+      if(this.gestor.email != null && this.gestor.nome != null && this.gestor.password != null){
+        this.gestor.clube = this.$session.get('user_info').clube;
+        axios.post(process.env.API_URL + "/server/gestor/", JSON.stringify(this.gestor)).then(response => {
+          router.push('/definicao');
+          this.gestor.email = null;
+          this.gestor.nome = null;
+          this.gestor.password = null;
+          this.gestor.clube = null;
+          this.criarGestor= false;
+        })
+      }
+    },
+
     removeSelecionado(id){
       axios.get(process.env.API_URL + "/server/del_tipo_selecionado/" + id + "/").then(response => {
         this.updateTiposSelecionados();
@@ -196,6 +320,12 @@ export default {
 
     userTecnico(){
       if(this.$session.get('user_info').tipo == "tecnico")
+        return true;
+      else return false;
+    },
+
+    userGestor(){
+      if(this.$session.get('user_info').tipo == "gestor")
         return true;
       else return false;
     }

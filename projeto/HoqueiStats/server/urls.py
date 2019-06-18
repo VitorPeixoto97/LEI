@@ -20,14 +20,14 @@ urlpatterns = [
     path('get_clubes/', views.gClubesView, name='gclubes'),
     path('get_clube/<str:id>/', views.gClubeView, name='gclube'),
 
-    path('gestor/<int:clube>/<str:email>/<str:nome>/<str:password>/', views.gestorView, name='gestor'),
+    path('gestor/', views.gestorView, name='gestor'),
 
     path('formacao/<str:clube>/<str:nome>/', views.formacaoView, name='formacao'),
     path('del_formacao/<str:id>/', views.dFormacaoView, name='dformacao'),
     path('get_formacoes/<int:clube>/', views.gFormacoesView, name='gformacoes'),
     path('get_formacao/<int:id>/', views.gFormacaoView, name='gformacao'),
 
-    path('atleta/<int:licenca>/<str:nome>/<str:formacao>/<int:camisola>/', views.atletaView, name='atleta'),
+    path('atleta/', views.atletaView, name='atleta'),
     path('change_atleta/<int:id>/<int:formacao>/<int:camisola>/', views.cAtletaView, name='catleta'),
     path('del_atleta/<int:id>/', views.dAtletaView, name='datleta'),
     path('get_atletas/<int:formacao>/', views.gAtletasView, name='gatletas'),
@@ -35,10 +35,10 @@ urlpatterns = [
     path('get_atletas_suplentes/<int:formacao>/<int:jogo>/', views.gAtletasSuplentesView, name='gatletassuplentes'),
     path('get_atleta/<int:id>/', views.gAtletaView, name='gatleta'),
 
-    path('tecnico/<int:clube>/<str:email>/<str:nome>/<str:password>/', views.tecnicoView, name='tecnico'),
+    path('tecnico/', views.tecnicoView, name='tecnico'),
     path('change_tecnico/<int:id>/<str:grelhaC>/<str:grelhaB>/', views.cTecnicoView, name='ctecnico'),
 
-    path('jogo/<int:clube>/<int:formacao>/<int:formacaoAdv>/<bool:casa>/<date:data>/<time:hora>/<str:tipo>/', views.jogoView, name='jogo'),
+    path('jogo/', views.jogoView, name='jogo'),
     path('change_jogo/<int:idJogo>/<str:grelhaC>/<str:grelhaB>/', views.cJogoView, name='cjogo'),
     path('get_jogos/<str:clube>/', views.gJogosView, name='gjogos'),
     path('get_jogo/<int:id>/', views.gJogoView, name='gjogo'),

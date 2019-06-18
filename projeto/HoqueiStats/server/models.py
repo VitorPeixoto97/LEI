@@ -34,7 +34,7 @@ class Gestor(models.Model):
     email = models.CharField(max_length=200)
     clube = models.ForeignKey(Clube, on_delete=models.CASCADE)
     def __str__(self):
-        return self.nome
+        return self.email
     class Meta:
         verbose_name_plural = 'Gestores'
 
@@ -44,7 +44,7 @@ class Tecnico(models.Model):
     grelhaCampo = models.CharField(max_length=5, default='8x4')
     grelhaBaliza = models.CharField(max_length=5, default='3x3')
     def __str__(self):
-        return self.nome
+        return self.email
     class Meta:
         verbose_name_plural = 'Técnicos'
 

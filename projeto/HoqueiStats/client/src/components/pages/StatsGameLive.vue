@@ -118,8 +118,8 @@
 
     mounted: function() {
       this.checkLoggedIn();
-      this.FetchData();
-      this.bubbles();
+      setInterval(() => {this.FetchData(); this.bubbles()}, 5000);
+
     },
 
     methods: {
@@ -177,6 +177,7 @@
         axios.get(process.env.API_URL + "/server/del_evento/" + id + "/").then(response => {
           this.updateTable();
           this.updateJogo();
+          this.bubbles();
         });
       },
 

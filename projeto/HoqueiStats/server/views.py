@@ -85,8 +85,8 @@ def gClubeView(request, id):
     return JsonResponse(model_to_dict(clube))
 
 
-@login_required
-@permission_required('view_clube', raise_exception=True)
+#@login_required
+#@permission_required('view_clube', raise_exception=True)
 def gClubesView(request):
     clubes = models.Clube.objects.all()
     aux = []
@@ -102,26 +102,28 @@ def gClubesView(request):
     return JsonResponse(aux, safe=False)
 
 
-@login_required
-@permission_required('add_gestor', raise_exception=True)
+#@login_required
+#@permission_required('add_gestor', raise_exception=True)
+@csrf_exempt
 def gestorView(request):
-    form = forms.UserForm(request.POST)
-    if form.is_valid():
-        existe = False
-        for u in User.objects.all():
-            if u.email == form.cleaned_data['email']:
-                existe = True
-        if not existe:
-            group = Group.objects.get('Gestor')
-            user, created = User.objects.create_user(first_name=form.cleaned_data['nome'], username=form.cleaned_data['email'], email=form.cleaned_data['email'], password=form.cleaned_data['password'], groups=group)
-            if created:
-                user.save()
-                models.Gestor.objects.create(email=form.cleaned_data['email'], clube=form.cleaned_data['clube'])
-                return HttpResponse('ok')
-            else:
-                return HttpResponseBadRequest(content='error')
+    if request.method=='POST':
+        received = json.loads(request.body.decode('utf-8'))
+        
+        email = received['email']
+        password = received['password']
+        nome = received['nome']
+        clubeID = received['clube']
+        clube = get_object_or_404(models.Clube, id=clubeID)
+
+        if models.Gestor.objects.filter(email=email).count() == 0:
+            group = Group.objects.get(name='Gestor')
+            user = User.objects.create_user(first_name=nome, username=email, email=email, password=password)
+            user.save()
+            user.groups.add(group)
+            models.Gestor.objects.create(email=email, clube=clube)
+            return HttpResponse('ok')
         else:
-            return HttpResponseBadRequest(content='email already in use')
+            return HttpResponseBadRequest(content='gestor already exists')
     else:
         return HttpResponseBadRequest(content='bad form')
 
@@ -145,8 +147,8 @@ def dFormacaoView(request, id):
     return HttpResponse('ok')
 
 
-@login_required
-@permission_required('view_formacao', raise_exception=True)
+#@login_required
+#@permission_required('view_formacao', raise_exception=True)
 def gFormacoesView(request, clube):
     clubex = get_object_or_404(models.Clube, id=clube)
     formacoes = clubex.formacao_set.all()
@@ -169,15 +171,26 @@ def gFormacaoView(request, id):
     return JsonResponse(model_to_dict(formacao))
 
 
-@login_required
-@permission_required('add_atleta', raise_exception=True)
-def atletaView(request, licenca, nome, formacao, camisola):
-    formacaox = get_object_or_404(models.Formacao, id=formacao)
-    if formacaox.atleta_set.get(licenca=licenca) is None:
-        models.Atleta.objects.create(nome=nome, formacao=formacao, licensa=licenca, camisola=camisola)
-        return HttpResponse('ok')
+#@login_required
+#@permission_required('add_atleta', raise_exception=True)
+@csrf_exempt
+def atletaView(request):
+    if request.method=='POST':
+        received = json.loads(request.body.decode('utf-8'))
+        
+        licenca = received['licenca']
+        camisola = received['camisola']
+        nome = received['nome']
+        formID = received['formacao']
+        formacao = get_object_or_404(models.Formacao, id=formID)
+
+        if models.Atleta.objects.filter(licenca=licenca).count() == 0:
+            models.Atleta.objects.create(nome=nome, formacao=formacao, licenca=licenca, camisola=camisola)
+            return HttpResponse('ok')
+        else:
+            return HttpResponseBadRequest(content='atleta already exists')
     else:
-        return HttpResponseBadRequest(content='atleta already exists')
+        return HttpResponseBadRequest(content='bad form')
 
 
 @login_required
@@ -258,27 +271,28 @@ def gAtletaView(request, id):
     return JsonResponse(model_to_dict(atleta))
 
 
-@login_required
-@permission_required('add_tecnico', raise_exception=True)
-#ALTERAR ISTO, JÁ NÃO ESTAMOS A USAR FORMS
+#@login_required
+#@permission_required('add_tecnico', raise_exception=True)
+@csrf_exempt
 def tecnicoView(request):
-    form = forms.UserForm(request.POST)
-    if form.is_valid():
-        existe = False
-        for u in User.objects.all():
-            if u.email == form.cleaned_data['email']:
-                existe = True
-        if not existe:
-            group = Group.objects.get('Tecnico')
-            user, created = User.objects.create_user(first_name=form.cleaned_data['nome'], username=form.cleaned_data['email'], email=form.cleaned_data['email'], password=form.cleaned_data['password'], groups=group)
-            if created:
-                user.save()
-                models.Tecnico.objects.create(email=form.cleaned_data['email'], clube=form.cleaned_data['clube'])
-                return HttpResponse('ok')
-            else:
-                return HttpResponseBadRequest(content='error')
+    if request.method=='POST':
+        received = json.loads(request.body.decode('utf-8'))
+        
+        email = received['email']
+        password = received['password']
+        nome = received['nome']
+        clubeID = received['clube']
+        clube = get_object_or_404(models.Clube, id=clubeID)
+
+        if models.Tecnico.objects.filter(email=email).count() == 0:
+            group = Group.objects.get(name='Tecnico')
+            user = User.objects.create_user(first_name=nome, username=email, email=email, password=password)
+            user.save()
+            user.groups.add(group)
+            models.Tecnico.objects.create(email=email, clube=clube)
+            return HttpResponse('ok')
         else:
-            return HttpResponseBadRequest(content='email already in use')
+            return HttpResponseBadRequest(content='tecnico already exists')
     else:
         return HttpResponseBadRequest(content='bad form')
 
@@ -290,11 +304,27 @@ def cTecnicoView(request, id, grelhaC, grelhaB):
     return HttpResponse('ok')
 
 
-@login_required
-@permission_required('add_jogo', raise_exception=True)
-def jogoView(request, clube, formacao, formacaoAdv, casa, data, hora, tipo):
-    models.Jogo.objects.create(ipo=tipo, clube=clube, formacao=formacao, adversario=formacaoAdv, casa=casa, data=data, hora=hora)
-    return HttpResponse('ok')
+#@login_required
+#@permission_required('add_jogo', raise_exception=True)
+@csrf_exempt
+def jogoView(request):
+    if request.method=='POST':
+        received = json.loads(request.body.decode('utf-8'))
+        
+        numero = received['numero']
+        casa = received['casa']
+        data = received['data']
+        hora = received['hora']
+        tipo = received['tipo']
+        formID = received['formacao']
+        formacao = get_object_or_404(models.Formacao, id=formID)
+        formAdvID = received['formacaoAdv']
+        formacaoAdv = get_object_or_404(models.Formacao, id=formAdvID)
+
+        models.Jogo.objects.create(tipo=tipo, formacao=formacao, adversario=formacaoAdv, casa=casa, data=data, hora=hora, numero=numero, grelhaCampo="8x4", grelhaBaliza="3x3")
+        return HttpResponse('ok')
+    else:
+        return HttpResponseBadRequest(content='bad form')
 
 
 @login_required

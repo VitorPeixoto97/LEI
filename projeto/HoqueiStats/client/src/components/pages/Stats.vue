@@ -271,6 +271,7 @@ export default {
       axios.get(process.env.API_URL + "/server/del_evento/" + id + "/").then(response => {
         this.updateTable();
         this.updateJogo();
+        this.bubbles();
       });
     },
 
@@ -387,6 +388,7 @@ export default {
           router.push("/stats");
           this.updateTable();
           this.updateJogo();
+          this.bubbles();
           this.tipo=null;
           this.evento_inicial = null;
           this.evento.id = null;
@@ -400,8 +402,6 @@ export default {
           this.evento.novoinstante = null;
           this.edit = false;
         }).catch(e => {});
-
-        console.log("refresh");
       //}
     }
   } 
