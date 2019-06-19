@@ -23,13 +23,11 @@ urlpatterns = [
     path('gestor/', views.gestorView, name='gestor'),
 
     path('formacao/', views.formacaoView, name='formacao'),
-    path('del_formacao/<str:id>/', views.dFormacaoView, name='dformacao'),
     path('get_formacoes/<int:clube>/', views.gFormacoesView, name='gformacoes'),
     path('get_formacao/<int:id>/', views.gFormacaoView, name='gformacao'),
 
     path('atleta/', views.atletaView, name='atleta'),
     path('change_atleta/', views.cAtletaView, name='catleta'),
-    path('del_atleta/<int:id>/', views.dAtletaView, name='datleta'),
     path('get_atletas/<int:formacao>/', views.gAtletasView, name='gatletas'),
     path('get_atletas_campo/<int:formacao>/<int:jogo>/', views.gAtletasEmCampoView, name='gatletascampo'),
     path('get_atletas_suplentes/<int:formacao>/<int:jogo>/', views.gAtletasSuplentesView, name='gatletassuplentes'),
@@ -45,7 +43,6 @@ urlpatterns = [
     path('end_jogo/<int:id>/', views.endJogoView, name='ejogo'),
     path('confirm_convocados/<int:id>/', views.confirmConvocadosView, name='confjogo'),
 
-    path('convocado/<int:jogo>/<int:atleta>/<bool:emCampo>/', views.convocadoView, name='convocado'),
     path('convocados/', views.convocadosView, name='convocados'),
     path('change_convocado/<int:jogo>/<int:atleta>/<bool:emCampo>/', views.cConvocadoView, name='cconvocado'),
     path('get_convocados/<int:idJogo>/', views.gConvocadosView, name='gconvocados'),

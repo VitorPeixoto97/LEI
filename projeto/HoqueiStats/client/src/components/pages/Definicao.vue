@@ -375,7 +375,7 @@ export default {
 
     getAtletas(){
       if(this.antigaFormacao != null){
-        axios.get(process.env.API_URL + "server/get_atletas/" + this.antigaFormacao + "/").then(response => {
+        axios.get(process.env.API_URL + "/server/get_atletas/" + this.antigaFormacao + "/").then(response => {
           this.sugestaoAtletas = response.data;
         })
       }

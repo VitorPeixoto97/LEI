@@ -148,14 +148,6 @@ def formacaoView(request):
         return HttpResponseBadRequest(content='bad form')
 
 
-@login_required
-@permission_required('delete_formacao', raise_exception=True)
-def dFormacaoView(request, id):
-    formacao = get_object_or_404(models.Formacao, id=id)
-    formacao.delete()
-    return HttpResponse('ok')
-
-
 #@login_required
 #@permission_required('view_formacao', raise_exception=True)
 def gFormacoesView(request, clube):
@@ -171,13 +163,6 @@ def gFormacoesView(request, clube):
         aux.append(new_formacao)
 
     return JsonResponse(aux, safe=False)
-
-
-@login_required
-@permission_required('view_formacao', raise_exception=True)
-def gFormacaoView(request, id):
-    formacao = get_object_or_404(models.Formacao, id=id)
-    return JsonResponse(model_to_dict(formacao))
 
 
 #@login_required
@@ -220,14 +205,6 @@ def cAtletaView(request):
             return HttpResponse('ok')  
     else:
         return HttpResponseBadRequest(content='bad form')
-
-
-@login_required
-@permission_required('delete_atleta', raise_exception=True)
-def dAtletaView(request, id):
-    atleta = get_object_or_404(models.Atleta, id=id)
-    atleta.delete()
-    return HttpResponse('ok')
 
 
 #@login_required
@@ -285,13 +262,6 @@ def gAtletasSuplentesView(request, formacao, jogo):
                 aux.append(new_atleta)
 
     return JsonResponse(aux, safe=False)
-
-
-@login_required
-@permission_required('view_atleta', raise_exception=True)
-def gAtletaView(request, id):
-    atleta = get_object_or_404(models.Atleta, id=id)
-    return JsonResponse(model_to_dict(atleta))
 
 
 #@login_required
@@ -441,9 +411,11 @@ def gJogoView(request, id):
     
     return JsonResponse(new_jogo)
 
+
 def confirmConvocadosView(request, id):
     models.Jogo.objects.filter(id=id).update(convocados=False)
     return HttpResponse('ok')
+
 
 def gResultado(id):
     jogo = get_object_or_404(models.Jogo, id=id)
@@ -459,13 +431,6 @@ def gResultado(id):
             golosF+=1
     return str(golosC)+"-"+str(golosF) 
 
-
-
-@login_required
-@permission_required('add_convocado', raise_exception=True)
-def convocadoView(request, jogo, atleta, emCampo):
-    models.Convocado.objects.create(atleta=atleta, jogo=jogo, emCampo=emCampo)
-    return HttpResponse('ok')
 
 @csrf_exempt
 def convocadosView(request):
@@ -493,30 +458,6 @@ def convocadosView(request):
         return HttpResponse('ok')
     else:
         return HttpResponseBadRequest(content='bad form')
-
-@login_required
-@permission_required('change_convocado', raise_exception=True)
-def cConvocadoView(request, jogo, atleta, emCampo):
-    models.Convocado.objects.filter(atleta=atleta, jogo=jogo).update(emCampo=emCampo)
-    return HttpResponse('ok')
-
-
-@login_required
-@permission_required('view_convocado', raise_exception=True)
-def gConvocadosView(request, idJogo):
-    jogo = get_object_or_404(models.Jogo, id=idJogo)
-    convocados = jogo.convocado_set.all()
-    aux = []
-
-    for conv in convocados:
-        new_convocado = {}
-        new_convocado['id'] = conv.id
-        new_convocado['atleta'] = conv.atleta.id
-        new_convocado['jogo'] = conv.jogo.id
-        new_convocado['emCampo'] = conv.emCampo
-        aux.append(new_convocado)
-
-    return JsonResponse(aux, safe=False)
 
 
 #@login_required
