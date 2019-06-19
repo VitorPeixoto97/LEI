@@ -30,6 +30,5 @@ urlpatterns = [
     path('rest/', include(router.urls)),
     path('auth/obtain/', obtain_jwt_token),
     path('auth/refresh/', refresh_jwt_token),
-    path('accounts/', include('django.contrib.auth.urls')),
-   #url(r'^accounts/login/$', LoginView.as_view(template_name='users/login.html')),
+    path('accounts/', include('django.contrib.auth.urls'))
 ]

@@ -12,13 +12,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 
-class IndexView(generic.ListView):
-	template_name = 'index.html'
-	context_object_name = 'club_list'
-	def get_queryset(self):
-		return models.Clube.objects.order_by('-nome')[:5]
-
-
 class PostsView(ListAPIView):
     authentication_class = (JSONWebTokenAuthentication,) # Don't forget to add a 'comma' after first element to make it a tuple
     permission_classes = (IsAuthenticated,)

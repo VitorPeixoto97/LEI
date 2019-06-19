@@ -1,17 +1,8 @@
 from django.urls import include, path, register_converter
-from . import converters, views
-from django.views.generic import TemplateView, RedirectView
-
-register_converter(converters.BoolConverter, 'bool')
-register_converter(converters.DateConverter, 'date')
-register_converter(converters.TimeConverter, 'time')
+from . import views
 
 app_name = 'server'
 urlpatterns = [
-
-    path('clubes/', TemplateView.as_view(template_name='clubes.html')),
-    path('jogos/', TemplateView.as_view(template_name='jogos.html')),
-
     path('info_user/<str:email>/', views.infoUserView, name='info'),
     path('adversario_nome/<int:form_id>/', views.advNome, name='adversarionome'),
 

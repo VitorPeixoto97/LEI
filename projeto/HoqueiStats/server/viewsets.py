@@ -1,6 +1,5 @@
 import django_filters.rest_framework
 from rest_framework import viewsets
-from .models import Clube, Atleta
 from .serializers import *
 
 
