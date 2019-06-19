@@ -93,15 +93,25 @@
                       Data   <input v-model="jogo.data" class="input" type="date" v-on:focus="selForm = false, selClAdv = false, selFormAdv = false">
                       Hora   <input v-model="hora" type="number" min="0" max="23" placeholder="00">:<input v-model="minutos" type="number" min="0" max="59" placeholder="00">
                       <br>
-                      <select v-model="jogo.tipo">
+                        <div class="column">
+                          <multiselect v-model="jogo.tipo" placeholder="Selecione tipo de competição" :options="typeOptions" :searchable="false" :close-on-select="true" :show-labels="false">
+                          </multiselect>
+                      </div>
+                      
+                      <!-- <select class="jogo_select" v-model="jogo.tipo">
                         <option value="Competição">Competição</option>
                         <option value="Amigável">Amigável</option>
-                      </select>
+                      </select> -->
                       <br>
-                      <select v-model="local">
+                      <div class="column">
+                        <multiselect v-model="local" placeholder="Selecione tipo de jogo" :options="gameOptions" :searchable="false" :close-on-select="true" :show-labels="false">
+                        </multiselect>
+                      </div>
+                      
+                      <!-- <select class="jogo_select" v-model="local">
                         <option value="Casa">Casa</option>
                         <option value="Fora">Fora</option>
-                      </select>
+                      </select> -->
                       <br>
                       <input type="submit" value="Confirmar">
                       <button @click="criarJogo = false, jogo.formacao = null, clubeAdv = null, jogo.formacaoAdv = null, jogo.tipo = null, local = null, jogo.data = null, jogo.hora = null">Cancelar</button>
@@ -150,6 +160,7 @@
 import router from "../../router";
 import LayoutBasic from '../layouts/Basic.vue'
 import axios from 'axios';
+import Multiselect from 'vue-multiselect'
 const toLower = text => {
   return text.toString().toLowerCase()
 }
@@ -163,7 +174,8 @@ const searchByName = (items, term) => {
 export default {
   name: 'Jogos',
   components: {
-      LayoutBasic
+      LayoutBasic,
+      Multiselect
   },
   data() {
       return {
@@ -191,7 +203,9 @@ export default {
         local: null,
         clubes: null,
         hora:null,
-        minutos:null
+        minutos:null,
+        gameOptions: ['Casa','Fora'],
+        typeOptions: ['Amigável', 'Competição']
       }
   },
   mounted: function() {
