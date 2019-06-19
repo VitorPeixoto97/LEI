@@ -57,32 +57,24 @@ def advNome(request, form_id):
   return JsonResponse(model_to_dict(formacao.clube))
 
 
-@login_required
-@permission_required('add_clube', raise_exception=True)
-def clubeView(request, nome, cor, simbolo):
-    existe = False
-    for clube in models.Clube.objects.all():
-        if clube.nome == nome:
-            existe = True
-    if not existe:
-        models.Clube.objects.create(nome=nome, cor=cor, simbolo=simbolo)
-        return HttpResponse('ok')
+#@login_required
+#@permission_required('add_clube', raise_exception=True)
+@csrf_exempt
+def clubeView(request):
+  if request.method=='POST':
+    received = json.loads(request.body.decode('utf-8'))
+
+    nome = received['nome']
+    cor = received['cor']
+    simbolo = received['simbolo']
+
+    if models.Clube.objects.filter(nome=nome).count() == 0:
+      models.Clube.objects.create(nome=nome, cor=cor, simbolo=simbolo)
+      return HttpResponse('ok')
     else:
-        return HttpResponseBadRequest(content='clube already exists')
-
-
-@login_required
-@permission_required('change_clube', raise_exception=True)
-def cClubeView(request, id, cor, simbolo):
-    models.Clube.objects.filter(id=id).update(cor=cor, simbolo=simbolo)
-    return HttpResponse('ok')
-
-
-@login_required
-@permission_required('view_clube', raise_exception=True)
-def gClubeView(request, id):
-    clube = get_object_or_404(models.Clube, id=id)
-    return JsonResponse(model_to_dict(clube))
+      return HttpResponseBadRequest(content='clube already exists')
+  else:
+    return HttpResponseBadRequest(content='bad form')
 
 
 #@login_required
@@ -290,11 +282,24 @@ def tecnicoView(request):
         return HttpResponseBadRequest(content='bad form')
 
 
-@login_required
-@permission_required('change_tecnico', raise_exception=True)
-def cTecnicoView(request, id, grelhaC, grelhaB):
-    models.Tecnico.objects.filter(id=id).update(grelhaCampo=grelhaC, grelhaB=grelhaB)
-    return HttpResponse('ok')
+#@login_required
+#@permission_required('change_tecnico', raise_exception=True)
+@csrf_exempt
+def cTecnicoView(request):
+    if request.method=='POST':
+        received = json.loads(request.body.decode('utf-8'))
+
+        email = received['email']
+        grelhaC = received['grelhaC']
+        grelhaB = received['grelhaB']
+
+        if models.Tecnico.objects.filter(email=email).count() == 0:
+            return HttpResponseBadRequest(content='tecnico does not exists')
+        else:
+            models.Tecnico.objects.filter(email=email).update(grelhaCampo=grelhaC, grelhaBaliza=grelhaB)
+            return HttpResponse('ok')
+    else:
+        return HttpResponseBadRequest(content='bad form')
 
 
 #@login_required
@@ -303,7 +308,7 @@ def cTecnicoView(request, id, grelhaC, grelhaB):
 def jogoView(request):
     if request.method=='POST':
         received = json.loads(request.body.decode('utf-8'))
-        
+
         numero = received['numero']
         casa = received['casa']
         data = received['data']
@@ -320,12 +325,24 @@ def jogoView(request):
         return HttpResponseBadRequest(content='bad form')
 
 
-@login_required
-@permission_required('change_jogo', raise_exception=True)
-#nao esta atualizado com todos os novos camos de um jogo
+#@login_required
+#@permission_required('change_jogo', raise_exception=True)
+@csrf_exempt
 def cJogoView(request, idJogo, grelhaC, grelhaB):
-    models.Jogo.objects.filter(id=idJogo).update(grelhaCampo=grelhaC, grelhaBaliza=grelhaB)
-    return HttpResponse('ok')
+    if request.method=='POST':
+        received = json.loads(request.body.decode('utf-8'))
+
+        id = received['id']
+        grelhaC = received['grelhaC']
+        grelhaB = received['grelhaB']
+
+        if models.Jogo.objects.filter(id=id).count() == 0:
+            return HttpResponseBadRequest(content='jogo does not exists')
+        else:
+            models.Jogo.objects.filter(id=id).update(grelhaCampo=grelhaC, grelhaBaliza=grelhaB)
+            return HttpResponse('ok')
+    else:
+      return HttpResponseBadRequest(content='bad form')
 
 
 #@login_required

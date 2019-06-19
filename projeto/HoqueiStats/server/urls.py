@@ -15,37 +15,31 @@ urlpatterns = [
     path('info_user/<str:email>/', views.infoUserView, name='info'),
     path('adversario_nome/<int:form_id>/', views.advNome, name='adversarionome'),
 
-    path('clube/<str:nome>/<str:cor>/<str:simbolo>/', views.clubeView, name='clube'),
-    path('change_clube/<int:id>/<str:cor>/<str:simbolo>/', views.cClubeView, name='cclube'),
+    path('clube/', views.clubeView, name='clube'),
     path('get_clubes/', views.gClubesView, name='gclubes'),
-    path('get_clube/<str:id>/', views.gClubeView, name='gclube'),
 
     path('gestor/', views.gestorView, name='gestor'),
 
     path('formacao/', views.formacaoView, name='formacao'),
     path('get_formacoes/<int:clube>/', views.gFormacoesView, name='gformacoes'),
-    path('get_formacao/<int:id>/', views.gFormacaoView, name='gformacao'),
 
     path('atleta/', views.atletaView, name='atleta'),
     path('change_atleta/', views.cAtletaView, name='catleta'),
     path('get_atletas/<int:formacao>/', views.gAtletasView, name='gatletas'),
     path('get_atletas_campo/<int:formacao>/<int:jogo>/', views.gAtletasEmCampoView, name='gatletascampo'),
     path('get_atletas_suplentes/<int:formacao>/<int:jogo>/', views.gAtletasSuplentesView, name='gatletassuplentes'),
-    path('get_atleta/<int:id>/', views.gAtletaView, name='gatleta'),
 
     path('tecnico/', views.tecnicoView, name='tecnico'),
-    path('change_tecnico/<int:id>/<str:grelhaC>/<str:grelhaB>/', views.cTecnicoView, name='ctecnico'),
+    path('change_tecnico/', views.cTecnicoView, name='ctecnico'),
 
     path('jogo/', views.jogoView, name='jogo'),
-    path('change_jogo/<int:idJogo>/<str:grelhaC>/<str:grelhaB>/', views.cJogoView, name='cjogo'),
+    path('change_jogo/', views.cJogoView, name='cjogo'),
     path('get_jogos/<str:clube>/', views.gJogosView, name='gjogos'),
     path('get_jogo/<int:id>/', views.gJogoView, name='gjogo'),
     path('end_jogo/<int:id>/', views.endJogoView, name='ejogo'),
     path('confirm_convocados/<int:id>/', views.confirmConvocadosView, name='confjogo'),
 
     path('convocados/', views.convocadosView, name='convocados'),
-    path('change_convocado/<int:jogo>/<int:atleta>/<bool:emCampo>/', views.cConvocadoView, name='cconvocado'),
-    path('get_convocados/<int:idJogo>/', views.gConvocadosView, name='gconvocados'),
 
     path('evento/', views.eventoView, name='evento'),
     path('change_evento/', views.cEventoView, name='cevento'),

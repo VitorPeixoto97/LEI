@@ -1,17 +1,21 @@
-INSERT INTO "public"."auth_group" ("id", "name") VALUES ('2', 'Administrador'),
+INSERT INTO "public"."auth_group" ("id", "name") VALUES 
+('2', 'Administrador'),
 ('3', 'Gestor'),
 ('4', 'Tecnico');
 
-INSERT INTO "public"."auth_user" ("id", "password", "last_login", "is_superuser", "username", "first_name", "last_name", "email", "is_staff", "is_active", "date_joined") VALUES ('1', 'pbkdf2_sha256$150000$QUvpelrwAw7r$5HPQvgbVxeKrMNZIdpuB1d+nEZELBgq/ETJIdsopsTs=', '2019-05-08 10:57:14.273069+01', 't', 'admin@alunos.uminho.pt', '', '', 'admin@alunos.uminho.pt', 't', 't', '2019-04-10 19:22:09.457293+01'),
+INSERT INTO "public"."auth_user" ("id", "password", "last_login", "is_superuser", "username", "first_name", "last_name", "email", "is_staff", "is_active", "date_joined") VALUES 
+('1', 'pbkdf2_sha256$150000$QUvpelrwAw7r$5HPQvgbVxeKrMNZIdpuB1d+nEZELBgq/ETJIdsopsTs=', '2019-05-08 10:57:14.273069+01', 't', 'admin@alunos.uminho.pt', '', '', 'admin@alunos.uminho.pt', 't', 't', '2019-04-10 19:22:09.457293+01'),
 ('4', 'pbkdf2_sha256$150000$avHO5ClLaaTq$pgcBGWBIxCcnYS8ca0SaykMAo6cbIq+AP2xIKvhS/ks=', NULL, 'f', 'a75281@alunos.uminho.pt', 'Salete', 'Teixeira', 'a75281@alunos.uminho.pt', 'f', 't', '2019-04-27 19:15:18+01'),
 ('5', 'pbkdf2_sha256$150000$aDR8TPo3LfI8$+oZktFupyv9MEpf1POz1HnBwk4zlq0sVpLHMoQvVTJk=', NULL, 'f', 'a77531@alunos.uminho.pt', 'Daniel', 'Maia', 'a77531@alunos.uminho.pt', 'f', 't', '2019-04-27 19:16:31+01'),
 ('6', 'pbkdf2_sha256$150000$GVbYWFIMaCO2$4vZPAYsLFdd1BNh6CoLCqSQ44L5eS/gVGsIVe9Zai1s=', '2019-04-27 23:57:57.226051+01', 'f', 'a79175@alunos.uminho.pt', 'Vitor', 'Peixoto', 'a79175@alunos.uminho.pt', 'f', 't', '2019-04-27 19:17:15+01');
 
-INSERT INTO "public"."auth_user_groups" ("id", "user_id", "group_id") VALUES ('3', '4', '2'),
+INSERT INTO "public"."auth_user_groups" ("id", "user_id", "group_id") VALUES 
+('3', '4', '2'),
 ('4', '5', '3'),
 ('5', '6', '4');
 
-INSERT INTO "public"."auth_group_permissions" ("id", "group_id", "permission_id") VALUES ('9', '2', '41'),
+INSERT INTO "public"."auth_group_permissions" ("id", "group_id", "permission_id") VALUES 
+('9', '2', '41'),
 ('10', '2', '13'),
 ('11', '2', '53'),
 ('12', '2', '56'),
@@ -62,7 +66,8 @@ INSERT INTO "public"."auth_group_permissions" ("id", "group_id", "permission_id"
 ('58', '4', '56'),
 ('59', '4', '61');
 
-INSERT INTO "public"."server_clube" ("id", "nome", "cor", "simbolo") VALUES ('1', 'FC Porto', '#0F579E', 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f1/FC_Porto.svg/1200px-FC_Porto.svg.png'),
+INSERT INTO "public"."server_clube" ("id", "nome", "cor", "simbolo") VALUES 
+('1', 'FC Porto', '#0F579E', 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f1/FC_Porto.svg/1200px-FC_Porto.svg.png'),
 ('2', 'SL Benfica', '#EF2F22', 'https://www.zerozero.pt/img/logos/equipas/4_imgbank.png'),
 ('3', 'Sporting CP', '#1B6F47', 'https://seeklogo.com/images/S/sporting-lisbon-sporting-clube-de-portugal-logo-87718592BF-seeklogo.com.png'),
 ('4', 'UD Oliveirense', '#E0241E', 'https://www.zerozero.pt/img/logos/equipas/2199_imgbank.png'),
@@ -78,7 +83,8 @@ INSERT INTO "public"."server_clube" ("id", "nome", "cor", "simbolo") VALUES ('1'
 ('14', 'SC Marinhense', '#00713C', 'https://www.zerozero.pt/img/logos/equipas/214133_imgbank.png'),
 ('15', 'FC Barcelona', '#7F001F', 'http://pngimg.com/uploads/fcb_logo/fcb_logo_PNG25.png');
 
-INSERT INTO "public"."server_formacao" ("id", "nome", "clube_id") VALUES ('1', 'Séniores', '1'),
+INSERT INTO "public"."server_formacao" ("id", "nome", "clube_id") VALUES 
+('1', 'Séniores', '1'),
 ('2', 'Séniores', '2'),
 ('3', 'Séniores', '3'),
 ('4', 'Séniores', '4'),
@@ -103,9 +109,14 @@ INSERT INTO "public"."server_jogo" ("id", "tipo", "casa", "data", "hora", "grelh
 ('5', 'Competição', 't', '2019-05-25', '18:00:00', '8x4', '3x3', '9', '1', '5', 't', '10', '4', 't'),
 ('6', 'Competição', 't', '2019-03-16', '17:00:00', '8x4', '3x3', '3', '1', '6', 'f', '20', '2', 't');
 
-INSERT INTO "public"."server_tecnico" ("id", "email", "grelhaCampo", "grelhaBaliza", "clube_id") VALUES ('0', 'a79175@alunos.uminho.pt', '8x4', '3x3', '1');
+INSERT INTO "public"."server_tecnico" ("id", "email", "grelhaCampo", "grelhaBaliza", "clube_id") VALUES 
+('0', 'a79175@alunos.uminho.pt', '8x4', '3x3', '1');
 
-INSERT INTO "public"."server_atleta" ("id", "nome", "licenca", "camisola", "formacao_id") VALUES ('0', 'Carles Grau', '0', '1', '1'),
+INSERT INTO "public"."server_gestor" ("id", "email", "clube_id") VALUES 
+('0', 'a77531@alunos.uminho.pt', '1');
+
+INSERT INTO "public"."server_atleta" ("id", "nome", "licenca", "camisola", "formacao_id") VALUES 
+('0', 'Carles Grau', '0', '1', '1'),
 ('1', 'Nélson Filipe', '1', '10', '1'),
 ('2', 'Telmo Pinto', '2', '5', '1'),
 ('3', 'Reinaldo García', '3', '57', '1'),
@@ -131,7 +142,8 @@ INSERT INTO "public"."server_atleta" ("id", "nome", "licenca", "camisola", "form
 ('23','Carlos Nicolía','23','5','2'),
 ('24','Lucas Ordóñez','24','9','2');
 
-INSERT INTO "public"."server_tipoevento" ("id", "tipo", "atleta1", "atleta2", "zonaCampo", "zonaBaliza", "novoinstante", "equipa") VALUES ('0', 'Golo', 't', 'f', 't', 't', 'f', 't'),
+INSERT INTO "public"."server_tipoevento" ("id", "tipo", "atleta1", "atleta2", "zonaCampo", "zonaBaliza", "novoinstante", "equipa") VALUES 
+('0', 'Golo', 't', 'f', 't', 't', 'f', 't'),
 ('1', 'Remate à baliza', 't', 'f', 't', 't', 'f', 't'),
 ('2', 'Remate intercetado', 't', 'f', 't', 'f', 'f', 't'),
 ('3', 'Remate fora', 't', 'f', 't', 'f', 'f', 't'),
@@ -154,10 +166,6 @@ INSERT INTO "public"."server_tiposselecionados" ("id", "tecnico_id", "tipo_id") 
 ('1', '0', '1'),
 ('2', '0', '4'),
 ('3', '0', '15');
-
--- INSERT INTO "public"."server_convocado" ("id", "emCampo", "atleta_id", "jogo_id") VALUES ('1', 't', '0', '5'),
--- ('2', 't', '1', '5'),
--- ('3', 'f', '2', '5');
 
 INSERT INTO "public"."server_evento" ("id", "zonaCampo", "zonaBaliza", "instante", "novoinstante", "timestamp", "atleta1_id", "atleta2_id", "equipa_id", "jogo_id", "tipo_id", "parte", "sinalizado") VALUES 
 ('0', '6', '9', '00:05:12', NULL, '2019-03-16 17:05:14.347796+00', '0', NULL, '1', '6', '0', '1', 't'),
