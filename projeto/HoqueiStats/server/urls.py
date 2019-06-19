@@ -22,13 +22,13 @@ urlpatterns = [
 
     path('gestor/', views.gestorView, name='gestor'),
 
-    path('formacao/<str:clube>/<str:nome>/', views.formacaoView, name='formacao'),
+    path('formacao/', views.formacaoView, name='formacao'),
     path('del_formacao/<str:id>/', views.dFormacaoView, name='dformacao'),
     path('get_formacoes/<int:clube>/', views.gFormacoesView, name='gformacoes'),
     path('get_formacao/<int:id>/', views.gFormacaoView, name='gformacao'),
 
     path('atleta/', views.atletaView, name='atleta'),
-    path('change_atleta/<int:id>/<int:formacao>/<int:camisola>/', views.cAtletaView, name='catleta'),
+    path('change_atleta/', views.cAtletaView, name='catleta'),
     path('del_atleta/<int:id>/', views.dAtletaView, name='datleta'),
     path('get_atletas/<int:formacao>/', views.gAtletasView, name='gatletas'),
     path('get_atletas_campo/<int:formacao>/<int:jogo>/', views.gAtletasEmCampoView, name='gatletascampo'),

@@ -49,9 +49,11 @@
           <div class="row" v-if="userGestor()">
             <div class="column" style="margin:auto">
               <p class="justify-center" style="margin:auto">
-                <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" :disabled="criarAtleta || criarGestor || criarTecnico" @click="criarGestor = true">Adicionar Gestor</button>
-                <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" :disabled="criarAtleta || criarGestor || criarTecnico" @click="criarTecnico = true">Adicionar Técnico</button>
-                <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" :disabled="criarAtleta || criarGestor || criarTecnico" @click="criarAtleta = true">Adicionar Atleta</button>
+                <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" :disabled="criarAtleta || criarGestor || criarTecnico || criarFormacao || alterarFormacao" @click="criarGestor = true">Adicionar Gestor</button>
+                <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" :disabled="criarAtleta || criarGestor || criarTecnico || criarFormacao || alterarFormacao" @click="criarTecnico = true">Adicionar Técnico</button>
+                <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" :disabled="criarAtleta || criarGestor || criarTecnico || criarFormacao || alterarFormacao" @click="criarAtleta = true">Adicionar Atleta</button>
+                <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" :disabled="criarAtleta || criarGestor || criarTecnico || criarFormacao || alterarFormacao" @click="criarFormacao = true">Adicionar Formacao</button>
+                <button class="btn btn-lg btn-primary btn-block text-uppercase btn-timer" style="margin:auto" :disabled="criarAtleta || criarGestor || criarTecnico || criarFormacao || alterarFormacao" @click="alterarFormacao = true">Mudar Formação Atleta</button>
               </p>
             </div>
           </div>
@@ -139,6 +141,40 @@
                 </form>
               </div>
             </div>
+            <div class="column" v-if="criarFormacao">
+              <div class="column">
+                <form class="review-form" @submit.prevent="submitFormacao">
+                  <div class="field">
+                    <input v-model="formacao.nome" class="input" type="text" placeholder="Nome da nova formação">
+                    <input type="submit" value="Confirmar">
+                    <button @click="criarFormacao = false, formacao.nome = null">Cancelar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="column" v-if="alterarFormacao">
+              <div class="column" v-if="selF">
+                <li v-if="formacoes != null" v-for="formacao in formacoes">
+                  <b>{{formacao.id}}</b> {{formacao.nome}}
+                </li>
+              </div>
+              <div class="column" v-if="selA">
+                <li v-if="sugestaoAtletas != null" v-for="atleta in sugestaoAtletas">
+                  <b>{{atleta.licenca}}</b> {{atleta.nome}}
+                </li>
+              </div>
+              <div class="column">
+                <form class="review-form" @submit.prevent="submitAlteracao">
+                  <div class="field">
+                    <input v-model="antigaFormacao" class="input" type="text" placeholder="Formação atual" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selF=true, selA=false">
+                    <input v-model="novoAtleta.licenca" class="input" type="text" placeholder="Número de licença do atleta" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selF=false, selA=true, getAtletas()">
+                    <input v-model="novoAtleta.formacao" class="input" type="text" placeholder="Nova formação" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selF=true, selA=false">
+                    <input type="submit" value="Confirmar">
+                    <button @click="alterarFormacao = false, selA = false, selF = false, sugestaoAtletas = null, novoAtleta.licenca = null, novoAtleta.formacao = null, antigaFormacao = null">Cancelar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
         </v-card>
       </v-container>
@@ -184,6 +220,12 @@ export default {
       criarGestor: false,
       criarTecnico: false,
       criarAtleta: false,
+      criarFormacao: false,
+      alterarFormacao: false,
+      selA: false,
+      selF: false,
+      sugestaoAtletas: null,
+      antigaFormacao: null,
       atleta: {
         licenca: null,
         nome: null,
@@ -202,6 +244,14 @@ export default {
         password: null,
         clube: null
       },
+      formacao: {
+        clube: null,
+        nome: null
+      },
+      novoAtleta: {
+        licenca: null,
+        formacao: null
+      }
     }
   },
   mounted: function() {
@@ -297,6 +347,40 @@ export default {
       }
     },
 
+    submitFormacao(){
+      if(this.formacao.nome != null){
+        this.formacao.clube = this.$session.get('user_info').clube;
+        axios.post(process.env.API_URL + "/server/formacao/", JSON.stringify(this.formacao)).then(response => {
+          router.push('/definicao');
+          this.updateFormacoes();
+          this.formacao.nome = null;
+          this.formacao.clube = null;
+          this.criarFormacao = false;
+        })
+      }
+    },
+
+    submitAlteracao(){
+      if(this.novoAtleta.licenca != null && this.novoAtleta.formacao != null){
+        axios.post(process.env.API_URL + "/server/change_atleta/", JSON.stringify(this.novoAtleta)).then(response => {
+          router.push('/definicao');
+          this.antigaFormacao = null;
+          this.novoAtleta.licenca = null;
+          this.novoAtleta.formacao = null;
+          this.sugestaoAtletas = null;
+          this.alterarFormacao = false;
+        })
+      }
+    },
+
+    getAtletas(){
+      if(this.antigaFormacao != null){
+        axios.get(process.env.API_URL + "server/get_atletas/" + this.antigaFormacao + "/").then(response => {
+          this.sugestaoAtletas = response.data;
+        })
+      }
+    },
+
     removeSelecionado(id){
       axios.get(process.env.API_URL + "/server/del_tipo_selecionado/" + id + "/").then(response => {
         this.updateTiposSelecionados();
@@ -316,6 +400,12 @@ export default {
         app.tiposSelecionados = response.data;
         app.searched = app.tiposSelecionados;
       });
+    },
+
+    updateFormacoes(){
+      axios.get(process.env.API_URL + "/server/get_formacoes/" + this.$session.get('user_info').clube + "/").then(response => {
+        app.formacoes = response.data;
+      })
     },
 
     userTecnico(){

@@ -128,15 +128,24 @@ def gestorView(request):
         return HttpResponseBadRequest(content='bad form')
 
 
-@login_required
-@permission_required('add_formacao', raise_exception=True)
-def formacaoView(request, clube, nome):
-    clubex = get_object_or_404(models.Clube, id=clube)
-    if clubex.formacao_set.get(nome=nome) is None:
-        models.Formacao.objects.create(nome=nome, clube=clube)
-        return HttpResponse('ok')
+#@login_required
+#@permission_required('add_formacao', raise_exception=True)
+@csrf_exempt
+def formacaoView(request):
+    if request.method=='POST':
+        received = json.loads(request.body.decode('utf-8'))
+        
+        nome = received['nome']
+        clubeID = received['clube']
+        clube = get_object_or_404(models.Clube, id=clubeID)
+
+        if models.Formacao.objects.filter(clube=clube, nome=nome).count() == 0:
+            models.Formacao.objects.create(nome=nome, clube=clube)
+            return HttpResponse('ok')
+        else:
+            return HttpResponseBadRequest(content='formacao already exists')
     else:
-        return HttpResponseBadRequest(content='formacao already exists')
+        return HttpResponseBadRequest(content='bad form')
 
 
 @login_required
@@ -193,11 +202,24 @@ def atletaView(request):
         return HttpResponseBadRequest(content='bad form')
 
 
-@login_required
-@permission_required('change_atleta', raise_exception=True)
-def cAtletaView(request, id, formacao, camisola):
-    models.Atleta.objects.filter(id=id).update(formacao=formacao, camisola=camisola)
-    return HttpResponse('ok')
+#@login_required
+#@permission_required('change_atleta', raise_exception=True)
+@csrf_exempt
+def cAtletaView(request):
+    if request.method=='POST':
+        received = json.loads(request.body.decode('utf-8'))
+        
+        licenca = received['licenca']
+        formID = received['formacao']
+        formacao = get_object_or_404(models.Formacao, id=formID)
+
+        if models.Atleta.objects.filter(licenca=licenca).count() == 0:
+            return HttpResponseBadRequest(content='atleta does not exists')
+        else:
+            models.Atleta.objects.filter(licenca=licenca).update(formacao=formacao)
+            return HttpResponse('ok')  
+    else:
+        return HttpResponseBadRequest(content='bad form')
 
 
 @login_required
@@ -216,6 +238,7 @@ def gAtletasView(request, formacao):
 
     for atleta in formacaox:
         new_atleta = {}
+        new_atleta['licenca'] = atleta.licenca
         new_atleta['id'] = atleta.id
         new_atleta['nome'] = atleta.nome
         new_atleta['camisola'] = atleta.camisola
