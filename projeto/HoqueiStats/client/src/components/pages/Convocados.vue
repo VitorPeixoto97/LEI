@@ -25,11 +25,11 @@
         <v-card color="white" class="my-card">
           <ul>
             <li v-for="atleta in atletas" :key="atleta.id">
-              <input type="checkbox" 
+              <md-checkbox class="md-primary"
                 v-model="convocados.atletas" 
-                :id="atleta.id"
+                :id="atleta.id.toString()"
                 :value="atleta"
-                :disabled="convocados.atletas.length > 9 && convocados.atletas.indexOf(atleta) === -1"> 
+                :disabled="convocados.atletas.length > 9 && convocados.atletas.indexOf(atleta) === -1"></md-checkbox>
               <input class="txt_conv" v-model.number="atleta.camisola" type="number" min="1" :disabled="convocados.atletas.indexOf(atleta) === -1">
               <label>{{ atleta.nome }}</label>
             </li>
@@ -45,11 +45,11 @@
         <v-card color="white" class="my-card">
           <ul>
             <li v-for="atleta in convocados.atletas" :key="atleta.id">
-              <input type="checkbox" 
+              <md-checkbox class="md-primary"
                 v-model="convocados.inicial"
-                :id="atleta.id"
+                :id="atleta.id.toString()"
                 :value="atleta"
-                :disabled="convocados.inicial.length > 4 && convocados.inicial.indexOf(atleta) === -1">
+                :disabled="convocados.inicial.length > 4 && convocados.inicial.indexOf(atleta) === -1"></md-checkbox>
               <label>{{ atleta.camisola }} - {{ atleta.nome }}</label>
             </li>
           </ul>
