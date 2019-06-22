@@ -59,6 +59,7 @@ import axios from 'axios';
 <style lang="scss" scoped>
   .phone-viewport {
     position: fixed;
+    z-index: 100;
     bottom: 0;
     width: 100%;
     overflow: hidden;
