@@ -24,8 +24,20 @@
       <v-container text-xs-center>
         <v-card color="white" class="my-card chart">
           <img class="background" src="../../assets/ring.png"></img>
-          <v-container style="margin:0px; padding:0px; position:relative; padding-bottom:50%; float:left; height:0;">
-            <apexchart height=465 type=bubble :options="chartOptions" :series="series" />
+          <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>1500">
+            <apexchart height=550 type=bubble :options="chartOptions" :series="series" />
+          </v-container>
+          <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>1000 && window.width<1500">
+            <apexchart height=450 type=bubble :options="chartOptions" :series="series" />
+          </v-container>
+          <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>700 && window.width<1000">
+            <apexchart height=350 type=bubble :options="chartOptions" :series="series" />
+          </v-container>
+          <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>370 && window.width<700">
+            <apexchart height=175 type=bubble :options="chartOptions" :series="series" />
+          </v-container>
+          <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>340 && window.width<370">
+            <apexchart height=170 type=bubble :options="chartOptions" :series="series" />
           </v-container>
         </v-card>
       </v-container>
@@ -205,9 +217,7 @@ export default {
         chart: {
           toolbar: { show: false },
           zoom: { enabled: false },
-          parentHeightOffset: '0px',
-          width:100,
-          height: 10,
+          parentHeightOffset: 0,
           sparkline: { enabled: true },
         },
         colors: null,
@@ -221,7 +231,11 @@ export default {
           min: 0,
           max: 100,
         }
-      }
+      },
+      window: {
+        width: 0,
+        height: 0
+      },
     }
   },
 
@@ -246,6 +260,9 @@ export default {
     });
     
     this.checkLoggedIn();
+
+    window.addEventListener('resize', this.handleResize)
+    this.handleResize();
   },
 
 
@@ -255,6 +272,10 @@ export default {
       if (!this.$session.has('token')) {
         router.push("/auth");
       }
+    },
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
     },
 
     verJogo(id) {
