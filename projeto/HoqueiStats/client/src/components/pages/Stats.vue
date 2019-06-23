@@ -25,7 +25,7 @@
         <v-card color="white" class="my-card chart">
           <img class="background" src="../../assets/ring.png"></img>
           <v-container style="margin:0px; padding:0px; position:relative; padding-bottom:50%; float:left; height:0;">
-            <apexchart width=100% type=bubble :options="chartOptions" :series="series" />
+            <apexchart height=465 type=bubble :options="chartOptions" :series="series" />
           </v-container>
         </v-card>
       </v-container>
