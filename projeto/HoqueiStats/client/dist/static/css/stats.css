@@ -84,10 +84,8 @@ body {
 
 .background{
   position: absolute;
-  margin-top:60px;
   margin-left:-50%;
 }
-
 
 @media only screen and (min-width: 0px) {
   .dist{
@@ -95,13 +93,17 @@ body {
     width: 98%;
   }
   .chart{
-    width:100%;
-    margin:auto;
-    position: relative;
+    width:95%;
+    position:relative;
+    padding-bottom: 50%;
+    float: left;
+    margin-left:10px;
+    height: 0;
   }
   .score{
-    width:100%;
+    width:95%;
     height:160px;
+    margin:auto;
   }
   .crest{
     height: 80px !important;
@@ -142,7 +144,7 @@ body {
     width:100%;
   }
   .v-row{
-    display:block !important;
+    display:flex !important;
   }
 }
 @media only screen and (min-width: 400px) {
@@ -153,7 +155,6 @@ body {
   .chart{
     width:100%;
     margin:auto;
-    position: relative;
   }
   .score{
     width:60%;
@@ -196,12 +197,6 @@ body {
     width:100%;
     margin: auto;
   }
-  .v-column{
-    width:100%;
-  }
-  .v-row{
-    display:block !important;
-  }
 }
 @media only screen and (min-width: 780px) {
   .distleft{
@@ -211,7 +206,10 @@ body {
   .chart{
     width:100%;
     margin:auto;
-    position: relative;
+    position:relative;
+    padding-bottom: 50%;
+    float: left;
+    height: 0;
   }
   .score{
     width:50%;
@@ -237,12 +235,6 @@ body {
     width:90%;
     padding:0.7rem;
   }
-  .v-column{
-    width:100%;
-  }
-  .v-row{
-    display:flex !important;
-  }
 }
 
 @media only screen and (min-width: 1500px) {
@@ -252,7 +244,6 @@ body {
   .chart{
     width:100%;
     margin:auto;
-    position: relative;
   }
   .distright{
     min-width:100%;
@@ -296,12 +287,6 @@ body {
   .eventos-table{
     width:100%;
     margin:auto;
-  }
-  .v-column{
-    width:100%;
-  }
-  .v-row{
-    display:flex !important;
   }
 }
 

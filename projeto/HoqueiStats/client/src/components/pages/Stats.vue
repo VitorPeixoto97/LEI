@@ -21,12 +21,12 @@
           </div>
         </v-card>
       </v-container>
-      <v-container  text-xs-center>
+      <v-container text-xs-center>
         <v-card color="white" class="my-card chart">
           <img class="background" src="../../assets/ring.png"></img>
-          <div id="chart">
-            <apexchart type=bubble width=100% :options="chartOptions" :series="series" />
-          </div>
+          <v-container style="margin:0px; padding:0px; position:relative; padding-bottom:50%; float:left; height:0;">
+            <apexchart width=100% type=bubble :options="chartOptions" :series="series" />
+          </v-container>
         </v-card>
       </v-container>
     </div>
@@ -41,7 +41,7 @@
               </div>
 
               <md-field md-clearable class="md-toolbar-section-end">
-                <md-input placeholder="Pesquisar..." v-model="search" @input="searchOnTable" />
+                <md-input placeholder="Pesquisar por tipo..." v-model="search" @input="searchOnTable" />
               </md-field>
             </md-table-toolbar>
 
@@ -155,6 +155,15 @@
 import router from "../../router";
 import LayoutBasic from '../layouts/Basic.vue'
 import axios from 'axios';
+const toLower = text => {
+  return text.toString().toLowerCase()
+}
+const searchByName = (items, term) => {
+  if (term) {
+    return items.filter(item => toLower(item.tipo).includes(toLower(term)))
+  }
+  return items
+}
 export default {
   name: 'Stats',
   components: {
@@ -190,11 +199,16 @@ export default {
       series: null,
       chartOptions: {
         grid: { show: false },
-        dataLabels: {
-          enabled: false
-        },
-        fill: {
-          opacity: 0.8
+        dataLabels: { enabled: false },
+        fill: { opacity: 0.7 },
+        legend: { show: false },
+        chart: {
+          toolbar: { show: false },
+          zoom: { enabled: false },
+          parentHeightOffset: '0px',
+          width:100,
+          height: 10,
+          sparkline: { enabled: true },
         },
         colors: null,
         xaxis: {
@@ -215,7 +229,6 @@ export default {
     axios.get(process.env.API_URL + "/server/get_eventos/" + this.$session.get('jogoTab') + "/").then(response => {
       this.eventos = response.data;
       this.searched = response.data;
-      console.log(this.eventos);
       axios.get(process.env.API_URL + "/server/get_jogo/" + this.$session.get('jogoTab') + "/").then(response => {
         this.jogo = response.data;
         this.evento.jogo = this.$session.get('jogoTab');
@@ -252,7 +265,7 @@ export default {
     genBubbles(equipa) {
       var series = [];
       var i = 0;
-
+      series.push([300, 300, 10]);
       while(i < this.eventos.length){
         if(this.eventos[i].equipa == equipa)
           series.push([this.eventos[i].gcx, this.eventos[i].gcy, this.eventos[i].size]);
@@ -267,6 +280,9 @@ export default {
         this.updateJogo();
         this.FetchData();
       });
+    },
+    searchOnTable () {
+      this.searched = searchByName(this.eventos, this.search)
     },
 
     sinalizaEvento(id){
