@@ -664,99 +664,163 @@ def gEventosView(request, idJogo):
             if(evento.zonaCampo==1):
                 new_evento['gcy'] = 13
                 new_evento['gcx'] = 7
+                nBubbles = checkBubblesPosition(7, 13, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==2):
                 new_evento['gcy'] = 38
                 new_evento['gcx'] = 7
+                nBubbles = checkBubblesPosition(7, 38, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==3):
                 new_evento['gcy'] = 61
                 new_evento['gcx'] = 7
+                nBubbles = checkBubblesPosition(7, 61, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==4):
                 new_evento['gcy'] = 86
                 new_evento['gcx'] = 7
+                nBubbles = checkBubblesPosition(7, 86, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==5):
                 new_evento['gcy'] = 13
                 new_evento['gcx'] = 27
+                nBubbles = checkBubblesPosition(27, 13, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==6):
                 new_evento['gcy'] = 38
                 new_evento['gcx'] = 27
+                nBubbles = checkBubblesPosition(27, 38, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==7):
                 new_evento['gcy'] = 61
                 new_evento['gcx'] = 27
+                nBubbles = checkBubblesPosition(27, 61, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==8):
                 new_evento['gcy'] = 86
                 new_evento['gcx'] = 27
+                nBubbles = checkBubblesPosition(27, 86, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==9):
                 new_evento['gcy'] = 13
                 new_evento['gcx'] = 55
+                nBubbles = checkBubblesPosition(55, 13, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==10):
                 new_evento['gcy'] = 38
                 new_evento['gcx'] = 55
+                nBubbles = checkBubblesPosition(55, 38, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==11):
                 new_evento['gcy'] = 61
                 new_evento['gcx'] = 55
+                nBubbles = checkBubblesPosition(55, 61, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==12):
                 new_evento['gcy'] = 86
                 new_evento['gcx'] = 55
+                nBubbles = checkBubblesPosition(55, 86, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==13):
                 new_evento['gcy'] = 13
                 new_evento['gcx'] = 85
+                nBubbles = checkBubblesPosition(85, 13, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==14):
                 new_evento['gcy'] = 38
                 new_evento['gcx'] = 85
+                nBubbles = checkBubblesPosition(85, 38, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==15):
                 new_evento['gcy'] = 61
                 new_evento['gcx'] = 85
+                nBubbles = checkBubblesPosition(85, 61, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==16):
                 new_evento['gcy'] = 86
                 new_evento['gcx'] = 85
+                nBubbles = checkBubblesPosition(85, 86, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==17):
                 new_evento['gcy'] = 13
                 new_evento['gcx'] = 115
+                nBubbles = checkBubblesPosition(115, 13, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==18):
                 new_evento['gcy'] = 38
                 new_evento['gcx'] = 115
+                nBubbles = checkBubblesPosition(115, 38, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==19):
                 new_evento['gcy'] = 61
                 new_evento['gcx'] = 115
+                nBubbles = checkBubblesPosition(115, 61, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==20):
                 new_evento['gcy'] = 86
                 new_evento['gcx'] = 115
+                nBubbles = checkBubblesPosition(115, 86, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==21):
                 new_evento['gcy'] = 13
                 new_evento['gcx'] = 144
+                nBubbles = checkBubblesPosition(144, 13, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==22):
                 new_evento['gcy'] = 38
                 new_evento['gcx'] = 144
+                nBubbles = checkBubblesPosition(144, 38, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==23):
                 new_evento['gcy'] = 61
                 new_evento['gcx'] = 144
+                nBubbles = checkBubblesPosition(144, 61, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==24):
                 new_evento['gcy'] = 86
                 new_evento['gcx'] = 144
+                nBubbles = checkBubblesPosition(144, 86, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==25):
                 new_evento['gcy'] = 13
                 new_evento['gcx'] = 172
+                nBubbles = checkBubblesPosition(172, 13, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==26):
                 new_evento['gcy'] = 38
                 new_evento['gcx'] = 172
+                nBubbles = checkBubblesPosition(172, 38, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==27):
                 new_evento['gcy'] = 61
                 new_evento['gcx'] = 172
+                nBubbles = checkBubblesPosition(172, 61, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==28):
                 new_evento['gcy'] = 86
                 new_evento['gcx'] = 172
+                nBubbles = checkBubblesPosition(172, 86, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==29):
                 new_evento['gcy'] = 13
                 new_evento['gcx'] = 193
+                nBubbles = checkBubblesPosition(193, 13, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==30):
                 new_evento['gcy'] = 38
                 new_evento['gcx'] = 193
+                nBubbles = checkBubblesPosition(193, 38, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==31):
                 new_evento['gcy'] = 61
                 new_evento['gcx'] = 193
+                nBubbles = checkBubblesPosition(193, 61, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo==32):
                 new_evento['gcy'] = 86
                 new_evento['gcx'] = 193
+                nBubbles = checkBubblesPosition(193, 86, aux)
+                new_evento = dispersaBubbles(new_evento, nBubbles)
             elif(evento.zonaCampo is None):
                 new_evento['gcy'] = 200
                 new_evento['gcx'] = 200
@@ -770,6 +834,95 @@ def gEventosView(request, idJogo):
         aux.append(new_evento)
     return JsonResponse(aux, safe=False)
 
+
+def checkBubblesPosition(x, y, eventos):
+    count = 0
+    for evento in eventos:
+        if(evento['gcy']<y+12 and evento['gcy']>y-12 and evento['gcx']<x+12 and evento['gcx']>x-12):
+            count=count+1
+    print(count)
+    return count
+
+def dispersaBubbles(new_evento, nBubbles):
+    if(nBubbles==1):
+        new_evento['gcy'] = new_evento['gcy'] + 3
+        new_evento['gcx'] = new_evento['gcx'] + 3
+    if(nBubbles==2):
+        new_evento['gcy'] = new_evento['gcy'] - 3
+        new_evento['gcx'] = new_evento['gcx'] - 3
+    if(nBubbles==3):
+        new_evento['gcy'] = new_evento['gcy'] + 3
+        new_evento['gcx'] = new_evento['gcx'] - 3
+    if(nBubbles==4):
+        new_evento['gcy'] = new_evento['gcy'] - 3
+        new_evento['gcx'] = new_evento['gcx'] + 3
+    if(nBubbles==5):
+        new_evento['gcy'] = new_evento['gcy'] + 4.5
+    if(nBubbles==6):
+        new_evento['gcx'] = new_evento['gcx'] + 4.5
+    if(nBubbles==7):
+        new_evento['gcy'] = new_evento['gcy'] - 4.5
+    if(nBubbles==8):
+        new_evento['gcx'] = new_evento['gcx'] - 4.5
+
+    if(nBubbles==9):
+        new_evento['gcy'] = new_evento['gcy'] + 9
+    if(nBubbles==10):
+        new_evento['gcx'] = new_evento['gcx'] + 9
+    if(nBubbles==11):
+        new_evento['gcy'] = new_evento['gcy'] - 9
+    if(nBubbles==12):
+        new_evento['gcx'] = new_evento['gcx'] - 9
+
+    if(nBubbles==13):
+        new_evento['gcx'] = new_evento['gcx'] + 3.3
+        new_evento['gcy'] = new_evento['gcy'] + 8.3
+    if(nBubbles==14):
+        new_evento['gcx'] = new_evento['gcx'] + 6.3
+        new_evento['gcy'] = new_evento['gcy'] + 6.3
+    if(nBubbles==15):
+        new_evento['gcx'] = new_evento['gcx'] + 8.3
+        new_evento['gcy'] = new_evento['gcy'] + 3.3
+    if(nBubbles==16):
+        new_evento['gcx'] = new_evento['gcx'] - 3.3
+        new_evento['gcy'] = new_evento['gcy'] - 8.3
+    if(nBubbles==17):
+        new_evento['gcx'] = new_evento['gcx'] - 6.3
+        new_evento['gcy'] = new_evento['gcy'] - 6.3
+    if(nBubbles==18):
+        new_evento['gcx'] = new_evento['gcx'] - 8.3
+        new_evento['gcy'] = new_evento['gcy'] - 3.3
+    if(nBubbles==19):
+        new_evento['gcx'] = new_evento['gcx'] - 3.3
+        new_evento['gcy'] = new_evento['gcy'] + 8.3
+    if(nBubbles==20):
+        new_evento['gcx'] = new_evento['gcx'] - 6.3
+        new_evento['gcy'] = new_evento['gcy'] + 6.3
+    if(nBubbles==21):
+        new_evento['gcx'] = new_evento['gcx'] - 8.3
+        new_evento['gcy'] = new_evento['gcy'] + 3.3
+    if(nBubbles==22):
+        new_evento['gcx'] = new_evento['gcx'] + 3.3
+        new_evento['gcy'] = new_evento['gcy'] - 8.3
+    if(nBubbles==23):
+        new_evento['gcx'] = new_evento['gcx'] + 6.3
+        new_evento['gcy'] = new_evento['gcy'] - 6.3
+    if(nBubbles==24):
+        new_evento['gcx'] = new_evento['gcx'] + 8.3
+        new_evento['gcy'] = new_evento['gcy'] - 3.3
+    if(nBubbles==25):
+        new_evento['gcy'] = new_evento['gcy'] + 9
+        new_evento['gcx'] = new_evento['gcx'] - 9
+    if(nBubbles==26):
+        new_evento['gcx'] = new_evento['gcx'] + 9
+        new_evento['gcy'] = new_evento['gcy'] - 9
+    if(nBubbles==27):
+        new_evento['gcy'] = new_evento['gcy'] - 9
+        new_evento['gcx'] = new_evento['gcx'] - 9
+    if(nBubbles==28):
+        new_evento['gcx'] = new_evento['gcx'] + 9
+        new_evento['gcy'] = new_evento['gcy'] + 9
+    return new_evento     
 
 #@login_required
 #@permission_required('add_tipoevento', raise_exception=True)
