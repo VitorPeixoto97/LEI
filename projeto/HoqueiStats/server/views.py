@@ -764,7 +764,7 @@ def gEventosView(request, idJogo):
         if(evento.tipo.id==0):
             new_evento['size'] = 2
         elif(evento.tipo.id==4):
-            new_evento['size'] = 8
+            new_evento['size'] = 10
         else:
             new_evento['size'] = 1
         aux.append(new_evento)

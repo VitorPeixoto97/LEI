@@ -165,6 +165,7 @@ export default {
       jogo: null,
       edit: false,
       searched: [],
+      eventos: [],
       evento_inicial: null,
       evento: {
         jogo: null,
@@ -195,7 +196,7 @@ export default {
         fill: {
           opacity: 0.8
         },
-        colors: [this.$session.get('clube_cor'), this.$session.get('adv_cor'), '#FFFFFF00'],
+        colors: null,
         xaxis: {
           min: 0,
           max: 200,
@@ -210,29 +211,32 @@ export default {
     }
   },
 
-  mounted: function() {
+  created: function() {
+    axios.get(process.env.API_URL + "/server/get_eventos/" + this.$session.get('jogoTab') + "/").then(response => {
+      this.eventos = response.data;
+      this.searched = response.data;
+      console.log(this.eventos);
+      axios.get(process.env.API_URL + "/server/get_jogo/" + this.$session.get('jogoTab') + "/").then(response => {
+        this.jogo = response.data;
+        this.evento.jogo = this.$session.get('jogoTab');
+        this.chartOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
+        
+        this.series= [{
+          name: this.jogo.clube_nome,
+          data: this.genBubbles(this.jogo.clube_nome)
+        },
+        {
+          name: this.jogo.adv_nome,
+          data: this.genBubbles(this.jogo.adv_nome)
+        }];
+      });
+    });
+    
     this.checkLoggedIn();
-    this.FetchData();
-    this.bubbles();
   },
 
+
   methods: {
-    FetchData: function() {
-      var app = this;
-      axios.get(process.env.API_URL + "/server/get_jogo/" + this.$session.get('jogoTab') + "/").then(response => {
-        app.jogo = response.data;
-        this.$session.set('jogo', response.data);
-        this.$session.set('clube', response.data.clube_nome);
-        this.$session.set('adv', response.data.adv_nome);
-        this.$session.set('clube_cor', response.data.clube_cor);
-        this.$session.set('adv_cor', response.data.adv_cor);
-        this.evento.jogo = this.$session.get('jogoTab');
-      });
-      axios.get(process.env.API_URL + "/server/get_eventos/" + this.$session.get('jogoTab') + "/").then(response => {
-        this.$session.set('eventos', response.data);
-        this.searched = response.data;
-      })
-    },
       
     checkLoggedIn() {
       if (!this.$session.has('token')) {
@@ -248,30 +252,20 @@ export default {
     genBubbles(equipa) {
       var series = [];
       var i = 0;
-      while(i < this.$session.get('eventos').length){
-        if(this.$session.get('eventos')[i].equipa == equipa)
-          series.push([this.$session.get('eventos')[i].gcx, this.$session.get('eventos')[i].gcy, this.$session.get('eventos')[i].size]);
+
+      while(i < this.eventos.length){
+        if(this.eventos[i].equipa == equipa)
+          series.push([this.eventos[i].gcx, this.eventos[i].gcy, this.eventos[i].size]);
         ++i;
       }
       return series;
-    },
-
-    bubbles() {
-      this.series= [{
-        name: this.$session.get('clube'),
-        data: this.genBubbles(this.$session.get('clube'))
-      },
-      {
-        name: this.$session.get('adv'),
-        data: this.genBubbles(this.$session.get('adv'))
-      }]
     },
 
     removeEvento(id){
       axios.get(process.env.API_URL + "/server/del_evento/" + id + "/").then(response => {
         this.updateTable();
         this.updateJogo();
-        this.bubbles();
+        this.FetchData();
       });
     },
 
@@ -313,27 +307,25 @@ export default {
 
     updateJogo() {
       axios.get(process.env.API_URL + "/server/get_jogo/"+this.$session.get('jogoTab')+"/").then(response => {
-        app.jogo = response.data;
+        this.jogo = response.data;
         this.$session.set('jogo', response.data);
         this.$session.set('clube', response.data.clube_nome);
         this.$session.set('adv', response.data.adv_nome);
-        this.$session.set('clube_cor', response.data.clube_cor);
         this.$session.set('adv_cor', response.data.adv_cor);
       });
     },
 
     getAtletas1() {
       if(this.codigoEquipa != null){
-        var app = this;
 
         if(this.codigoEquipa == 1){
-          axios.get(process.env.API_URL + "/server/get_atletas_campo/" + app.jogo.formacao + "/" + app.evento_inicial.jogo + "/").then(response => {
-            app.sugestaoAtletas1 = response.data
+          axios.get(process.env.API_URL + "/server/get_atletas_campo/" + this.jogo.formacao + "/" + this.evento_inicial.jogo + "/").then(response => {
+            this.sugestaoAtletas1 = response.data
           })
         }
         else{
-          axios.get(process.env.API_URL + "/server/get_atletas_campo/" + app.jogo.adversario + "/" + app.evento_inicial.jogo + "/").then(response => {
-            app.sugestaoAtletas1 = response.data
+          axios.get(process.env.API_URL + "/server/get_atletas_campo/" + this.jogo.adversario + "/" + this.evento_inicial.jogo + "/").then(response => {
+            this.sugestaoAtletas1 = response.data
           })
         }
       }
@@ -341,16 +333,15 @@ export default {
 
     getAtletas2() {
       if(this.codigoEquipa != null){
-        var app = this;
 
         if(this.codigoEquipa == 1){
-          axios.get(process.env.API_URL + "/server/get_atletas_suplentes/" + app.jogo.formacao + "/" + app.evento_inicial.jogo + "/").then(response => {
-            app.sugestaoAtletas2 = response.data
+          axios.get(process.env.API_URL + "/server/get_atletas_suplentes/" + this.jogo.formacao + "/" + this.evento_inicial.jogo + "/").then(response => {
+            this.sugestaoAtletas2 = response.data
           })
         }
         else{
-          axios.get(process.env.API_URL + "/server/get_atletas_suplentes/" + app.jogo.adversario + "/" + app.evento_inicial.jogo + "/").then(response => {
-            app.sugestaoAtletas2 = response.data
+          axios.get(process.env.API_URL + "/server/get_atletas_suplentes/" + this.jogo.adversario + "/" + this.evento_inicial.jogo + "/").then(response => {
+            this.sugestaoAtletas2 = response.data
           })
         }
       }
@@ -364,8 +355,7 @@ export default {
     },
 
     allFieldsOk() {
-      var app = this;
-      axios.get(process.env.API_URL + "/server/get_tipo_evento/" + app.evento_inicial.tipo + "/").then(response => {
+      axios.get(process.env.API_URL + "/server/get_tipo_evento/" + this.evento_inicial.tipo + "/").then(response => {
         var tipo_evento = response.data;
 
         if ((tipo_evento.equipa && (this.evento.equipa == null)) || (tipo_evento.atleta1 && (this.evento.atleta1 == null)) || (tipo_evento.atleta2 && (this.evento.atleta2 == null)) ||
@@ -383,8 +373,7 @@ export default {
 
     submitChange(){
       //if(this.allFieldsOk()){
-        var app = this;
-        axios.post(process.env.API_URL + "/server/change_evento/", JSON.stringify(app.evento)).then(response => {
+        axios.post(process.env.API_URL + "/server/change_evento/", JSON.stringify(this.evento)).then(response => {
           router.push("/stats");
           this.updateTable();
           this.updateJogo();
