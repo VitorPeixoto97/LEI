@@ -21,26 +21,66 @@
           </div>
         </v-card>
       </v-container>
+
       <v-container text-xs-center>
         <v-card color="white" class="my-card chart">
           <img class="background" src="../../assets/ring.png"></img>
           <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>1500">
-            <apexchart height=550 type=bubble :options="chartOptions" :series="series" />
+            <apexchart height=550 type=bubble :options="bubbleOptions" :series="series" />
           </v-container>
           <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>1000 && window.width<1500">
-            <apexchart height=450 type=bubble :options="chartOptions" :series="series" />
+            <apexchart height=450 type=bubble :options="bubbleOptions" :series="series" />
           </v-container>
           <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>700 && window.width<1000">
-            <apexchart height=350 type=bubble :options="chartOptions" :series="series" />
+            <apexchart height=350 type=bubble :options="bubbleOptions" :series="series" />
           </v-container>
           <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>370 && window.width<700">
-            <apexchart height=175 type=bubble :options="chartOptions" :series="series" />
+            <apexchart height=175 type=bubble :options="bubbleOptions" :series="series" />
           </v-container>
           <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>340 && window.width<370">
-            <apexchart height=170 type=bubble :options="chartOptions" :series="series" />
+            <apexchart height=170 type=bubble :options="bubbleOptions" :series="series" />
           </v-container>
         </v-card>
       </v-container>
+
+      <carousel-3d v-if="window.width>0 && window.width<400" :autoplay="false" :display="3" :width="300" :height="150" :border="0">
+        <slide :index="0">
+          <v-container text-xs-center style="margin:0px; padding:0px;">
+            <v-card class="my-card">
+              <div id="chart">
+                <apexchart v-if="statsShow==0" type=bar height=150 :options="rematesOptions" :series="remates" />
+              </div>
+            </v-card>
+          </v-container>
+        </slide>
+        <slide :index="1"><img src="https://unsplash.it/400/300?image=456"/></slide>
+        <slide :index="2"><img src="https://unsplash.it/400/300?image=222"/></slide>
+        <slide :index="3"><img src="https://unsplash.it/400/300?image=1003"/></slide>
+        <slide :index="4"><img src="https://unsplash.it/400/300?image=940"/></slide>
+        <slide :index="5"><img src="https://unsplash.it/400/300?image=944"/></slide>
+        <slide :index="6"><img src="https://source.unsplash.com/mEr7U5yfYt8/400x300"/></slide>
+        <slide :index="7"><img src="https://unsplash.it/400/300?image=1041"/></slide>
+      </carousel-3d>
+
+      <carousel-3d v-if="window.width>=400" :autoplay="false" :display="3" :width="500" :height="200" :border="0">
+        <slide :index="0">
+          <v-container text-xs-center style="margin:0px; padding:0px;">
+            <v-card class="my-card">
+              <div id="chart">
+                <apexchart v-if="statsShow==0" type=bar height=200 :options="rematesOptions" :series="remates" />
+              </div>
+            </v-card>
+          </v-container>
+        </slide>
+        <slide :index="1"><img src="https://unsplash.it/400/300?image=456"/></slide>
+        <slide :index="2"><img src="https://unsplash.it/400/300?image=222"/></slide>
+        <slide :index="3"><img src="https://unsplash.it/400/300?image=1003"/></slide>
+        <slide :index="4"><img src="https://unsplash.it/400/300?image=940"/></slide>
+        <slide :index="5"><img src="https://unsplash.it/400/300?image=944"/></slide>
+        <slide :index="6"><img src="https://source.unsplash.com/mEr7U5yfYt8/400x300"/></slide>
+        <slide :index="7"><img src="https://unsplash.it/400/300?image=1041"/></slide>
+      </carousel-3d>
+
     </div>
 
     <div class="row v-row">
@@ -208,11 +248,71 @@ export default {
       selA2: false,
       selC: false,
       selB: false,
+      statsShow: 0,
       series: null,
-      chartOptions: {
+      remates: null,
+      rematesOptions: {
+        grid: {
+          show: true,
+          xaxis: {
+            lines: {
+              show: false,
+            },
+          },
+          yaxis: {
+            lines: {
+              show: false,
+            },
+          }, 
+          strokeDashArray: 0,
+        },
+        dataLabels:{
+          formatter: function(value, { seriesIndex, dataPointIndex, w }) {
+            return w.config.series[seriesIndex].data[dataPointIndex] + '   (' + value.toFixed(0) + '%)'
+          },
+        },
+        tooltip: {
+          custom: function({series, seriesIndex, dataPointIndex, w}) {
+            return '<div>' +
+                     '<span>' + w.config.series[seriesIndex].name + '</span>' +
+                   '</div>'
+          },
+        },
+        chart: {
+          stacked: true,
+          stackType: '100%',
+          zoom: { enabled: false },
+          parentHeightOffset: 0,
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+          },
+        },
+        
+        colors: null,
+        title: {
+          text: 'Remates',
+          style: {
+            fontSize:  '19px',
+            color:  '#37003c',
+          },
+        },
+        xaxis: {
+          categories: ['Baliza', 'Intercetado', 'Fora'],
+          axisBorder: { show: false },
+          labels: { show:false },
+          axisTicks: {show:false},
+        },
+        fill: {
+          opacity: 1
+        },
+        legend: { show: false },
+      },
+      bubbleOptions: {
         grid: { show: false },
         dataLabels: { enabled: false },
-        fill: { opacity: 0.7 },
+        fill: { opacity: 0.9 },
         legend: { show: false },
         chart: {
           toolbar: { show: false },
@@ -223,8 +323,9 @@ export default {
         tooltip: {
           custom: function({series, seriesIndex, dataPointIndex, w}) {
             return '<div class="arrow_box">' +
-                     '<span>' + w.config.series[seriesIndex].data[dataPointIndex][5]
-                     + ' - ' + w.config.series[seriesIndex].data[dataPointIndex][3] 
+                     '<span>' + w.config.series[seriesIndex].name 
+                     + ' | '  + w.config.series[seriesIndex].data[dataPointIndex][5]
+                     + ' | '  + w.config.series[seriesIndex].data[dataPointIndex][3] 
                      + ' de ' + w.config.series[seriesIndex].data[dataPointIndex][4] + '</span>' +
                    '</div>'
           },
@@ -256,9 +357,10 @@ export default {
       axios.get(process.env.API_URL + "/server/get_jogo/" + this.$session.get('jogoTab') + "/").then(response => {
         this.jogo = response.data;
         this.evento.jogo = this.$session.get('jogoTab');
-        this.chartOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
+        this.bubbleOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
+        this.rematesOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
         
-        this.series= [{
+        this.series = [{
           name: this.jogo.clube_nome,
           data: this.genBubbles(this.jogo.clube_nome)
         },
@@ -266,6 +368,16 @@ export default {
           name: this.jogo.adv_nome,
           data: this.genBubbles(this.jogo.adv_nome)
         }];
+
+        this.remates = [{
+          name: this.jogo.clube_nome,
+          data: this.genRemates(this.jogo.clube_nome)
+        },
+        {
+          name: this.jogo.adv_nome,
+          data: this.genRemates(this.jogo.adv_nome)
+        }];
+
       });
     });
     
@@ -310,6 +422,35 @@ export default {
       return series;
     },
 
+    genRemates(equipa) {
+      var series = [];
+      var rBal = 0;
+      var rInt = 0;
+      var rFor = 0;
+      var i = 0;
+      while(i < this.eventos.length){
+        if(this.eventos[i].equipa == equipa){
+          if(this.eventos[i].tipo == 'Remate à baliza'){
+            rBal = rBal + 1;
+          }
+          if(this.eventos[i].tipo == 'Remate intercetado'){
+            rInt = rInt + 1;
+          }
+          if(this.eventos[i].tipo == 'Remate fora'){
+            rFor = rFor + 1;
+          }
+        }
+        ++i;
+      }
+
+
+      series.push(rBal);
+      series.push(rInt);
+      series.push(rFor);
+      console.log(series);
+      return series;
+    },
+
     removeEvento(id){
       axios.get(process.env.API_URL + "/server/del_evento/" + id + "/").then(response => {
         this.updateTable();
@@ -317,6 +458,7 @@ export default {
         this.FetchData();
       });
     },
+
     searchOnTable () {
       this.searched = searchByName(this.eventos, this.search)
     },
@@ -403,7 +545,6 @@ export default {
       if(this.codigoEquipa == 1)
         this.evento.equipa = this.jogo.formacao;
       else this.evento.equipa = this.jogo.adversario;
-
     },
 
     allFieldsOk() {
@@ -444,7 +585,7 @@ export default {
           this.edit = false;
         }).catch(e => {});
       //}
-    }
+    },
   } 
 }
 </script>

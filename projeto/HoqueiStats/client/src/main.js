@@ -9,6 +9,7 @@ import BootstrapVue from 'bootstrap-vue'
 import VueMaterial from 'vue-material'
 import mdbDatatable from 'mdbvue';
 import VueApexCharts from 'vue-apexcharts'
+import Carousel3d from 'vue-carousel-3d';
 import { MdButton, MdContent, MdTabs } from 'vue-material/dist/components'
 
 import 'vuetify/dist/vuetify.min.css'
@@ -22,6 +23,7 @@ import 'vue-material/dist/theme/default.css';
 require('../dist/static/css/index.css')
 
 
+
 Vue.use(MdButton)
 Vue.use(MdContent)
 Vue.use(MdTabs)
@@ -29,6 +31,7 @@ Vue.use(VueMaterial)
 Vue.use(BootstrapVue)
 Vue.use(Vuetify)
 Vue.use(VueSession)
+Vue.use(Carousel3d);
 Vue.component('apexchart', VueApexCharts)
 
 Vue.config.productionTip = false

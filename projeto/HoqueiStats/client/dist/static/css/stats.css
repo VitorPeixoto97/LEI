@@ -125,6 +125,11 @@ body {
     margin-left:10px;
     height: 0;
   }
+  .stats-card{
+    height:200px;
+    width:95%;
+    margin:auto;
+  }
   .score{
     width:95%;
     height:160px;
@@ -186,6 +191,9 @@ body {
     margin:auto;
     height:160px;
   }
+  .stats-card{
+    width:85%;
+  }
   .crest{
     height: 80px !important;
     display:inline-flex;
@@ -241,6 +249,9 @@ body {
     height:160px;
     margin:auto;
   }
+  .stats-card{
+    width:75%;
+  }
   .crest{
     height:20%;
     display:inline-flex;
@@ -275,6 +286,9 @@ body {
   .score{
     width:50%;
     height:160px;
+  }
+  .stats-card{
+    width:70%;
   }
   .crest{
     height: 80px !important;
@@ -362,12 +376,20 @@ body {
   color: #777;
 }
 
-.btn-google {
-  color: white;
-  background-color: #ea4335;
+
+
+.carousel-3d-container {
+  padding-bottom:22px;
+  height:222px !important;
+  margin: 20px auto 0px auto !important;
 }
 
-.btn-facebook {
-  color: white;
-  background-color: #3b5998;
+.carousel-3d-slide {
+  background-color: rgba(0, 0, 0, 0.0) !important;
+  border-width: 0px;
+  border-radius:20px;
+  -webkit-box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.41);
+  -moz-box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.41);
+  box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.41);
 }
+
