@@ -1,5 +1,5 @@
 from rest_framework import routers
-from StatsApp.viewsets import *
+from server.viewsets import *
 router = routers.DefaultRouter()
 router.register(r'clube', ClubeViewSet)
 router.register(r'formacao', FormacaoViewSet)

@@ -16,11 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
+from django.contrib.auth.views import LoginView
 from django.conf.urls import url
+from django.contrib.auth import views as auth_views
 from .routers import router
 
 urlpatterns = [
-    path('', include('StatsApp.urls')),
+
+    url(r'server/', include('server.urls')),
+    url(r'^$', TemplateView.as_view(template_name='index.html')),
     path('admin/', admin.site.urls),
     path('rest/', include(router.urls)),
+    path('auth/obtain/', obtain_jwt_token),
+    path('auth/refresh/', refresh_jwt_token),
+    path('accounts/', include('django.contrib.auth.urls'))
 ]
