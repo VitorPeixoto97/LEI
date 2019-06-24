@@ -220,6 +220,16 @@ export default {
           parentHeightOffset: 0,
           sparkline: { enabled: true },
         },
+        tooltip: {
+          custom: function({series, seriesIndex, dataPointIndex, w}) {
+            return '<div class="arrow_box">' +
+                     '<span>' + w.config.series[seriesIndex].data[dataPointIndex][5]
+                     + ' - ' + w.config.series[seriesIndex].data[dataPointIndex][3] 
+                     + ' de ' + w.config.series[seriesIndex].data[dataPointIndex][4] + '</span>' +
+                   '</div>'
+          },
+          theme: false,
+        },
         colors: null,
         xaxis: {
           min: 0,
@@ -267,12 +277,12 @@ export default {
 
 
   methods: {
-      
     checkLoggedIn() {
       if (!this.$session.has('token')) {
         router.push("/auth");
       }
     },
+
     handleResize() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
@@ -289,7 +299,12 @@ export default {
       series.push([300, 300, 10]);
       while(i < this.eventos.length){
         if(this.eventos[i].equipa == equipa)
-          series.push([this.eventos[i].gcx, this.eventos[i].gcy, this.eventos[i].size]);
+          series.push([this.eventos[i].gcx,
+                       this.eventos[i].gcy,
+                       this.eventos[i].size,
+                       this.eventos[i].tipo,
+                       this.eventos[i].atleta1,
+                       this.eventos[i].instante]);
         ++i;
       }
       return series;
