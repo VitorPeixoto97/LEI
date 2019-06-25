@@ -45,7 +45,7 @@
               </div>
             </div>
           </v-card>
-      </v-container>s
+      </v-container>
 
       <v-container text-xs-center v-if="change">
           <v-card color="white" class="my-card timechange">
