@@ -1,5 +1,21 @@
 <template>
   <layout-basic>
+    <div v-if="menuTipo==true" class="full">
+      <v-container>
+        <v-card class="my-card filter-card">
+          <div style="padding:10px;">
+            <button v-for="tipoevento in tiposeventos" v-if="tipoevento[1]==false" class="btn btn-lg btn-filter-false text-uppercase" @click="filterEv(tipoevento)">{{tipoevento[0]}}</button>
+            <button v-for="tipoevento in tiposeventos" v-if="tipoevento[1]==true"  class="btn btn-lg btn-filter-true text-uppercase"  @click="filterEv(tipoevento)">{{tipoevento[0]}}</button>
+
+            <div></div>
+
+            <button class="btn btn-lg btn-filter-all text-uppercase"  @click="filterEv(1)">Selecionar tudo</button>
+            <button class="btn btn-lg btn-filter-all text-uppercase"  @click="filterEv(0)">Remover tudo</button>
+            <button class="btn btn-lg btn-filter-all text-uppercase"  @click="menuTipo=false">Fechar</button>
+          </div>
+        </v-card>
+      </v-container>
+    </div>
     <div id="app" class="row v-row">
       <v-container text-xs-center>
         <v-card color="white" class="my-card score">
@@ -21,7 +37,15 @@
           </div>
         </v-card>
       </v-container>
+    </div>
 
+    <div class="row v-row">
+      <v-container text-xs-center>
+        <button class="btn btn-lg btn-filter btn-block text-uppercase" @click="menuTipo=true">Tipo</button>
+      </v-container>
+    </div>
+
+    <div class="row v-row">
       <v-container text-xs-center>
         <v-card style="border-radius:40px;" class="my-card chart">
           <img class="background" src="../../assets/ring.png"></img>
@@ -138,7 +162,6 @@
           </v-container>
         </slide>
       </carousel-3d>
-
     </div>
 
     <div class="row v-row">
@@ -263,7 +286,7 @@
 
 <script> 
 import router from "../../router";
-import LayoutBasic from '../layouts/Basic.vue'
+import LayoutBasic from '../layouts/Basic.vue';
 import axios from 'axios';
 const toLower = text => {
   return text.toString().toLowerCase()
@@ -284,7 +307,9 @@ export default {
       jogo: null,
       edit: false,
       searched: [],
+      search: null,
       eventos: [],
+      eventosfiltered: [],
       evento_inicial: null,
       evento: {
         jogo: null,
@@ -301,6 +326,9 @@ export default {
       codigoEquipa: null,
       sugestaoAtletas1: null,
       sugestaoAtletas2: null,
+      tiposeventos: [],
+      menuTipo: true,
+      menuJogador: false,
       selE: false,
       selA1: false,
       selA2: false,
@@ -370,7 +398,6 @@ export default {
         },
         legend: { show: false },
       },
-
       bolasOptions: {
         grid: {
           show: true,
@@ -429,7 +456,6 @@ export default {
         },
         legend: { show: false },
       },
-
       ataquesOptions: {
         grid: {
           show: true,
@@ -488,7 +514,6 @@ export default {
         },
         legend: { show: false },
       },
-
       faltasOptions: {
         grid: {
           show: true,
@@ -547,7 +572,6 @@ export default {
         },
         legend: { show: false },
       },
-
       disciplinaOptions: {
         grid: {
           show: true,
@@ -606,7 +630,6 @@ export default {
         },
         legend: { show: false },
       },
-
       bubbleOptions: {
         grid: { show: false },
         dataLabels: { enabled: false },
@@ -651,6 +674,7 @@ export default {
   created: function() {
     axios.get(process.env.API_URL + "/server/get_eventos/" + this.$session.get('jogoTab') + "/").then(response => {
       this.eventos = response.data;
+      this.eventosfiltered = response.data;
       this.searched = response.data;
       axios.get(process.env.API_URL + "/server/get_jogo/" + this.$session.get('jogoTab') + "/").then(response => {
         this.jogo = response.data;
@@ -716,6 +740,21 @@ export default {
           data: this.genDisciplina(this.jogo.adv_nome)
         }];
 
+
+        var i = 0;
+        while(i < this.eventos.length){
+          var a = 0;
+          var flag = true;
+          while(a < this.tiposeventos.length){
+            if(this.tiposeventos[a][0] == this.eventos[i].tipo)
+              flag = false;
+            ++a;
+          }
+          if(flag){
+            this.tiposeventos.push([this.eventos[i].tipo, true]);
+          }
+          ++i;
+        }
       });
     });
     
@@ -724,6 +763,8 @@ export default {
     window.addEventListener('resize', this.handleResize)
     this.handleResize();
   },
+
+  
 
 
   methods: {
@@ -738,6 +779,11 @@ export default {
       this.window.height = window.innerHeight;
     },
 
+    outside() {
+      this.menuTipo=false;
+      console.log('clicked outside!');
+    },
+
     verJogo(id) {
       this.$session.set('jogoTab', id)
       router.push("/jogo")
@@ -747,14 +793,14 @@ export default {
       var series = [];
       var i = 0;
       series.push([300, 300, 10]);
-      while(i < this.eventos.length){
-        if(this.eventos[i].equipa == equipa)
-          series.push([this.eventos[i].gcx,
-                       this.eventos[i].gcy,
-                       this.eventos[i].size,
-                       this.eventos[i].tipo,
-                       this.eventos[i].atleta1,
-                       this.eventos[i].instante]);
+      while(i < this.searched.length){
+        if(this.searched[i].equipa == equipa)
+          series.push([this.searched[i].gcx,
+                       this.searched[i].gcy,
+                       this.searched[i].size,
+                       this.searched[i].tipo,
+                       this.searched[i].atleta1,
+                       this.searched[i].instante]);
         ++i;
       }
       return series;
@@ -766,15 +812,15 @@ export default {
       var rInt = 0;
       var rFor = 0;
       var i = 0;
-      while(i < this.eventos.length){
-        if(this.eventos[i].equipa == equipa){
-          if(this.eventos[i].tipo == 'Remate à baliza'){
+      while(i < this.searched.length){
+        if(this.searched[i].equipa == equipa){
+          if(this.searched[i].tipo == 'Remate à baliza'){
             rBal = rBal + 1;
           }
-          if(this.eventos[i].tipo == 'Remate intercetado'){
+          if(this.searched[i].tipo == 'Remate intercetado'){
             rInt = rInt + 1;
           }
-          if(this.eventos[i].tipo == 'Remate fora'){
+          if(this.searched[i].tipo == 'Remate fora'){
             rFor = rFor + 1;
           }
         }
@@ -791,12 +837,12 @@ export default {
       var perdas = 0;
       var roubos = 0;
       var i = 0;
-      while(i < this.eventos.length){
-        if(this.eventos[i].equipa == equipa){
-          if(this.eventos[i].tipo == 'Perda de bola'){
+      while(i < this.searched.length){
+        if(this.searched[i].equipa == equipa){
+          if(this.searched[i].tipo == 'Perda de bola'){
             perdas = perdas + 1;
           }
-          if(this.eventos[i].tipo == 'Roubo de bola'){
+          if(this.searched[i].tipo == 'Roubo de bola'){
             roubos = roubos + 1;
           }
         }
@@ -813,15 +859,15 @@ export default {
       var rap = 0;
       var ctr = 0;
       var i = 0;
-      while(i < this.eventos.length){
-        if(this.eventos[i].equipa == equipa){
-          if(this.eventos[i].tipo == 'Ataque organizado'){
+      while(i < this.searched.length){
+        if(this.searched[i].equipa == equipa){
+          if(this.searched[i].tipo == 'Ataque organizado'){
             org = org + 1;
           }
-          if(this.eventos[i].tipo == 'Ataque rápido'){
+          if(this.searched[i].tipo == 'Ataque rápido'){
             rap = rap + 1;
           }
-          if(this.eventos[i].tipo == 'Contra-ataque'){
+          if(this.searched[i].tipo == 'Contra-ataque'){
             ctr = ctr + 1;
           }
         }
@@ -839,15 +885,15 @@ export default {
       var penal = 0;
       var livre = 0;
       var i = 0;
-      while(i < this.eventos.length){
-        if(this.eventos[i].equipa == equipa){
-          if(this.eventos[i].tipo == 'Falta'){
+      while(i < this.searched.length){
+        if(this.searched[i].equipa == equipa){
+          if(this.searched[i].tipo == 'Falta'){
             falta = falta + 1;
           }
-          if(this.eventos[i].tipo == 'Penalti'){
+          if(this.searched[i].tipo == 'Penalti'){
             penal = penal + 1;
           }
-          if(this.eventos[i].tipo == 'Livre Direto'){
+          if(this.searched[i].tipo == 'Livre Direto'){
             livre = livre + 1;
           }
         }
@@ -865,15 +911,15 @@ export default {
       var cv = 0;
       var pp = 0;
       var i = 0;
-      while(i < this.eventos.length){
-        if(this.eventos[i].equipa == equipa){
-          if(this.eventos[i].tipo == 'Cartão azul'){
+      while(i < this.searched.length){
+        if(this.searched[i].equipa == equipa){
+          if(this.searched[i].tipo == 'Cartão azul'){
             ca = ca + 1;
           }
-          if(this.eventos[i].tipo == 'Cartão vermelho'){
+          if(this.searched[i].tipo == 'Cartão vermelho'){
             cv = cv + 1;
           }
-          if(this.eventos[i].tipo == 'Powerplay'){
+          if(this.searched[i].tipo == 'Powerplay'){
             pp = pp + 1;
           }
         }
@@ -883,6 +929,126 @@ export default {
       series.push(cv);
       series.push(pp);
       return series;
+    },
+
+    filterEv(evento){
+      var i = 0;
+      var a = 0;
+      var b = 0;
+
+      if(evento==1){
+        while(b < this.tiposeventos.length){
+          this.tiposeventos[b][1]=true;
+          b=b+1;
+          console.log(b);
+        }
+        this.filtEventosTipo();
+        this.$forceUpdate();
+      }
+
+      if(evento==0){
+        while(b < this.tiposeventos.length){
+          this.tiposeventos[b][1]=false;
+          b=b+1;
+          console.log(b);
+        }
+        this.filtEventosTipo();
+        this.$forceUpdate();
+      }
+
+      while(a < this.tiposeventos.length){
+        if(this.tiposeventos[a][0] == evento[0]){
+          if(this.tiposeventos[a][1]==true){
+            this.tiposeventos[a][1]=false;
+            this.filtEventosTipo();
+            this.$forceUpdate();
+          }
+          else if(this.tiposeventos[a][1]==false){
+            this.tiposeventos[a][1]=true;
+            this.filtEventosTipo();
+            this.$forceUpdate();
+          }
+        }
+        ++a;
+      }
+    },
+
+    filtEventosTipo(){
+      var a = 0;
+      var i = 0;
+      var series = [];
+      while(a < this.tiposeventos.length){
+        if(this.tiposeventos[a][1]==true){
+          series.push(this.tiposeventos[a][0]);
+        }
+        a=a+1;
+      }
+      a=0;
+      this.searched=[];
+      while(a < this.eventos.length){
+        if(series.includes(this.eventos[a].tipo)){
+          this.searched[i] = this.eventos[a];
+          i=i+1;
+        }
+        a=a+1;
+      }
+      this.updateStats();
+    },
+
+    updateStats(){
+        this.series = [{
+          name: this.jogo.clube_nome,
+          data: this.genBubbles(this.jogo.clube_nome)
+        },
+        {
+          name: this.jogo.adv_nome,
+          data: this.genBubbles(this.jogo.adv_nome)
+        }];
+
+        this.remates = [{
+          name: this.jogo.clube_nome,
+          data: this.genRemates(this.jogo.clube_nome)
+        },
+        {
+          name: this.jogo.adv_nome,
+          data: this.genRemates(this.jogo.adv_nome)
+        }];
+
+        this.bolas = [{
+          name: this.jogo.clube_nome,
+          data: this.genBolas(this.jogo.clube_nome)
+        },
+        {
+          name: this.jogo.adv_nome,
+          data: this.genBolas(this.jogo.adv_nome)
+        }];
+
+        this.ataques = [{
+          name: this.jogo.clube_nome,
+          data: this.genAtaques(this.jogo.clube_nome)
+        },
+        {
+          name: this.jogo.adv_nome,
+          data: this.genAtaques(this.jogo.adv_nome)
+        }];
+
+        this.faltas = [{
+          name: this.jogo.clube_nome,
+          data: this.genFaltas(this.jogo.clube_nome)
+        },
+        {
+          name: this.jogo.adv_nome,
+          data: this.genFaltas(this.jogo.adv_nome)
+        }];
+
+        this.disciplina = [{
+          name: this.jogo.clube_nome,
+          data: this.genDisciplina(this.jogo.clube_nome)
+        },
+        {
+          name: this.jogo.adv_nome,
+          data: this.genDisciplina(this.jogo.adv_nome)
+        }];
     },
 
     removeEvento(id){
@@ -1020,7 +1186,39 @@ export default {
         }).catch(e => {});
       //}
     },
-  } 
+  },
+  directives: {
+    'click-outside': {
+      bind: function(el, binding, vNode) {
+        // Provided expression must evaluate to a function.
+        if (typeof binding.value !== 'function') {
+          const compName = vNode.context.name
+          let warn = `[Vue-click-outside:] provided expression '${binding.expression}' is not a function, but has to be`
+          if (compName) { warn += `Found in component '${compName}'` }
+          
+          console.warn(warn)
+        }
+        // Define Handler and cache it on the element
+        const bubble = binding.modifiers.bubble
+        const handler = (e) => {
+          if (bubble || (!el.contains(e.target) && el !== e.target)) {
+            binding.value(e)
+          }
+        }
+        el.__vueClickOutside__ = handler
+
+        // add Event Listeners
+        document.addEventListener('click', handler)
+      },
+      
+      unbind: function(el, binding) {
+        // Remove Event Listeners
+        document.removeEventListener('click', el.__vueClickOutside__)
+        el.__vueClickOutside__ = null
+
+      }
+    }
+  },
 }
 </script>
 
