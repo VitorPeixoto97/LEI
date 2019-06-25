@@ -22,6 +22,7 @@
       </v-container>
 
       <v-container text-xs-center v-if="menuConv">
+        <h1 class="justify-center teamname">Equipa</h1>
         <v-card color="white" class="my-card">
           <ul>
             <li v-for="atleta in atletas" :key="atleta.id">
@@ -34,14 +35,15 @@
               <label>{{ atleta.nome }}</label>
             </li>
           </ul>
-          <button class="btn btn-lg btn-primary btn-block text-uppercase"  
-                  v-on:click="menuConv = false; convocados.atletas.sort(function(a, b){return a.camisola - b.camisola})" 
+          <button class="btn btn-lg btn-primary btn-block btn-convocados text-uppercase"  
+                  v-on:click="menuConv = false; menuInicial = true; convocados.atletas.sort(function(a, b){return a.camisola - b.camisola})" 
                   :disabled="convocados.atletas.length < 10 && convocados.atletas.indexOf(atleta) === -1 && has_null">Avançar
           </button>
         </v-card>
       </v-container>
 
-      <v-container text-xs-center v-else>
+      <v-container text-xs-center v-else-if="menuInicial">
+        <h1 class="justify-center teamname">Equipa</h1>
         <v-card color="white" class="my-card">
           <ul>
             <li v-for="atleta in convocados.atletas" :key="atleta.id">
@@ -53,12 +55,56 @@
               <label>{{ atleta.camisola }} - {{ atleta.nome }}</label>
             </li>
           </ul>
-          <button class="btn btn-lg btn-primary btn-block text-uppercase"  
-                  v-on:click="addConvocados()" 
-                  :disabled="convocados.inicial.length < 5 && convocados.inicial.indexOf(atleta) === -1">Guardar
+          <button class="btn btn-lg btn-primary btn-block btn-convocados text-uppercase"  
+                  v-on:click="menuInicial = false; menuConvAdv = true;" 
+                  :disabled="convocados.inicial.length < 5 && convocados.inicial.indexOf(atleta) === -1">Avançar
           </button>
         </v-card>
       </v-container>
+
+      <v-container text-xs-center v-else-if="menuConvAdv">
+        <h1 class="justify-center teamname">Adversário</h1>
+        <v-card color="white" class="my-card">
+          <ul>
+            <li v-for="atleta in atletasAdv" :key="atleta.id">
+              <md-checkbox class="md-primary"
+                v-model="convocadosAdv.atletas" 
+                :id="atleta.id.toString()"
+                :value="atleta"
+                :disabled="convocadosAdv.atletas.length > 9 && convocadosAdv.atletas.indexOf(atleta) === -1"></md-checkbox>
+              <input class="txt_conv" v-model.number="atleta.camisola" type="number" min="1" :disabled="convocadosAdv.atletas.indexOf(atleta) === -1">
+              <label>{{ atleta.nome }}</label>
+            </li>
+          </ul>
+          <button class="btn btn-lg btn-primary btn-block btn-convocados text-uppercase"  
+                  v-on:click="menuConvAdv = false; menuInicialAdv = true; convocadosAdv.atletas.sort(function(a, b){return a.camisola - b.camisola})" 
+                  :disabled="convocadosAdv.atletas.length < 10 && convocadosAdv.atletas.indexOf(atleta) === -1 && has_null">Avançar
+          </button>
+        </v-card>
+      </v-container>
+
+      <v-container text-xs-center v-else>
+        <h1 class="justify-center teamname">Adversário</h1>
+        <v-card color="white" class="my-card">
+          <ul>
+            <li v-for="atleta in convocadosAdv.atletas" :key="atleta.id">
+              <md-checkbox class="md-primary"
+                v-model="convocadosAdv.inicial"
+                :id="atleta.id.toString()"
+                :value="atleta"
+                :disabled="convocadosAdv.inicial.length > 4 && convocadosAdv.inicial.indexOf(atleta) === -1"></md-checkbox>
+              <label>{{ atleta.camisola }} - {{ atleta.nome }}</label>
+            </li>
+          </ul>
+          <button class="btn btn-lg btn-primary btn-block btn-convocados text-uppercase"  
+                  v-on:click="addConvocados()" 
+                  :disabled="convocadosAdv.inicial.length < 5 && convocadosAdv.inicial.indexOf(atleta) === -1">Guardar
+          </button>
+        </v-card>
+      </v-container>
+      <br>
+      <br>
+      <br>
     </div>
   </layout-basic>
 </template>
@@ -76,13 +122,20 @@ export default {
       return {
         jogo: null,
         atletas: null,
+        atletasAdv: null,
         convocados: {
           atletas: [],
-          inicial: [],
-          jogo: this.$session.get('jogoTab')
+          inicial: []
+        },
+        convocadosAdv: {
+          atletas: [],
+          inicial: []
         },
 
-        menuConv: true
+        menuConv: true,
+        menuInicial: false,
+        menuConvAdv: false,
+        menuInicialAdv: false
       }
   },
   mounted: function() {
@@ -96,6 +149,9 @@ export default {
         app.jogo = response.data;
         axios.get(process.env.API_URL + "/server/get_atletas/" + app.jogo.formacao + "/").then(response => {
           app.atletas = response.data.sort(function(a, b){return a.camisola - b.camisola})
+          axios.get(process.env.API_URL + "/server/get_atletas/" + app.jogo.adversario + "/").then(response => {
+            app.atletasAdv = response.data.sort(function(a, b){return a.camisola - b.camisola})
+          });
         });
       });
     },
@@ -118,7 +174,14 @@ export default {
     },
 
     addConvocados() {
-      axios.post(process.env.API_URL + "/server/convocados/", JSON.stringify(this.convocados)).then(response => {
+      var convocados = {
+          atletas: [],
+          inicial: [],
+          jogo: this.$session.get('jogoTab')
+      }
+      convocados.atletas = this.convocados.atletas.concat(this.convocadosAdv.atletas)
+      convocados.inicial = this.convocados.inicial.concat(this.convocadosAdv.inicial)
+      axios.post(process.env.API_URL + "/server/convocados/", JSON.stringify(convocados)).then(response => {
         router.push("/jogo");
       })
     }

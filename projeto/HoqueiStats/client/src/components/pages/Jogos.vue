@@ -91,30 +91,22 @@
                       <input v-model="clubeAdv" class="input" type="text" placeholder="Clube adversário" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selForm = false, selClAdv = true, selFormAdv = false">
                       <input v-model="jogo.formacaoAdv" class="input" type="text" placeholder="Formação adversária" v-on:keyup.down="$event.target.nextElementSibling.focus()" v-on:keyup.up="$event.target.previousElementSibling.focus()" v-on:focus="selForm = false, selClAdv = false, selFormAdv = true, formacoesAdversarias()">
                       Data   <input v-model="jogo.data" class="input" type="date" v-on:focus="selForm = false, selClAdv = false, selFormAdv = false">
-                      Hora   <input v-model="hora" type="number" min="0" max="23" placeholder="00">:<input v-model="minutos" type="number" min="0" max="59" placeholder="00">
+                      Hora   <input v-model="hora" type="number" min="0" max="23" placeholder="00">:<input v-model="minutos" type="number" min="0" max="59" placeholder="00"><br>
+                      Duração (em minutos):   <input v-model="jogo.duracao" type="number" min="0" placeholder="00"><br>
+                      Partes do jogo:  <input v-model="jogo.partes" type="number" min="0" placeholder="00"><br>
                       <br>
                         <div class="column">
                           <multiselect v-model="jogo.tipo" placeholder="Selecione tipo de competição" :options="typeOptions" :searchable="false" :close-on-select="true" :show-labels="false">
                           </multiselect>
                       </div>
-                      
-                      <!-- <select class="jogo_select" v-model="jogo.tipo">
-                        <option value="Competição">Competição</option>
-                        <option value="Amigável">Amigável</option>
-                      </select> -->
                       <br>
                       <div class="column">
                         <multiselect v-model="local" placeholder="Selecione tipo de jogo" :options="gameOptions" :searchable="false" :close-on-select="true" :show-labels="false">
                         </multiselect>
                       </div>
-                      
-                      <!-- <select class="jogo_select" v-model="local">
-                        <option value="Casa">Casa</option>
-                        <option value="Fora">Fora</option>
-                      </select> -->
                       <br>
                       <input type="submit" value="Confirmar">
-                      <button @click="criarJogo = false, jogo.formacao = null, clubeAdv = null, jogo.formacaoAdv = null, jogo.tipo = null, local = null, jogo.data = null, jogo.hora = null">Cancelar</button>
+                      <button @click="criarJogo = false, jogo.formacao = null, clubeAdv = null, jogo.formacaoAdv = null, jogo.tipo = null, local = null, jogo.data = null, jogo.hora = null, jogo.duracao = null, jogo.partes = null">Cancelar</button>
                     </div>
                   </form>
                 </div>
@@ -192,7 +184,9 @@ export default {
           tipo: null,
           casa: null,
           data: null,
-          hora: null
+          hora: null,
+          duracao: null,
+          partes: null
         },
         clubeAdv: null,
         formacoesAdv: null,
@@ -306,7 +300,7 @@ export default {
     },
 
     submitJogo(){
-      if(this.jogo.numero != null &&this.jogo.formacao != null && this.jogo.formacaoAdv != null && this.jogo.tipo != null && this.local != null && this.jogo.data != null && this.hora != null && this.minutos != null){
+      if(this.jogo.numero != null &&this.jogo.formacao != null && this.jogo.formacaoAdv != null && this.jogo.tipo != null && this.local != null && this.jogo.data != null && this.hora != null && this.minutos != null && this.jogo.duracao != null && this.jogo.partes != null){
         this.jogo.hora = this.hora + ":" + this.minutos + ":00";
 
         if(this.local == 'Casa')
@@ -328,7 +322,14 @@ export default {
           this.minutos = null;
           this.jogo.hora = null;
           this.local = null;
+          this.duracao = null;
+          this.partes = null;
           this.criarJogo = false;
+
+          axios.get(process.env.API_URL + "/server/get_jogos/"+this.$session.get('user_info').clube+"/").then(response => {
+            this.jogos = response.data;
+            this.searched = this.jogos
+          });
         })
       }
     },

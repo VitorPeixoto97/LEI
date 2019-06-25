@@ -45,7 +45,7 @@
               </div>
             </div>
           </v-card>
-      </v-container>s
+      </v-container>
 
       <v-container text-xs-center v-if="change">
           <v-card color="white" class="my-card timechange">
@@ -277,10 +277,10 @@ export default {
 
     updateJogo() {
       var app = this;
-      axios.get(process.env.API_URL + "/server/get_jogo/"+this.$session.get('jogoTab')+"/").then(response => {
+      console.log('updatejogo: '+this.jogo.id);
+      axios.get(process.env.API_URL + "/server/get_jogo/"+this.jogo.id+"/").then(response => {
         app.jogo = response.data;
       });
-
     },
       
     checkLoggedIn() {
@@ -302,7 +302,6 @@ export default {
       var app = this;
       axios.get(process.env.API_URL + "/server/get_tipo_evento/" + app.tipo + "/").then(response => {
         app.tipo_evento = response.data;
-        console.log(app.tipo_evento)
         app.evento.tipo = app.tipo_evento.id;
       })
     },
@@ -378,7 +377,6 @@ export default {
         }
       }
     },
-
     getAtletas2() {
       if(this.codigoEquipa != null){
         var app = this;
@@ -398,9 +396,10 @@ export default {
 
     removeEvento(id){
       axios.get(process.env.API_URL + "/server/del_evento/" + id + "/").then(response => {
-        this.updateTable();
-        this.updateJogo();
+
       });
+      this.updateTable();
+      this.updateJogo();
     },
 
     sinalizaEvento(id){
@@ -420,7 +419,6 @@ export default {
       this.started=true;
       if (!this.paused) { // está prestes a parar
         clearInterval(this.interval);
-        console.log(this.evento);
       } else { // está prestes a (re)começar
         console.log('timer starts');
         this.interval = setInterval(() => this.incrementTime(), 1000);
