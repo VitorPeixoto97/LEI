@@ -655,6 +655,12 @@ def gEventosView(request, idJogo):
             new_evento['novoinstante'] = evento.novoinstante
         else:
             new_evento['novoinstante'] = " - "
+
+        if(evento.zonaBaliza):
+            new_evento['zonaBaliza'] = evento.zonaBaliza
+        else:
+            new_evento['zonaBaliza'] = " - "
+
         
         new_evento['timestamp'] = evento.timestamp
         new_evento['parte'] = evento.parte
@@ -828,7 +834,7 @@ def gEventosView(request, idJogo):
         if(evento.tipo.id==0):
             new_evento['size'] = 2
         elif(evento.tipo.id==4):
-            new_evento['size'] = 10
+            new_evento['size'] = 9
         else:
             new_evento['size'] = 1
         aux.append(new_evento)

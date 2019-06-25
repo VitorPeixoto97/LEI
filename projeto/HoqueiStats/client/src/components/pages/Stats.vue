@@ -48,18 +48,47 @@
           <v-container text-xs-center style="margin:0px; padding:0px;">
             <v-card class="my-card">
               <div id="chart">
-                <apexchart v-if="statsShow==0" type=bar height=150 :options="rematesOptions" :series="remates" />
+                <apexchart type=bar height=150 :options="rematesOptions" :series="remates" />
               </div>
             </v-card>
           </v-container>
         </slide>
-        <slide :index="1"><img src="https://unsplash.it/400/300?image=456"/></slide>
-        <slide :index="2"><img src="https://unsplash.it/400/300?image=222"/></slide>
-        <slide :index="3"><img src="https://unsplash.it/400/300?image=1003"/></slide>
-        <slide :index="4"><img src="https://unsplash.it/400/300?image=940"/></slide>
-        <slide :index="5"><img src="https://unsplash.it/400/300?image=944"/></slide>
-        <slide :index="6"><img src="https://source.unsplash.com/mEr7U5yfYt8/400x300"/></slide>
-        <slide :index="7"><img src="https://unsplash.it/400/300?image=1041"/></slide>
+        <slide :index="1">
+          <v-container text-xs-center style="margin:0px; padding:0px;">
+            <v-card class="my-card">
+              <div id="chart">
+                <apexchart type=bar height=150 :options="bolasOptions" :series="bolas" />
+              </div>
+            </v-card>
+          </v-container>
+        </slide>
+        <slide :index="2">
+          <v-container text-xs-center style="margin:0px; padding:0px;">
+            <v-card class="my-card">
+              <div id="chart">
+                <apexchart type=bar height=150 :options="ataquesOptions" :series="ataques" />
+              </div>
+            </v-card>
+          </v-container>
+        </slide>
+        <slide :index="3">
+          <v-container text-xs-center style="margin:0px; padding:0px;">
+            <v-card class="my-card">
+              <div id="chart">
+                <apexchart type=bar height=150 :options="faltasOptions" :series="faltas" />
+              </div>
+            </v-card>
+          </v-container>
+        </slide>
+        <slide :index="4">
+          <v-container text-xs-center style="margin:0px; padding:0px;">
+            <v-card class="my-card">
+              <div id="chart">
+                <apexchart type=bar height=150 :options="disciplinaOptions" :series="disciplina" />
+              </div>
+            </v-card>
+          </v-container>
+        </slide>
       </carousel-3d>
 
       <carousel-3d v-if="window.width>=400" :autoplay="false" :display="3" :width="500" :height="200" :border="0">
@@ -67,18 +96,47 @@
           <v-container text-xs-center style="margin:0px; padding:0px;">
             <v-card class="my-card">
               <div id="chart">
-                <apexchart v-if="statsShow==0" type=bar height=200 :options="rematesOptions" :series="remates" />
+                <apexchart type=bar height=200 :options="rematesOptions" :series="remates" />
               </div>
             </v-card>
           </v-container>
         </slide>
-        <slide :index="1"><img src="https://unsplash.it/400/300?image=456"/></slide>
-        <slide :index="2"><img src="https://unsplash.it/400/300?image=222"/></slide>
-        <slide :index="3"><img src="https://unsplash.it/400/300?image=1003"/></slide>
-        <slide :index="4"><img src="https://unsplash.it/400/300?image=940"/></slide>
-        <slide :index="5"><img src="https://unsplash.it/400/300?image=944"/></slide>
-        <slide :index="6"><img src="https://source.unsplash.com/mEr7U5yfYt8/400x300"/></slide>
-        <slide :index="7"><img src="https://unsplash.it/400/300?image=1041"/></slide>
+        <slide :index="1">
+          <v-container text-xs-center style="margin:0px; padding:0px;">
+            <v-card class="my-card">
+              <div id="chart">
+                <apexchart type=bar height=200 :options="bolasOptions" :series="bolas" />
+              </div>
+            </v-card>
+          </v-container>
+        </slide>
+        <slide :index="2">
+          <v-container text-xs-center style="margin:0px; padding:0px;">
+            <v-card class="my-card">
+              <div id="chart">
+                <apexchart type=bar height=200 :options="ataquesOptions" :series="ataques" />
+              </div>
+            </v-card>
+          </v-container>
+        </slide>
+        <slide :index="3">
+          <v-container text-xs-center style="margin:0px; padding:0px;">
+            <v-card class="my-card">
+              <div id="chart">
+                <apexchart type=bar height=200 :options="faltasOptions" :series="faltas" />
+              </div>
+            </v-card>
+          </v-container>
+        </slide>
+        <slide :index="4">
+          <v-container text-xs-center style="margin:0px; padding:0px;">
+            <v-card class="my-card">
+              <div id="chart">
+                <apexchart type=bar height=200 :options="disciplinaOptions" :series="disciplina" />
+              </div>
+            </v-card>
+          </v-container>
+        </slide>
       </carousel-3d>
 
     </div>
@@ -248,9 +306,12 @@ export default {
       selA2: false,
       selC: false,
       selB: false,
-      statsShow: 0,
       series: null,
       remates: null,
+      bolas: null,
+      ataques: null,
+      faltas: null,
+      disciplina: null,
       rematesOptions: {
         grid: {
           show: true,
@@ -309,6 +370,243 @@ export default {
         },
         legend: { show: false },
       },
+
+      bolasOptions: {
+        grid: {
+          show: true,
+          xaxis: {
+            lines: {
+              show: false,
+            },
+          },
+          yaxis: {
+            lines: {
+              show: false,
+            },
+          }, 
+          strokeDashArray: 0,
+        },
+        dataLabels:{
+          formatter: function(value, { seriesIndex, dataPointIndex, w }) {
+            return w.config.series[seriesIndex].data[dataPointIndex] + '   (' + value.toFixed(0) + '%)'
+          },
+        },
+        tooltip: {
+          custom: function({series, seriesIndex, dataPointIndex, w}) {
+            return '<div>' +
+                     '<span>' + w.config.series[seriesIndex].name + '</span>' +
+                   '</div>'
+          },
+        },
+        chart: {
+          stacked: true,
+          stackType: '100%',
+          zoom: { enabled: false },
+          parentHeightOffset: 0,
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+          },
+        },
+        
+        colors: null,
+        title: {
+          text: 'Bolas',
+          style: {
+            fontSize: '19px',
+            color:  '#37003c',
+          },
+        },
+        xaxis: {
+          categories: ['Perdas', 'Roubos'],
+          axisBorder: { show: false },
+          labels: { show:false },
+          axisTicks: {show:false},
+        },
+        fill: {
+          opacity: 1
+        },
+        legend: { show: false },
+      },
+
+      ataquesOptions: {
+        grid: {
+          show: true,
+          xaxis: {
+            lines: {
+              show: false,
+            },
+          },
+          yaxis: {
+            lines: {
+              show: false,
+            },
+          }, 
+          strokeDashArray: 0,
+        },
+        dataLabels:{
+          formatter: function(value, { seriesIndex, dataPointIndex, w }) {
+            return w.config.series[seriesIndex].data[dataPointIndex] + '   (' + value.toFixed(0) + '%)'
+          },
+        },
+        tooltip: {
+          custom: function({series, seriesIndex, dataPointIndex, w}) {
+            return '<div>' +
+                     '<span>' + w.config.series[seriesIndex].name + '</span>' +
+                   '</div>'
+          },
+        },
+        chart: {
+          stacked: true,
+          stackType: '100%',
+          zoom: { enabled: false },
+          parentHeightOffset: 0,
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+          },
+        },
+        
+        colors: null,
+        title: {
+          text: 'Ataques',
+          style: {
+            fontSize: '19px',
+            color:  '#37003c',
+          },
+        },
+        xaxis: {
+          categories: ['Organizado', 'Rápido', 'Contra-ataque'],
+          axisBorder: { show: false },
+          labels: { show:false },
+          axisTicks: {show:false},
+        },
+        fill: {
+          opacity: 1
+        },
+        legend: { show: false },
+      },
+
+      faltasOptions: {
+        grid: {
+          show: true,
+          xaxis: {
+            lines: {
+              show: false,
+            },
+          },
+          yaxis: {
+            lines: {
+              show: false,
+            },
+          }, 
+          strokeDashArray: 0,
+        },
+        dataLabels:{
+          formatter: function(value, { seriesIndex, dataPointIndex, w }) {
+            return w.config.series[seriesIndex].data[dataPointIndex] + '   (' + value.toFixed(0) + '%)'
+          },
+        },
+        tooltip: {
+          custom: function({series, seriesIndex, dataPointIndex, w}) {
+            return '<div>' +
+                     '<span>' + w.config.series[seriesIndex].name + '</span>' +
+                   '</div>'
+          },
+        },
+        chart: {
+          stacked: true,
+          stackType: '100%',
+          zoom: { enabled: false },
+          parentHeightOffset: 0,
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+          },
+        },
+        
+        colors: null,
+        title: {
+          text: 'Faltas',
+          style: {
+            fontSize: '19px',
+            color:  '#37003c',
+          },
+        },
+        xaxis: {
+          categories: ['Falta', 'Penalti', 'Livre direto'],
+          axisBorder: { show: false },
+          labels: { show:false },
+          axisTicks: {show:false},
+        },
+        fill: {
+          opacity: 1
+        },
+        legend: { show: false },
+      },
+
+      disciplinaOptions: {
+        grid: {
+          show: true,
+          xaxis: {
+            lines: {
+              show: false,
+            },
+          },
+          yaxis: {
+            lines: {
+              show: false,
+            },
+          }, 
+          strokeDashArray: 0,
+        },
+        dataLabels:{
+          formatter: function(value, { seriesIndex, dataPointIndex, w }) {
+            return w.config.series[seriesIndex].data[dataPointIndex] + '   (' + value.toFixed(0) + '%)'
+          },
+        },
+        tooltip: {
+          custom: function({series, seriesIndex, dataPointIndex, w}) {
+            return '<div>' +
+                     '<span>' + w.config.series[seriesIndex].name + '</span>' +
+                   '</div>'
+          },
+        },
+        chart: {
+          stacked: true,
+          stackType: '100%',
+          zoom: { enabled: false },
+          parentHeightOffset: 0,
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+          },
+        },
+        
+        colors: null,
+        title: {
+          text: 'Disciplina',
+          style: {
+            fontSize: '19px',
+            color:  '#37003c',
+          },
+        },
+        xaxis: {
+          categories: ['Cartão azul', 'Cartão vermelho', 'Powerplay'],
+          axisBorder: { show: false },
+          labels: { show:false },
+          axisTicks: {show:false},
+        },
+        fill: {
+          opacity: 1
+        },
+        legend: { show: false },
+      },
+
       bubbleOptions: {
         grid: { show: false },
         dataLabels: { enabled: false },
@@ -359,6 +657,10 @@ export default {
         this.evento.jogo = this.$session.get('jogoTab');
         this.bubbleOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
         this.rematesOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
+        this.bolasOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
+        this.ataquesOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
+        this.faltasOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
+        this.disciplinaOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
         
         this.series = [{
           name: this.jogo.clube_nome,
@@ -376,6 +678,42 @@ export default {
         {
           name: this.jogo.adv_nome,
           data: this.genRemates(this.jogo.adv_nome)
+        }];
+
+        this.bolas = [{
+          name: this.jogo.clube_nome,
+          data: this.genBolas(this.jogo.clube_nome)
+        },
+        {
+          name: this.jogo.adv_nome,
+          data: this.genBolas(this.jogo.adv_nome)
+        }];
+
+        this.ataques = [{
+          name: this.jogo.clube_nome,
+          data: this.genAtaques(this.jogo.clube_nome)
+        },
+        {
+          name: this.jogo.adv_nome,
+          data: this.genAtaques(this.jogo.adv_nome)
+        }];
+
+        this.faltas = [{
+          name: this.jogo.clube_nome,
+          data: this.genFaltas(this.jogo.clube_nome)
+        },
+        {
+          name: this.jogo.adv_nome,
+          data: this.genFaltas(this.jogo.adv_nome)
+        }];
+
+        this.disciplina = [{
+          name: this.jogo.clube_nome,
+          data: this.genDisciplina(this.jogo.clube_nome)
+        },
+        {
+          name: this.jogo.adv_nome,
+          data: this.genDisciplina(this.jogo.adv_nome)
         }];
 
       });
@@ -442,12 +780,108 @@ export default {
         }
         ++i;
       }
-
-
       series.push(rBal);
       series.push(rInt);
       series.push(rFor);
-      console.log(series);
+      return series;
+    },
+
+    genBolas(equipa) {
+      var series = [];
+      var perdas = 0;
+      var roubos = 0;
+      var i = 0;
+      while(i < this.eventos.length){
+        if(this.eventos[i].equipa == equipa){
+          if(this.eventos[i].tipo == 'Perda de bola'){
+            perdas = perdas + 1;
+          }
+          if(this.eventos[i].tipo == 'Roubo de bola'){
+            roubos = roubos + 1;
+          }
+        }
+        ++i;
+      }
+      series.push(perdas);
+      series.push(roubos);
+      return series;
+    },
+
+    genAtaques(equipa) {
+      var series = [];
+      var org = 0;
+      var rap = 0;
+      var ctr = 0;
+      var i = 0;
+      while(i < this.eventos.length){
+        if(this.eventos[i].equipa == equipa){
+          if(this.eventos[i].tipo == 'Ataque organizado'){
+            org = org + 1;
+          }
+          if(this.eventos[i].tipo == 'Ataque rápido'){
+            rap = rap + 1;
+          }
+          if(this.eventos[i].tipo == 'Contra-ataque'){
+            ctr = ctr + 1;
+          }
+        }
+        ++i;
+      }
+      series.push(org);
+      series.push(rap);
+      series.push(ctr);
+      return series;
+    },
+
+    genFaltas(equipa) {
+      var series = [];
+      var falta = 0;
+      var penal = 0;
+      var livre = 0;
+      var i = 0;
+      while(i < this.eventos.length){
+        if(this.eventos[i].equipa == equipa){
+          if(this.eventos[i].tipo == 'Falta'){
+            falta = falta + 1;
+          }
+          if(this.eventos[i].tipo == 'Penalti'){
+            penal = penal + 1;
+          }
+          if(this.eventos[i].tipo == 'Livre Direto'){
+            livre = livre + 1;
+          }
+        }
+        ++i;
+      }
+      series.push(falta);
+      series.push(penal);
+      series.push(livre);
+      return series;
+    },
+
+    genDisciplina(equipa) {
+      var series = [];
+      var ca = 0;
+      var cv = 0;
+      var pp = 0;
+      var i = 0;
+      while(i < this.eventos.length){
+        if(this.eventos[i].equipa == equipa){
+          if(this.eventos[i].tipo == 'Cartão azul'){
+            ca = ca + 1;
+          }
+          if(this.eventos[i].tipo == 'Cartão vermelho'){
+            cv = cv + 1;
+          }
+          if(this.eventos[i].tipo == 'Powerplay'){
+            pp = pp + 1;
+          }
+        }
+        ++i;
+      }
+      series.push(ca);
+      series.push(cv);
+      series.push(pp);
       return series;
     },
 
