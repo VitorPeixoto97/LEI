@@ -491,7 +491,6 @@ def eventoView(request):
         novo = received['novoinst']
 
         if tp.id == 16 and novo is not None:
-            print(novo)
             models.Evento.objects.create(tipo=tp, jogo=jg, instante=inst, novoinstante=novo, parte=pt)
 
         elif eq is not None:
@@ -848,7 +847,6 @@ def checkBubblesPosition(x, y, eventos):
     for evento in eventos:
         if(evento['gcy']<y+12 and evento['gcy']>y-12 and evento['gcx']<x+12 and evento['gcx']>x-12):
             count=count+1
-    print(count)
     return count
 
 def dispersaBubbles(new_evento, nBubbles):
