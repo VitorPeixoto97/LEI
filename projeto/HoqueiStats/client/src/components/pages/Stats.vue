@@ -68,19 +68,19 @@
       <v-container text-xs-center>
         <v-card style="border-radius:40px;" class="my-card chart">
           <img class="background" src="../../assets/ring.png"></img>
-          <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>1500">
+          <v-container style="width:100%; margin:0; padding:0;" v-if="window.width>1500">
             <apexchart height=550 type=bubble :options="bubbleOptions" :series="series" />
           </v-container>
-          <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>1000 && window.width<1500">
+          <v-container style="width:100%; margin:0; padding:0;" v-if="window.width>1000 && window.width<1500">
             <apexchart height=450 type=bubble :options="bubbleOptions" :series="series" />
           </v-container>
-          <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>700 && window.width<1000">
+          <v-container style="width:100%; margin:0; padding:0;" v-if="window.width>700 && window.width<1000">
             <apexchart height=350 type=bubble :options="bubbleOptions" :series="series" />
           </v-container>
-          <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>370 && window.width<700">
+          <v-container style="width:100%; margin:0; padding:0;" v-if="window.width>370 && window.width<700">
             <apexchart height=175 type=bubble :options="bubbleOptions" :series="series" />
           </v-container>
-          <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>340 && window.width<370">
+          <v-container style="width:100%; margin:0; padding:0;" v-if="window.width>340 && window.width<370">
             <apexchart height=170 type=bubble :options="bubbleOptions" :series="series" />
           </v-container>
         </v-card>
