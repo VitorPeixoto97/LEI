@@ -235,7 +235,7 @@
     return items
   }
   export default {
-    name: 'StatsGame',
+    name: 'StatsGameLive',
     components: {
       LayoutBasic,
     },
@@ -589,110 +589,13 @@
       }
     },
 
-    created: function() {
-      axios.get(process.env.API_URL + "/server/get_eventos/" + this.$session.get('jogoTab') + "/").then(response => {
-        this.eventos = response.data;
-        this.searched = response.data;
-        axios.get(process.env.API_URL + "/server/get_jogo/" + this.$session.get('jogoTab') + "/").then(response => {
-          this.jogo = response.data;
-          this.bubbleOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
-          this.rematesOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
-          this.bolasOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
-          this.ataquesOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
-          this.faltasOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
-          this.disciplinaOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
-
-          this.series = [{
-            name: this.jogo.clube_nome,
-            data: this.genBubbles(this.jogo.clube_nome)
-          },
-            {
-              name: this.jogo.adv_nome,
-              data: this.genBubbles(this.jogo.adv_nome)
-            }];
-
-          this.remates = [{
-            name: this.jogo.clube_nome,
-            data: this.genRemates(this.jogo.clube_nome)
-          },
-            {
-              name: this.jogo.adv_nome,
-              data: this.genRemates(this.jogo.adv_nome)
-            }];
-
-          this.bolas = [{
-            name: this.jogo.clube_nome,
-            data: this.genBolas(this.jogo.clube_nome)
-          },
-            {
-              name: this.jogo.adv_nome,
-              data: this.genBolas(this.jogo.adv_nome)
-            }];
-
-          this.ataques = [{
-            name: this.jogo.clube_nome,
-            data: this.genAtaques(this.jogo.clube_nome)
-          },
-            {
-              name: this.jogo.adv_nome,
-              data: this.genAtaques(this.jogo.adv_nome)
-            }];
-
-          this.faltas = [{
-            name: this.jogo.clube_nome,
-            data: this.genFaltas(this.jogo.clube_nome)
-          },
-            {
-              name: this.jogo.adv_nome,
-              data: this.genFaltas(this.jogo.adv_nome)
-            }];
-
-          this.disciplina = [{
-            name: this.jogo.clube_nome,
-            data: this.genDisciplina(this.jogo.clube_nome)
-          },
-            {
-              name: this.jogo.adv_nome,
-              data: this.genDisciplina(this.jogo.adv_nome)
-            }];
-
-
-          var i = 0;
-          while(i < this.eventos.length){
-            var a = 0;
-            var flag = true;
-            while(a < this.tiposeventos.length){
-              if(this.tiposeventos[a][0] == this.eventos[i].tipo)
-                flag = false;
-              ++a;
-            }
-            if(flag){
-              this.tiposeventos.push([this.eventos[i].tipo, true]);
-            }
-            ++i;
-          }
-
-          i = 0;
-          while(i < this.eventos.length){
-            var a = 0;
-            var flag = true;
-            while(a < this.jogadores.length){
-              if(this.jogadores[a][0] == this.eventos[i].atleta1)
-                flag = false;
-              ++a;
-            }
-            if(flag){
-              this.jogadores.push([this.eventos[i].atleta1, true]);
-            }
-            ++i;
-          }
-        });
-      });
-
+    mounted: function() {
       this.checkLoggedIn();
 
-      window.addEventListener('resize', this.handleResize)
+      window.addEventListener('resize', this.handleResize);
       this.handleResize();
+
+      setInterval(() => this.FetchData(), 5000);
     },
 
     methods: {
@@ -700,6 +603,107 @@
         if (!this.$session.has('token')) {
           router.push("/auth");
         }
+      },
+
+      FetchData() {
+        axios.get(process.env.API_URL + "/server/get_eventos/" + this.$session.get('jogoTab') + "/").then(response => {
+          this.eventos = response.data;
+          this.searched = response.data;
+          axios.get(process.env.API_URL + "/server/get_jogo/" + this.$session.get('jogoTab') + "/").then(response => {
+            this.jogo = response.data;
+            this.bubbleOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
+            this.rematesOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
+            this.bolasOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
+            this.ataquesOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
+            this.faltasOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
+            this.disciplinaOptions.colors = [this.jogo.clube_cor, this.jogo.adv_cor, '#FFFFFF00'];
+
+            this.series = [{
+              name: this.jogo.clube_nome,
+              data: this.genBubbles(this.jogo.clube_nome)
+            },
+              {
+                name: this.jogo.adv_nome,
+                data: this.genBubbles(this.jogo.adv_nome)
+              }];
+
+            this.remates = [{
+              name: this.jogo.clube_nome,
+              data: this.genRemates(this.jogo.clube_nome)
+            },
+              {
+                name: this.jogo.adv_nome,
+                data: this.genRemates(this.jogo.adv_nome)
+              }];
+
+            this.bolas = [{
+              name: this.jogo.clube_nome,
+              data: this.genBolas(this.jogo.clube_nome)
+            },
+              {
+                name: this.jogo.adv_nome,
+                data: this.genBolas(this.jogo.adv_nome)
+              }];
+
+            this.ataques = [{
+              name: this.jogo.clube_nome,
+              data: this.genAtaques(this.jogo.clube_nome)
+            },
+              {
+                name: this.jogo.adv_nome,
+                data: this.genAtaques(this.jogo.adv_nome)
+              }];
+
+            this.faltas = [{
+              name: this.jogo.clube_nome,
+              data: this.genFaltas(this.jogo.clube_nome)
+            },
+              {
+                name: this.jogo.adv_nome,
+                data: this.genFaltas(this.jogo.adv_nome)
+              }];
+
+            this.disciplina = [{
+              name: this.jogo.clube_nome,
+              data: this.genDisciplina(this.jogo.clube_nome)
+            },
+              {
+                name: this.jogo.adv_nome,
+                data: this.genDisciplina(this.jogo.adv_nome)
+              }];
+
+
+            var i = 0;
+            while(i < this.eventos.length){
+              var a = 0;
+              var flag = true;
+              while(a < this.tiposeventos.length){
+                if(this.tiposeventos[a][0] == this.eventos[i].tipo)
+                  flag = false;
+                ++a;
+              }
+              if(flag){
+                this.tiposeventos.push([this.eventos[i].tipo, true]);
+              }
+              ++i;
+            }
+
+            i = 0;
+            while(i < this.eventos.length){
+              var a = 0;
+              var flag = true;
+              while(a < this.jogadores.length){
+                if(this.jogadores[a][0] == this.eventos[i].atleta1)
+                  flag = false;
+                ++a;
+              }
+              if(flag){
+                this.jogadores.push([this.eventos[i].atleta1, true]);
+              }
+              ++i;
+            }
+          });
+        })
       },
 
       handleResize() {
