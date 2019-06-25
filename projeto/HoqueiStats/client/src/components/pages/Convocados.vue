@@ -35,7 +35,7 @@
               <label>{{ atleta.nome }}</label>
             </li>
           </ul>
-          <button class="btn btn-lg btn-primary btn-block text-uppercase"  
+          <button class="btn btn-lg btn-primary btn-block btn-convocados text-uppercase"  
                   v-on:click="menuConv = false; menuInicial = true; convocados.atletas.sort(function(a, b){return a.camisola - b.camisola})" 
                   :disabled="convocados.atletas.length < 10 && convocados.atletas.indexOf(atleta) === -1 && has_null">Avançar
           </button>
@@ -55,7 +55,7 @@
               <label>{{ atleta.camisola }} - {{ atleta.nome }}</label>
             </li>
           </ul>
-          <button class="btn btn-lg btn-primary btn-block text-uppercase"  
+          <button class="btn btn-lg btn-primary btn-block btn-convocados text-uppercase"  
                   v-on:click="menuInicial = false; menuConvAdv = true;" 
                   :disabled="convocados.inicial.length < 5 && convocados.inicial.indexOf(atleta) === -1">Avançar
           </button>
@@ -76,7 +76,7 @@
               <label>{{ atleta.nome }}</label>
             </li>
           </ul>
-          <button class="btn btn-lg btn-primary btn-block text-uppercase"  
+          <button class="btn btn-lg btn-primary btn-block btn-convocados text-uppercase"  
                   v-on:click="menuConvAdv = false; menuInicialAdv = true; convocadosAdv.atletas.sort(function(a, b){return a.camisola - b.camisola})" 
                   :disabled="convocadosAdv.atletas.length < 10 && convocadosAdv.atletas.indexOf(atleta) === -1 && has_null">Avançar
           </button>
@@ -96,12 +96,15 @@
               <label>{{ atleta.camisola }} - {{ atleta.nome }}</label>
             </li>
           </ul>
-          <button class="btn btn-lg btn-primary btn-block text-uppercase"  
+          <button class="btn btn-lg btn-primary btn-block btn-convocados text-uppercase"  
                   v-on:click="addConvocados()" 
                   :disabled="convocadosAdv.inicial.length < 5 && convocadosAdv.inicial.indexOf(atleta) === -1">Guardar
           </button>
         </v-card>
       </v-container>
+      <br>
+      <br>
+      <br>
     </div>
   </layout-basic>
 </template>

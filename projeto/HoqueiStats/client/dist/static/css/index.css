@@ -36,7 +36,7 @@ body {
 
 .form-signin .btn {
   font-size: 80%;
-  border-radius: 5rem;
+  border-radius: 30px;
   letter-spacing: .1rem;
   font-weight: bold;
   padding: 1rem;
@@ -52,6 +52,13 @@ body {
   border-color: #37003c !important;
   background-color: #37003c !important;
   color: #00ff87 !important;
+}
+
+.btn-convocados{
+  width:60%;
+  margin:auto;
+  height:auto;
+  border-radius:50px !important;
 }
 
 .btn-secundary{
