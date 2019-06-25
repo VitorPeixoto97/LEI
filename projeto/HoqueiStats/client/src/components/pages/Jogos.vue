@@ -300,7 +300,7 @@ export default {
     },
 
     submitJogo(){
-      if(this.jogo.numero != null &&this.jogo.formacao != null && this.jogo.formacaoAdv != null && this.jogo.tipo != null && this.local != null && this.jogo.data != null && this.hora != null && this.minutos != null && this.duracao != null && this.partes != null){
+      if(this.jogo.numero != null &&this.jogo.formacao != null && this.jogo.formacaoAdv != null && this.jogo.tipo != null && this.local != null && this.jogo.data != null && this.hora != null && this.minutos != null && this.jogo.duracao != null && this.jogo.partes != null){
         this.jogo.hora = this.hora + ":" + this.minutos + ":00";
 
         if(this.local == 'Casa')
@@ -325,6 +325,11 @@ export default {
           this.duracao = null;
           this.partes = null;
           this.criarJogo = false;
+
+          axios.get(process.env.API_URL + "/server/get_jogos/"+this.$session.get('user_info').clube+"/").then(response => {
+            this.jogos = response.data;
+            this.searched = this.jogos
+          });
         })
       }
     },
