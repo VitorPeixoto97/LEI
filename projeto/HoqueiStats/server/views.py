@@ -307,12 +307,14 @@ def jogoView(request):
         data = received['data']
         hora = received['hora']
         tipo = received['tipo']
+        duracao = received['duracao']
+        partes = received['partes']
         formID = received['formacao']
         formacao = get_object_or_404(models.Formacao, id=formID)
         formAdvID = received['formacaoAdv']
         formacaoAdv = get_object_or_404(models.Formacao, id=formAdvID)
 
-        models.Jogo.objects.create(tipo=tipo, formacao=formacao, adversario=formacaoAdv, casa=casa, data=data, hora=hora, numero=numero, grelhaCampo="8x4", grelhaBaliza="3x3")
+        models.Jogo.objects.create(tipo=tipo, formacao=formacao, adversario=formacaoAdv, casa=casa, data=data, hora=hora, numero=numero, duracao=duracao, partes=partes, grelhaCampo="8x4", grelhaBaliza="3x3")
         return HttpResponse('ok')
     else:
         return HttpResponseBadRequest(content='bad form')
