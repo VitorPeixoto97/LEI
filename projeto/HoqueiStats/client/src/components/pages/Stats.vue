@@ -16,6 +16,22 @@
         </v-card>
       </v-container>
     </div>
+    <div v-if="menuJogador==true" class="full">
+      <v-container>
+        <v-card class="my-card filter-card">
+          <div style="padding:10px;">
+            <button v-for="jogador in jogadores" v-if="jogador[1]==false" class="btn btn-lg btn-filter-false text-uppercase" @click="filterJog(jogador)">{{jogador[0]}}</button>
+            <button v-for="jogador in jogadores" v-if="jogador[1]==true"  class="btn btn-lg btn-filter-true text-uppercase"  @click="filterJog(jogador)">{{jogador[0]}}</button>
+
+            <div></div>
+
+            <button class="btn btn-lg btn-filter-all text-uppercase"  @click="filterJog(1)">Selecionar tudo</button>
+            <button class="btn btn-lg btn-filter-all text-uppercase"  @click="filterJog(0)">Remover tudo</button>
+            <button class="btn btn-lg btn-filter-all text-uppercase"  @click="menuJogador=false">Fechar</button>
+          </div>
+        </v-card>
+      </v-container>
+    </div>
     <div id="app" class="row v-row">
       <v-container text-xs-center>
         <v-card color="white" class="my-card score">
@@ -44,6 +60,7 @@
         <button class="btn btn-lg btn-filter text-uppercase" @click="menuTipo=true">Tipo</button>
         <button class="btn btn-lg btn-filter text-uppercase" @click="switchEquipa()">{{equipaFilter}}</button>
         <button class="btn btn-lg btn-filter text-uppercase" @click="switchParte()">{{parteFilter}} Parte</button>
+        <button class="btn btn-lg btn-filter text-uppercase" @click="menuJogador=true">Jogador</button>
       </v-container>
     </div>
 
@@ -328,7 +345,9 @@ export default {
       sugestaoAtletas1: null,
       sugestaoAtletas2: null,
       tiposeventos: [],
+      jogadores: [],
       menuTipo: false,
+      menuJogador: false,
       equipaFilter: 'Equipa',
       parteFilter: '',
       menuJogador: false,
@@ -757,6 +776,21 @@ export default {
           }
           ++i;
         }
+
+        i = 0;
+        while(i < this.eventos.length){
+          var a = 0;
+          var flag = true;
+          while(a < this.jogadores.length){
+            if(this.jogadores[a][0] == this.eventos[i].atleta1)
+              flag = false;
+            ++a;
+          }
+          if(flag){
+            this.jogadores.push([this.eventos[i].atleta1, true]);
+          }
+          ++i;
+        }
       });
     });
     
@@ -765,9 +799,6 @@ export default {
     window.addEventListener('resize', this.handleResize)
     this.handleResize();
   },
-
-  
-
 
   methods: {
     checkLoggedIn() {
@@ -802,7 +833,6 @@ export default {
       }
       return series;
     },
-
     genRemates(equipa) {
       var series = [];
       var rBal = 0;
@@ -828,7 +858,6 @@ export default {
       series.push(rFor);
       return series;
     },
-
     genBolas(equipa) {
       var series = [];
       var perdas = 0;
@@ -849,7 +878,6 @@ export default {
       series.push(roubos);
       return series;
     },
-
     genAtaques(equipa) {
       var series = [];
       var org = 0;
@@ -875,7 +903,6 @@ export default {
       series.push(ctr);
       return series;
     },
-
     genFaltas(equipa) {
       var series = [];
       var falta = 0;
@@ -901,7 +928,6 @@ export default {
       series.push(livre);
       return series;
     },
-
     genDisciplina(equipa) {
       var series = [];
       var ca = 0;
@@ -945,7 +971,6 @@ export default {
         this.$forceUpdate();
       }
     },
-
     switchParte(){
       if(this.parteFilter==''){
         this.parteFilter=1;
@@ -964,7 +989,6 @@ export default {
       }
     },
 
-
     filterEv(evento){
       var i = 0;
       var a = 0;
@@ -979,6 +1003,7 @@ export default {
         this.$forceUpdate();
       }
 
+      b = 0;
       if(evento==0){
         while(b < this.tiposeventos.length){
           this.tiposeventos[b][1]=false;
@@ -1005,24 +1030,75 @@ export default {
       }
     },
 
+    filterJog(jogador){
+      var i = 0;
+      var a = 0;
+      var b = 0;
+
+      if(jogador==1){
+        while(b < this.jogadores.length){
+          this.jogadores[b][1]=true;
+          b=b+1;
+        }
+        this.filtEventos();
+        this.$forceUpdate();
+      }
+
+      b = 0;
+      if(jogador==0){
+        while(b < this.jogadores.length){
+          this.jogadores[b][1]=false;
+          b=b+1;
+        }
+        this.filtEventos();
+        this.$forceUpdate();
+      }
+
+      while(a < this.jogadores.length){
+        if(this.jogadores[a][0] == jogador[0]){
+          if(this.jogadores[a][1]==true){
+            this.jogadores[a][1]=false;
+            this.filtEventos();
+            this.$forceUpdate();
+          }
+          else if(this.jogadores[a][1]==false){
+            this.jogadores[a][1]=true;
+            this.filtEventos();
+            this.$forceUpdate();
+          }
+        }
+        ++a;
+      }
+    },
+
     filtEventos(){
       var a = 0;
       var i = 0;
-      var series = [];
+      var seriesEv = [];
+      var seriesJog = [];
       while(a < this.tiposeventos.length){
         if(this.tiposeventos[a][1]==true){
-          series.push(this.tiposeventos[a][0]);
+          seriesEv.push(this.tiposeventos[a][0]);
+        }
+        a=a+1;
+      }
+      a=0;
+      while(a < this.jogadores.length){
+        if(this.jogadores[a][1]==true){
+          seriesJog.push(this.jogadores[a][0]);
         }
         a=a+1;
       }
       a=0;
       this.searched=[];
       while(a < this.eventos.length){
-        if(series.includes(this.eventos[a].tipo)){
-          if(this.eventos[a].equipa==this.equipaFilter || this.equipaFilter=="Equipa"){
-            if(this.eventos[a].parte==this.parteFilter || this.parteFilter==''){
-              this.searched[i] = this.eventos[a];
-              i=i+1;
+        if(seriesEv.includes(this.eventos[a].tipo)){
+          if(seriesJog.includes(this.eventos[a].atleta1)){
+            if(this.eventos[a].equipa==this.equipaFilter || this.equipaFilter=="Equipa"){
+              if(this.eventos[a].parte==this.parteFilter || this.parteFilter==''){
+                this.searched[i] = this.eventos[a];
+                i=i+1;
+              }
             }
           }
         }
