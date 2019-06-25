@@ -321,7 +321,7 @@ def jogoView(request):
 #@login_required
 #@permission_required('change_jogo', raise_exception=True)
 @csrf_exempt
-def cJogoView(request, idJogo, grelhaC, grelhaB):
+def cJogoView(request):
     if request.method=='POST':
         received = json.loads(request.body.decode('utf-8'))
 
