@@ -23,7 +23,7 @@
       </v-container>
 
       <v-container text-xs-center>
-        <v-card color="white" class="my-card chart">
+        <v-card style="border-radius:40px;" class="my-card chart">
           <img class="background" src="../../assets/ring.png"></img>
           <v-container style="width=100%; margin:0; padding:0;" v-if="window.width>1500">
             <apexchart height=550 type=bubble :options="bubbleOptions" :series="series" />
