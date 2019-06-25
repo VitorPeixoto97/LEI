@@ -41,7 +41,9 @@
 
     <div class="row v-row">
       <v-container text-xs-center>
-        <button class="btn btn-lg btn-filter btn-block text-uppercase" @click="menuTipo=true">Tipo</button>
+        <button class="btn btn-lg btn-filter text-uppercase" @click="menuTipo=true">Tipo</button>
+        <button class="btn btn-lg btn-filter text-uppercase" @click="switchEquipa()">{{equipaFilter}}</button>
+        <button class="btn btn-lg btn-filter text-uppercase" @click="switchParte()">{{parteFilter}} Parte</button>
       </v-container>
     </div>
 
@@ -309,7 +311,6 @@ export default {
       searched: [],
       search: null,
       eventos: [],
-      eventosfiltered: [],
       evento_inicial: null,
       evento: {
         jogo: null,
@@ -327,7 +328,9 @@ export default {
       sugestaoAtletas1: null,
       sugestaoAtletas2: null,
       tiposeventos: [],
-      menuTipo: true,
+      menuTipo: false,
+      equipaFilter: 'Equipa',
+      parteFilter: '',
       menuJogador: false,
       selE: false,
       selA1: false,
@@ -674,7 +677,6 @@ export default {
   created: function() {
     axios.get(process.env.API_URL + "/server/get_eventos/" + this.$session.get('jogoTab') + "/").then(response => {
       this.eventos = response.data;
-      this.eventosfiltered = response.data;
       this.searched = response.data;
       axios.get(process.env.API_URL + "/server/get_jogo/" + this.$session.get('jogoTab') + "/").then(response => {
         this.jogo = response.data;
@@ -777,11 +779,6 @@ export default {
     handleResize() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
-    },
-
-    outside() {
-      this.menuTipo=false;
-      console.log('clicked outside!');
     },
 
     verJogo(id) {
@@ -931,6 +928,43 @@ export default {
       return series;
     },
 
+    switchEquipa(){
+      if(this.equipaFilter=='Equipa'){
+        this.equipaFilter=this.jogo.clube_nome;
+        this.filtEventos();
+        this.$forceUpdate();
+      }
+      else if(this.equipaFilter==this.jogo.clube_nome){
+        this.equipaFilter=this.jogo.adv_nome;
+        this.filtEventos();
+        this.$forceUpdate();
+      }
+      else if(this.equipaFilter==this.jogo.adv_nome){
+        this.equipaFilter='Equipa';
+        this.filtEventos();
+        this.$forceUpdate();
+      }
+    },
+
+    switchParte(){
+      if(this.parteFilter==''){
+        this.parteFilter=1;
+        this.filtEventos();
+        this.$forceUpdate();
+      }
+      else if(this.parteFilter==1){
+        this.parteFilter=2;
+        this.filtEventos();
+        this.$forceUpdate();
+      }
+      else if(this.parteFilter==2){
+        this.parteFilter='';
+        this.filtEventos();
+        this.$forceUpdate();
+      }
+    },
+
+
     filterEv(evento){
       var i = 0;
       var a = 0;
@@ -940,9 +974,8 @@ export default {
         while(b < this.tiposeventos.length){
           this.tiposeventos[b][1]=true;
           b=b+1;
-          console.log(b);
         }
-        this.filtEventosTipo();
+        this.filtEventos();
         this.$forceUpdate();
       }
 
@@ -950,9 +983,8 @@ export default {
         while(b < this.tiposeventos.length){
           this.tiposeventos[b][1]=false;
           b=b+1;
-          console.log(b);
         }
-        this.filtEventosTipo();
+        this.filtEventos();
         this.$forceUpdate();
       }
 
@@ -960,12 +992,12 @@ export default {
         if(this.tiposeventos[a][0] == evento[0]){
           if(this.tiposeventos[a][1]==true){
             this.tiposeventos[a][1]=false;
-            this.filtEventosTipo();
+            this.filtEventos();
             this.$forceUpdate();
           }
           else if(this.tiposeventos[a][1]==false){
             this.tiposeventos[a][1]=true;
-            this.filtEventosTipo();
+            this.filtEventos();
             this.$forceUpdate();
           }
         }
@@ -973,7 +1005,7 @@ export default {
       }
     },
 
-    filtEventosTipo(){
+    filtEventos(){
       var a = 0;
       var i = 0;
       var series = [];
@@ -987,8 +1019,12 @@ export default {
       this.searched=[];
       while(a < this.eventos.length){
         if(series.includes(this.eventos[a].tipo)){
-          this.searched[i] = this.eventos[a];
-          i=i+1;
+          if(this.eventos[a].equipa==this.equipaFilter || this.equipaFilter=="Equipa"){
+            if(this.eventos[a].parte==this.parteFilter || this.parteFilter==''){
+              this.searched[i] = this.eventos[a];
+              i=i+1;
+            }
+          }
         }
         a=a+1;
       }
