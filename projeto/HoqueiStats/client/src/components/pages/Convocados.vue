@@ -22,7 +22,7 @@
       </v-container>
 
       <v-container text-xs-center v-if="menuConv">
-        <h1 class="justify-center teamname">Equipa</h1>
+        <h1 class="justify-center teamname">Equipa - Convocados</h1>
         <v-card color="white" class="my-card">
           <ul>
             <li v-for="atleta in atletas" :key="atleta.id">
@@ -43,7 +43,7 @@
       </v-container>
 
       <v-container text-xs-center v-else-if="menuInicial">
-        <h1 class="justify-center teamname">Equipa</h1>
+        <h1 class="justify-center teamname">Equipa - 5 Inicial</h1>
         <v-card color="white" class="my-card">
           <ul>
             <li v-for="atleta in convocados.atletas" :key="atleta.id">
@@ -63,7 +63,7 @@
       </v-container>
 
       <v-container text-xs-center v-else-if="menuConvAdv">
-        <h1 class="justify-center teamname">Adversário</h1>
+        <h1 class="justify-center teamname">Adversário - Convocados</h1>
         <v-card color="white" class="my-card">
           <ul>
             <li v-for="atleta in atletasAdv" :key="atleta.id">
@@ -84,7 +84,7 @@
       </v-container>
 
       <v-container text-xs-center v-else>
-        <h1 class="justify-center teamname">Adversário</h1>
+        <h1 class="justify-center teamname">Adversário - 5 Inicial</h1>
         <v-card color="white" class="my-card">
           <ul>
             <li v-for="atleta in convocadosAdv.atletas" :key="atleta.id">
