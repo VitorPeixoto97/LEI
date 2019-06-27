@@ -48,23 +48,37 @@ body {
   margin-bottom: 1rem;
 }
 
+
 .btn-primary{
   border-color: #37003c !important;
   background-color: #37003c !important;
   color: #00ff87 !important;
-}
-
-.btn-convocados{
-  width:60%;
-  margin:auto;
-  height:auto;
-  border-radius:50px !important;
+  font-size: 100%;
+  border-radius: 5rem;
+  letter-spacing: .1rem;
+  font-weight: bold;
+  padding: 1rem;
+  transition: all 0.2s;
 }
 
 .btn-secundary{
   border-color: #aaaaaa !important;
   background-color: #aaaaaa !important;
   color: #222222 !important;
+}
+
+.btn-convocados{
+  width:40%;
+  margin:auto;
+  height:auto;
+  border-radius:50px !important;
+}
+
+.my-card{
+  border-radius:20px; 
+  -webkit-box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
+  -moz-box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
+  box-shadow: 1px 8px 18px -3px rgba(0,0,0,0.31);
 }
 
 .form-label-group input {
@@ -491,3 +505,237 @@ fieldset[disabled]
 
 [dir=rtl] 
 .multiselect__spinner{right:auto;left:1px}@keyframes spinning{0%{transform:rotate(0)}to{transform:rotate(2turn)}}
+
+
+@media only screen and (min-width: 0px) {
+  .dist{
+    margin: auto !important;
+    width: 98%;
+  }
+  .chart{
+    width:95%;
+    position:relative;
+    padding-bottom: 50%;
+    float: left;
+    margin-left:10px;
+    height: 0;
+  }
+  .filter-card{
+    width:100%;
+    margin:auto;
+  }
+  .stats-card{
+    height:200px;
+    width:95%;
+    margin:auto;
+  }
+  .score{
+    width:95%;
+    height:160px;
+    margin:auto;
+  }
+  .crest{
+    height: 80px !important;
+    display:inline-flex;
+  }
+  .resultado{
+    top:-30px;
+    color: #31043A;
+    font-size:3em !important;
+  }
+  .time{
+    margin-top:-10px;
+    color: #31043A;
+    font-size:1.5em !important;
+  }
+  .datahora{
+    margin-top:-10px;
+    color: #31043A;
+    font-size:1em !important;
+  }
+  .teamname{
+    top:-50px;
+    color: #31043A;
+    font-size:1em !important;
+  }
+  .timer{
+    width:100%;
+  }
+  .btn-timer{
+    width:90%;
+    padding:0.7rem;
+  }
+  .eventos-table{
+    width:95%;
+    margin: auto;
+  }
+  .v-column{
+    width:100%;
+  }
+  .v-row{
+    display:flex !important;
+  }
+}
+@media only screen and (min-width: 400px) {
+  .dist{
+    margin: auto !important;
+    width: 98%;
+  }
+  .chart{
+    width:100%;
+    margin:auto;
+  }
+  .score{
+    width:60%;
+    margin:auto;
+    height:160px;
+  }
+  .stats-card{
+    width:85%;
+  }
+  .filter-card{
+    width:80%;
+    margin:20% auto auto auto;
+  }
+  .crest{
+    height: 80px !important;
+    display:inline-flex;
+  }
+  .resultado{
+    top:-30px;
+    color: #31043A;
+    font-size:3em !important;
+  }
+  .time{
+    margin-top:-10px;
+    color: #31043A;
+    font-size:1.5em !important;
+  }
+  .datahora{
+    margin-top:-10px;
+    color: #31043A;
+    font-size:1em !important;
+  }
+  .teamname{
+    top:-50px;
+    color: #31043A;
+    font-size:1em !important;
+  }
+  .timer{
+    width: 60%;
+    margin: auto;
+  }
+  .btn-timer{
+    width:90%;
+    padding:0.7rem;
+  }
+  .eventos-table{
+    width:100%;
+    margin: auto;
+  }
+}
+@media only screen and (min-width: 780px) {
+  .distleft{
+    width:30%;
+    min-width:95%;
+  }
+  .chart{
+    width:100%;
+    margin:auto;
+    position:relative;
+    padding-bottom: 50%;
+    float: left;
+    height: 0;
+  }
+  .score{
+    width:50%;
+    height:160px;
+    margin:auto;
+  }
+  .stats-card{
+    width:75%;
+  }
+  .filter-card{
+    width:70%;
+    margin:30% auto auto auto;
+  }
+  .crest{
+    height:20%;
+    display:inline-flex;
+  }
+  .distright{
+    width:30%;
+    min-width:95%;
+  }
+  .eventos-table{
+    width:100%;
+    margin:auto;
+  }
+  .timer{
+    width:50%;
+  }
+  .btn-timer{
+    width:90%;
+    padding:0.7rem;
+  }
+}
+@media only screen and (min-width: 1500px) {
+  .distleft{
+    min-width:100%;
+  }
+  .chart{
+    width:100%;
+    margin:auto;
+  }
+  .distright{
+    min-width:100%;
+  }
+  .score{
+    width:50%;
+    height:160px;
+  }
+  .stats-card{
+    width:70%;
+  }
+  .filter-card{
+    width:70%;
+    margin:20% auto auto auto;
+  }
+  .crest{
+    height: 80px !important;
+    display:inline-flex;
+  }
+  .resultado{
+    top:-30px;
+    color: #31043A;
+    font-size:3em !important;
+  }
+  .time{
+    margin-top:-10px;
+    color: #31043A;
+    font-size:2em !important;
+  }
+  .datahora{
+    margin-top:-15px;
+    color: #31043A;
+    font-size:1.2em !important;
+  }
+  .teamname{
+    top:-50px;
+    color: #31043A;
+    font-size:1.2em !important;
+  }
+  .timer{
+    width:50%;
+    margin:auto;
+  }
+  .btn-timer{
+    width:80%;
+    padding:0.9rem;
+  }
+  .eventos-table{
+    width:100%;
+    margin:auto;
+  }
+}
+

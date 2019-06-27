@@ -39,6 +39,7 @@
                   v-on:click="menuConv = false; menuInicial = true; convocados.atletas.sort(function(a, b){return a.camisola - b.camisola})" 
                   :disabled="convocados.atletas.length < 10 && convocados.atletas.indexOf(atleta) === -1 && has_null">Avançar
           </button>
+          <br>
         </v-card>
       </v-container>
 
@@ -59,6 +60,7 @@
                   v-on:click="menuInicial = false; menuConvAdv = true;" 
                   :disabled="convocados.inicial.length < 5 && convocados.inicial.indexOf(atleta) === -1">Avançar
           </button>
+          <br>
         </v-card>
       </v-container>
 
@@ -80,6 +82,7 @@
                   v-on:click="menuConvAdv = false; menuInicialAdv = true; convocadosAdv.atletas.sort(function(a, b){return a.camisola - b.camisola})" 
                   :disabled="convocadosAdv.atletas.length < 10 && convocadosAdv.atletas.indexOf(atleta) === -1 && has_null">Avançar
           </button>
+          <br>
         </v-card>
       </v-container>
 
@@ -100,6 +103,7 @@
                   v-on:click="addConvocados()" 
                   :disabled="convocadosAdv.inicial.length < 5 && convocadosAdv.inicial.indexOf(atleta) === -1">Guardar
           </button>
+          <br>
         </v-card>
       </v-container>
       <br>
