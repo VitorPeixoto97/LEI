@@ -7,7 +7,7 @@
 
 [Salete Teixeira](https://github.com/SaleteTeixeira)
 
-[Vitor Peixoto](https://github.com/VitorPeixoto97)
+[Vitor Peixoto](https://github.com/vitorecarpe)
 
 # Classification
 
